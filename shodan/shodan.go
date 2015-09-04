@@ -11,6 +11,8 @@ const (
 	baseUrl = "https://api.shodan.io"
 )
 
+type QueryStringParams map[string]string
+
 type Client struct {
 	Token string
 
@@ -27,7 +29,7 @@ func NewClient(token string) *Client {
 	}
 }
 
-func (c *Client) buildUrl(path string, params map[string]string) (string, error) {
+func (c *Client) buildUrl(path string, params QueryStringParams) (string, error) {
 	baseUrl, err := url.Parse(baseUrl + path)
 	if err != nil {
 		return path, err
