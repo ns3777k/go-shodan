@@ -5,13 +5,13 @@ import (
 	"io"
 	"encoding/json"
 	"net/url"
+
+	"github.com/google/go-querystring/query"
 )
 
 const (
 	baseUrl = "https://api.shodan.io"
 )
-
-type QueryStringParams map[string]string
 
 type Client struct {
 	Token string
@@ -29,22 +29,21 @@ func NewClient(token string) *Client {
 	}
 }
 
-func (c *Client) buildUrl(path string, params QueryStringParams) (string, error) {
+func (c *Client) buildUrl(path string, params interface{}) (string, error) {
 	baseUrl, err := url.Parse(baseUrl + path)
 	if err != nil {
-		return path, err
+		return "", err
 	}
 
-	qs := url.Values{}
+	qs, err := query.Values(params)
+	if err != nil {
+		return baseUrl.String(), err
+	}
+
 	qs.Add("key", c.Token)
 
-	if params != nil {
-		for k, v := range params {
-			qs.Add(k, v)
-		}
-	}
-
 	baseUrl.RawQuery = qs.Encode()
+
 	return baseUrl.String(), nil
 }
 
