@@ -8,7 +8,7 @@ type ServicePort        string
 type ServiceDescription string
 type ServiceCollection  map[ServicePort]ServiceDescription
 
-func (c *Client) GetServices() (*ServiceCollection, error) {
+func (c *Client) GetServices() (ServiceCollection, error) {
 	url, err := c.buildUrl(servicesPath, nil)
 	if err != nil {
 		return nil, err
@@ -17,5 +17,5 @@ func (c *Client) GetServices() (*ServiceCollection, error) {
 	var services ServiceCollection
 	err = c.executeRequest("GET", url, &services)
 
-	return &services, err
+	return services, err
 }
