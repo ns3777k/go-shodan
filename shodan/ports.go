@@ -6,7 +6,7 @@ const (
 
 type Port int
 
-func (c *Client) GetPorts() (*[]Port, error) {
+func (c *Client) GetPorts() ([]Port, error) {
 	url, err := c.buildUrl(portsPath, nil)
 	if err != nil {
 		return nil, err
@@ -15,5 +15,5 @@ func (c *Client) GetPorts() (*[]Port, error) {
 	var ports []Port
 	err = c.executeRequest("GET", url, &ports)
 
-	return &ports, err
+	return ports, err
 }
