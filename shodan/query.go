@@ -1,9 +1,17 @@
 package shodan
 
+import (
+	"errors"
+)
+
 const (
 	queryTagsPath = "/shodan/query/tags"
 	querySearchPath = "/shodan/query/search"
 	queryPath = "/shodan/query"
+)
+
+var (
+	ErrInvalidQuery = errors.New("Query is invalid")
 )
 
 type QueryTagsMatch struct {
@@ -70,6 +78,10 @@ func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
 }
 
 func (c *Client) SearchQueries(options *SearchQueryOptions) (*QuerySearch, error) {
+	if options.Query == "" {
+		return nil, ErrInvalidQuery
+	}
+
 	url, err := c.buildUrl(querySearchPath, options)
 	if err != nil {
 		return nil, err
