@@ -20,7 +20,7 @@ const (
 	reversePath = "/dns/reverse"
 )
 
-func (c *Client) GetDnsResolve(hostnames []string) (*DnsResolved, error) {
+func (c *Client) GetDnsResolve(hostnames []string) (DnsResolved, error) {
 	options := &dnsResolveOptions{
 		Hostnames: strings.Join(hostnames, ","),
 	}
@@ -29,13 +29,13 @@ func (c *Client) GetDnsResolve(hostnames []string) (*DnsResolved, error) {
 		return nil, err
 	}
 
-	var dnsResolved DnsResolved
+	dnsResolved := make(DnsResolved)
 	err = c.executeRequest("GET", url, &dnsResolved)
 
-	return &dnsResolved, err
+	return dnsResolved, err
 }
 
-func (c *Client) GetDnsReverse(ips []string) (*DnsReversed, error) {
+func (c *Client) GetDnsReverse(ips []string) (DnsReversed, error) {
 	options := &dnsReverseOptions{
 		Ips: strings.Join(ips, ","),
 	}
@@ -44,8 +44,8 @@ func (c *Client) GetDnsReverse(ips []string) (*DnsReversed, error) {
 		return nil, err
 	}
 
-	var dnsReversed DnsReversed
+	dnsReversed := make(DnsReversed)
 	err = c.executeRequest("GET", url, &dnsReversed)
 
-	return &dnsReversed, err
+	return dnsReversed, err
 }
