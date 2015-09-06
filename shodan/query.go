@@ -39,22 +39,32 @@ type QuerySearch struct {
 }
 
 type QueryTagsOptions struct {
+	// The number of tags to return (default: 10)
 	Size int `url:"size,omitempty"`
 }
 
 type SearchQueryOptions struct {
+	// What to search for in the directory of saved search queries
 	Query string `url:"query"`
-	Page  int    `url:"page,omitempty"`
+
+	// Page number to iterate over results; each page contains 10 items
+	Page int `url:"page,omitempty"`
 }
 
 type QueryOptions struct {
-	Page  int    `url:"page,omitempty"`
-	Sort  string `url:"sort,omitempty"`
+	// Page number to iterate over results; each page contains 10 items
+	Page int `url:"page,omitempty"`
+
+	// Sort the list based on a property. Possible values are: votes, timestamp
+	Sort string `url:"sort,omitempty"`
+
+	// Whether to sort the list in ascending or descending order. Possible values are: asc, desc
 	Order string `url:"order,omitempty"`
 }
 
+// GetQueryTags obtains a list of popular tags for the saved search queries in Shodan
 func (c *Client) GetQueryTags(options *QueryTagsOptions) (*QueryTags, error) {
-	url, err := c.buildUrl(queryTagsPath, options)
+	url, err := c.buildURL(queryTagsPath, options)
 	if err != nil {
 		return nil, err
 	}
@@ -65,8 +75,9 @@ func (c *Client) GetQueryTags(options *QueryTagsOptions) (*QueryTags, error) {
 	return &queryTags, err
 }
 
+// GetQueries obtains a list of search queries that users have saved in Shodan
 func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
-	url, err := c.buildUrl(queryPath, options)
+	url, err := c.buildURL(queryPath, options)
 	if err != nil {
 		return nil, err
 	}
@@ -77,12 +88,13 @@ func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
 	return &querySearch, err
 }
 
+// SearchQueries searches the directory of search queries that users have saved in Shodan
 func (c *Client) SearchQueries(options *SearchQueryOptions) (*QuerySearch, error) {
 	if options.Query == "" {
 		return nil, ErrInvalidQuery
 	}
 
-	url, err := c.buildUrl(querySearchPath, options)
+	url, err := c.buildURL(querySearchPath, options)
 	if err != nil {
 		return nil, err
 	}

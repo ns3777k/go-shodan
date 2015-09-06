@@ -1,5 +1,6 @@
 # go-shodan
 To start working with Shodan you have to get your token first. You can do this at [http://www.shodanhq.com](http://www.shodanhq.com).
+#### Please note that it is unstable for now
 
 ### Installation
 Download the package:
@@ -34,6 +35,11 @@ Sample output:
 $ go run c.go
 2015/09/05 18:50:52 173.194.115.35
 ```
+
+### Roadmap
+1. Streaming API
+2. Error handling
+3. Testing
 
 ### Links
 * [goDoc](http://godoc.org/github.com/ns3777k/go-shodan/shodan)

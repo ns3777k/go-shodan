@@ -4,22 +4,23 @@ const (
 	infoPath = "/api-info"
 )
 
-type ApiInfo struct {
+type APIInfo struct {
 	QueryCredits int    `json:"query_credits"`
 	ScanCredits  int    `json:"scan_credits"`
 	Telnet       bool   `json:"telnet"`
 	Plan         string `json:"plan"`
-	Https        bool   `json:"https"`
+	HTTPS        bool   `json:"https"`
 	Unlocked     bool   `json:"unlocked"`
 }
 
-func (c *Client) GetApiInfo() (*ApiInfo, error) {
-	url, err := c.buildUrl(infoPath, nil)
+// GetAPIInfo returns information about the API plan belonging to the given API key
+func (c *Client) GetAPIInfo() (*APIInfo, error) {
+	url, err := c.buildURL(infoPath, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	var apiInfo ApiInfo
+	var apiInfo APIInfo
 	err = c.executeRequest("GET", url, &apiInfo)
 
 	return &apiInfo, err

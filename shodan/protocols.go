@@ -4,12 +4,11 @@ const (
 	protocolsPath = "/shodan/protocols"
 )
 
-type Protocol            string
-type ProtocolDescription string
-type ProtocolCollection  map[Protocol]ProtocolDescription
+type ProtocolCollection map[string]string
 
+// GetProtocols returns an object containing all the protocols that can be used when launching an Internet scan
 func (c *Client) GetProtocols() (ProtocolCollection, error) {
-	url, err := c.buildUrl(protocolsPath, nil)
+	url, err := c.buildURL(protocolsPath, nil)
 	if err != nil {
 		return nil, err
 	}

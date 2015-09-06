@@ -9,8 +9,10 @@ const (
 	ipPath = "/tools/myip"
 )
 
+// GetMyIP returns your current IP address as seen from the Internet
+// API key for this method is unnecessary
 func (c *Client) GetMyIP() (string, error) {
-	url, err := c.buildUrl(ipPath, nil)
+	url, err := c.buildURL(ipPath, nil)
 	if err != nil {
 		return "", err
 	}

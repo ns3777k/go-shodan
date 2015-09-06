@@ -6,8 +6,9 @@ const (
 
 type Port int
 
+// GetPorts returns a list of port numbers that the crawlers are looking for
 func (c *Client) GetPorts() ([]Port, error) {
-	url, err := c.buildUrl(portsPath, nil)
+	url, err := c.buildURL(portsPath, nil)
 	if err != nil {
 		return nil, err
 	}

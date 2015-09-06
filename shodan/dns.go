@@ -4,15 +4,15 @@ import (
 	"strings"
 )
 
-type DnsResolved map[string]string
-type DnsReversed map[string][]string
+type DNSResolved map[string]string
+type DNSReversed map[string][]string
 
 type dnsResolveOptions struct {
 	Hostnames string `url:"hostnames"`
 }
 
 type dnsReverseOptions struct {
-	Ips string `url:"ips"`
+	IP string `url:"ips"`
 }
 
 const (
@@ -20,31 +20,33 @@ const (
 	reversePath = "/dns/reverse"
 )
 
-func (c *Client) GetDnsResolve(hostnames []string) (DnsResolved, error) {
+// GetDNSResolve looks up the IP address for the provided list of hostnames
+func (c *Client) GetDNSResolve(hostnames []string) (DNSResolved, error) {
 	options := &dnsResolveOptions{
 		Hostnames: strings.Join(hostnames, ","),
 	}
-	url, err := c.buildUrl(resolvePath, options)
+	url, err := c.buildURL(resolvePath, options)
 	if err != nil {
 		return nil, err
 	}
 
-	dnsResolved := make(DnsResolved)
+	dnsResolved := make(DNSResolved)
 	err = c.executeRequest("GET", url, &dnsResolved)
 
 	return dnsResolved, err
 }
 
-func (c *Client) GetDnsReverse(ips []string) (DnsReversed, error) {
+// GetDNSReverse looks up the hostnames that have been defined for the given list of IP addresses
+func (c *Client) GetDNSReverse(ip []string) (DNSReversed, error) {
 	options := &dnsReverseOptions{
-		Ips: strings.Join(ips, ","),
+		IP: strings.Join(ip, ","),
 	}
-	url, err := c.buildUrl(reversePath, options)
+	url, err := c.buildURL(reversePath, options)
 	if err != nil {
 		return nil, err
 	}
 
-	dnsReversed := make(DnsReversed)
+	dnsReversed := make(DNSReversed)
 	err = c.executeRequest("GET", url, &dnsReversed)
 
 	return dnsReversed, err

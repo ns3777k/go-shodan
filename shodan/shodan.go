@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	baseUrl = "https://api.shodan.io"
+	baseURL = "https://api.shodan.io"
 )
 
 type Client struct {
@@ -29,22 +29,22 @@ func NewClient(token string) *Client {
 	}
 }
 
-func (c *Client) buildUrl(path string, params interface{}) (string, error) {
-	baseUrl, err := url.Parse(baseUrl + path)
+func (c *Client) buildURL(path string, params interface{}) (string, error) {
+	baseURL, err := url.Parse(baseURL + path)
 	if err != nil {
 		return "", err
 	}
 
 	qs, err := query.Values(params)
 	if err != nil {
-		return baseUrl.String(), err
+		return baseURL.String(), err
 	}
 
 	qs.Add("key", c.Token)
 
-	baseUrl.RawQuery = qs.Encode()
+	baseURL.RawQuery = qs.Encode()
 
-	return baseUrl.String(), nil
+	return baseURL.String(), nil
 }
 
 func (c *Client) executeRequest(method, path string, v interface{}) error {
