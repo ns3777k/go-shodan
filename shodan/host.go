@@ -84,6 +84,14 @@ type HostMatch struct {
 	Matches []*HostData         `json:"matches"`
 }
 
+type HostQueryTokens struct {
+	Filters    []string               `json:"filters"`
+	String     string                 `json:"string"`
+	Errors     []string               `json:"errors"`
+	// FIXME: should it really be interface{} ?
+	Attributes map[string]interface{} `json:"attributes"`
+}
+
 // GetServicesForHost returns all services that have been found on the given host IP
 func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*Host, error) {
 	url, err := c.buildURL(hostPath + "/" + ip, options)
@@ -128,4 +136,20 @@ func (c *Client) GetHostsForQuery(options *HostQueryOptions) (*HostMatch, error)
 	err = c.executeRequest("GET", url, &found)
 
 	return &found, err
+}
+
+// This method lets you determine which filters are being used by the query string and what parameters were provided
+// to the filters.
+func (c *Client) BreakQueryIntoTokens(query string) (*HostQueryTokens, error) {
+	url, err := c.buildURL(hostSearchTokensPath, struct {
+		Query string `url:"query"`
+	}{Query: query})
+	if err != nil {
+		return nil, err
+	}
+
+	var tokens HostQueryTokens
+	err = c.executeRequest("GET", url, &tokens)
+
+	return &tokens, err
 }
