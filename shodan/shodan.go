@@ -11,6 +11,8 @@ import (
 
 const (
 	baseURL = "https://api.shodan.io"
+	exploitBaseURL = "https://exploits.shodan.io/api"
+	streamBaseURL = "https://stream.shodan.io"
 )
 
 type Client struct {
@@ -29,8 +31,8 @@ func NewClient(token string) *Client {
 	}
 }
 
-func (c *Client) buildURL(path string, params interface{}) (string, error) {
-	baseURL, err := url.Parse(baseURL + path)
+func (c *Client) buildURL(base, path string, params interface{}) (string, error) {
+	baseURL, err := url.Parse(base + path)
 	if err != nil {
 		return "", err
 	}
@@ -45,6 +47,18 @@ func (c *Client) buildURL(path string, params interface{}) (string, error) {
 	baseURL.RawQuery = qs.Encode()
 
 	return baseURL.String(), nil
+}
+
+func (c *Client) buildBaseURL(path string, params interface{}) (string, error) {
+	return c.buildURL(baseURL, path, params)
+}
+
+func (c *Client) buildExploitBaseURL(path string, params interface{}) (string, error) {
+	return c.buildURL(exploitBaseURL, path, params)
+}
+
+func (c *Client) buildStreamBaseURL(path string, params interface{}) (string, error) {
+	return c.buildURL(streamBaseURL, path, params)
 }
 
 func (c *Client) executeRequest(method, path string, v interface{}) error {

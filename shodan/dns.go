@@ -14,7 +14,7 @@ const (
 
 // GetDNSResolve looks up the IP address for the provided list of hostnames
 func (c *Client) GetDNSResolve(hostnames []string) (DNSResolved, error) {
-	url, err := c.buildURL(resolvePath, struct {
+	url, err := c.buildBaseURL(resolvePath, struct {
 		Hostnames string `url:"hostnames"`
 	}{strings.Join(hostnames, ",")})
 	if err != nil {
@@ -29,7 +29,7 @@ func (c *Client) GetDNSResolve(hostnames []string) (DNSResolved, error) {
 
 // GetDNSReverse looks up the hostnames that have been defined for the given list of IP addresses
 func (c *Client) GetDNSReverse(ip []string) (DNSReversed, error) {
-	url, err := c.buildURL(reversePath, struct {
+	url, err := c.buildBaseURL(reversePath, struct {
 		IP string `url:"ips"`
 	}{strings.Join(ip, ",")})
 	if err != nil {

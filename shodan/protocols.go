@@ -8,7 +8,7 @@ type ProtocolCollection map[string]string
 
 // GetProtocols returns an object containing all the protocols that can be used when launching an Internet scan
 func (c *Client) GetProtocols() (ProtocolCollection, error) {
-	url, err := c.buildURL(protocolsPath, nil)
+	url, err := c.buildBaseURL(protocolsPath, nil)
 	if err != nil {
 		return nil, err
 	}

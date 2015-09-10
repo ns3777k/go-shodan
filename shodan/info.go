@@ -15,7 +15,7 @@ type APIInfo struct {
 
 // GetAPIInfo returns information about the API plan belonging to the given API key
 func (c *Client) GetAPIInfo() (*APIInfo, error) {
-	url, err := c.buildURL(infoPath, nil)
+	url, err := c.buildBaseURL(infoPath, nil)
 	if err != nil {
 		return nil, err
 	}
