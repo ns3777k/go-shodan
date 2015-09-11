@@ -66,11 +66,6 @@ type Host struct {
 	HostLocation
 }
 
-type Facet struct {
-	Count int    `json:"count"`
-	Value string `json:"value"`
-}
-
 type HostQueryOptions struct {
 	Query  string `url:"query"`
 	Facets string `url:"facets,omitempty"`

@@ -1,17 +1,9 @@
 package shodan
 
-import (
-	"errors"
-)
-
 const (
 	queryTagsPath = "/shodan/query/tags"
 	querySearchPath = "/shodan/query/search"
 	queryPath = "/shodan/query"
-)
-
-var (
-	ErrInvalidQuery = errors.New("Query is invalid")
 )
 
 type QueryTagsMatch struct {
