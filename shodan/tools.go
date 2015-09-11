@@ -12,7 +12,7 @@ const (
 // GetMyIP returns your current IP address as seen from the Internet
 // API key for this method is unnecessary
 func (c *Client) GetMyIP() (string, error) {
-	url, err := c.buildURL(ipPath, nil)
+	url, err := c.buildBaseURL(ipPath, nil)
 	if err != nil {
 		return "", err
 	}
