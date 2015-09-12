@@ -37,8 +37,8 @@ $ go run c.go
 
 ### Roadmap
 1. Streaming API
-2. Error handling
-3. Testing
+2. Testing
+3. Scan API? (Don't have scan credits though)
 
 ### Links
 * [goDoc](http://godoc.org/github.com/ns3777k/go-shodan/shodan)

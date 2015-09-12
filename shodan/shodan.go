@@ -5,6 +5,9 @@ import (
 	"io"
 	"encoding/json"
 	"net/url"
+	"io/ioutil"
+	"errors"
+	"strings"
 
 	"github.com/google/go-querystring/query"
 )
@@ -14,6 +17,24 @@ const (
 	exploitBaseURL = "https://exploits.shodan.io/api"
 	streamBaseURL = "https://stream.shodan.io"
 )
+
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+func getErrorFromResponse (r *http.Response) error {
+	var errorResponse ErrorResponse
+	message, err := ioutil.ReadAll(r.Body)
+	if err == nil {
+		if err := json.Unmarshal(message, &errorResponse); err == nil {
+			return errors.New(errorResponse.Error)
+		} else {
+			return errors.New(strings.TrimSpace(string(message)))
+		}
+	}
+
+	return ErrBodyRead
+}
 
 type Client struct {
 	Token string
@@ -61,7 +82,7 @@ func (c *Client) buildStreamBaseURL(path string, params interface{}) (string, er
 	return c.buildURL(streamBaseURL, path, params)
 }
 
-func (c *Client) executeRequest(method, path string, v interface{}) error {
+func (c *Client) executeRequest(method, path string, destination interface{}) error {
 	req, err := http.NewRequest(method, path, nil)
 	if err != nil {
 		return err
@@ -74,11 +95,15 @@ func (c *Client) executeRequest(method, path string, v interface{}) error {
 
 	defer res.Body.Close()
 
-	if w, ok := v.(io.Writer); ok {
+	if res.StatusCode != http.StatusOK {
+		return getErrorFromResponse(res)
+	}
+
+	if w, ok := destination.(io.Writer); ok {
 		io.Copy(w, res.Body)
 	} else {
 		decoder := json.NewDecoder(res.Body)
-		err = decoder.Decode(v)
+		err = decoder.Decode(destination)
 	}
 
 	return err
