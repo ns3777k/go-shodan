@@ -1,6 +1,5 @@
 # go-shodan
 To start working with Shodan you have to get your token first. You can do this at [http://www.shodanhq.com](http://www.shodanhq.com).
-#### Please note that it is unstable for now
 
 ### Installation
 Download the package:
