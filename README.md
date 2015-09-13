@@ -32,9 +32,8 @@ func main() {
     }
 }
 ```
-Sample output:
+Output from above code:
 ```bash
-$ go run c.go
 2015/09/05 18:50:52 173.194.115.35
 ```
 
