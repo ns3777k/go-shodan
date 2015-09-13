@@ -6,7 +6,9 @@ go:
  - 1.4
  - 1.5
 install:
-  - go get code.google.com/p/go.tools/cmd/cover
+  - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
   - go get -v ./shodan
-script: go test -v ./shodan -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
+script:
+  - if [ "$TRAVIS_GO_VERSION" == "1.5" ]; then go test -v ./shodan -covermode=count -coverprofile=coverage.out; fi
+  - if [ "$TRAVIS_GO_VERSION" == "1.5" ]; then $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN; fi
