@@ -33,7 +33,7 @@ func main() {
     }
 }
 ```
-Output from above code:
+Output for above:
 ```bash
 2015/09/05 18:50:52 173.194.115.35
 ```
