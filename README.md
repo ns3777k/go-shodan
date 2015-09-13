@@ -24,7 +24,7 @@ import (
 
 func main() {
     client := shodan.NewClient("MY_TOKEN")
-    dns, err := client.GetDnsResolve([]string{"google.com", "ya.ru"})
+    dns, err := client.GetDNSResolve([]string{"google.com", "ya.ru"})
     
     if err != nil {
         log.Panic(err)
