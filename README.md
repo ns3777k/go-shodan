@@ -1,4 +1,7 @@
 # go-shodan
+[![Build Status](https://travis-ci.org/ns3777k/go-shodan.svg?branch=master)](https://travis-ci.org/ns3777k/go-shodan)
+[![Coverage Status](https://coveralls.io/repos/ns3777k/go-shodan/badge.svg?branch=master&service=github)](https://coveralls.io/github/ns3777k/go-shodan?branch=master)
+
 To start working with Shodan you have to get your token first. You can do this at [http://www.shodanhq.com](http://www.shodanhq.com).
 
 ### Installation
