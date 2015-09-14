@@ -11,7 +11,7 @@ func TestClient_GetProtocols(t *testing.T) {
 
 	mux.HandleFunc(protocolsPath, func(w http.ResponseWriter, r *http.Request) {
 		w.Write(getStub(t, "protocols"))
-	});
+	})
 
 	url, err := client.buildURL(server.URL, protocolsPath, nil)
 	if err != nil {
