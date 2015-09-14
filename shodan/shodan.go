@@ -38,6 +38,9 @@ func getErrorFromResponse (r *http.Response) error {
 
 type Client struct {
 	Token string
+	BaseURL string
+	ExploitBaseURL string
+	StreamBaseURL string
 
 	client *http.Client
 }
@@ -48,6 +51,9 @@ func NewClient(token string) *Client {
 
 	return &Client{
 		Token: token,
+		BaseURL: baseURL,
+		ExploitBaseURL: exploitBaseURL,
+		StreamBaseURL: streamBaseURL,
 		client: client,
 	}
 }
@@ -71,15 +77,15 @@ func (c *Client) buildURL(base, path string, params interface{}) (string, error)
 }
 
 func (c *Client) buildBaseURL(path string, params interface{}) (string, error) {
-	return c.buildURL(baseURL, path, params)
+	return c.buildURL(c.BaseURL, path, params)
 }
 
 func (c *Client) buildExploitBaseURL(path string, params interface{}) (string, error) {
-	return c.buildURL(exploitBaseURL, path, params)
+	return c.buildURL(c.ExploitBaseURL, path, params)
 }
 
 func (c *Client) buildStreamBaseURL(path string, params interface{}) (string, error) {
-	return c.buildURL(streamBaseURL, path, params)
+	return c.buildURL(c.StreamBaseURL, path, params)
 }
 
 func (c *Client) executeRequest(method, path string, destination interface{}) error {

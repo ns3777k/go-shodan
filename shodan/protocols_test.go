@@ -13,13 +13,7 @@ func TestClient_GetProtocols(t *testing.T) {
 		w.Write(getStub(t, "protocols"))
 	})
 
-	url, err := client.buildURL(server.URL, protocolsPath, nil)
-	if err != nil {
-		t.Errorf("buildURL returned error %v", err)
-	}
-
-	var protocols ProtocolCollection
-	err = client.executeRequest("GET", url, &protocols)
+	_, err := client.GetProtocols()
 	if err != nil {
 		t.Errorf("Client executeRequest returned error %v", err)
 	}

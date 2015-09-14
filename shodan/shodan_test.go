@@ -23,6 +23,9 @@ func setUpTestServe() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
 	client = NewClient(testClientToken)
+	client.BaseURL = server.URL
+	client.ExploitBaseURL = server.URL
+	client.StreamBaseURL = server.URL
 }
 
 func getStub(t *testing.T, stubName string) []byte {
