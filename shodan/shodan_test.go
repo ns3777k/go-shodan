@@ -2,11 +2,42 @@ package shodan
 
 import (
 	"testing"
+	"net/http"
+	"net/http/httptest"
+	"io/ioutil"
+	"fmt"
 )
 
 const (
 	testClientToken = "TEST_TOKEN"
+	stubsDir = "stubs"
 )
+
+var (
+	mux *http.ServeMux
+	server *httptest.Server
+	client *Client
+)
+
+func setUpTestServe() {
+	mux = http.NewServeMux()
+	server = httptest.NewServer(mux)
+	client = NewClient(testClientToken)
+}
+
+func getStub(t *testing.T, stubName string) []byte {
+	stubPath := fmt.Sprintf("%s/%s.json", stubsDir, stubName)
+	content, err := ioutil.ReadFile(stubPath)
+	if err != nil {
+		t.Errorf("getStub error %v", err)
+	}
+
+	return content
+}
+
+func tearDownTestServe() {
+	server.Close()
+}
 
 func TestNewClient(t *testing.T) {
 	client := NewClient(testClientToken)
@@ -53,4 +84,3 @@ func TestClient_buildURL_valid(t *testing.T) {
 		}
 	}
 }
-
