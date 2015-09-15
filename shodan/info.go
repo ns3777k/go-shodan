@@ -21,7 +21,7 @@ func (c *Client) GetAPIInfo() (*APIInfo, error) {
 	}
 
 	var apiInfo APIInfo
-	err = c.executeRequest("GET", url, &apiInfo)
+	err = c.executeRequest("GET", url, &apiInfo, nil)
 
 	return &apiInfo, err
 }

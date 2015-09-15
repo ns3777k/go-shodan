@@ -41,7 +41,6 @@ Output for above:
 ### Roadmap
 1. Streaming API
 2. Testing
-3. Scan API? (Don't have scan credits though)
 
 ### Links
 * [Shodan.io](http://shodan.io) & [ShodanHQ](http://www.shodanhq.com)

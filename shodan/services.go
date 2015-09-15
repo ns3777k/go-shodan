@@ -15,7 +15,7 @@ func (c *Client) GetServices() (ServiceCollection, error) {
 	}
 
 	var services ServiceCollection
-	err = c.executeRequest("GET", url, &services)
+	err = c.executeRequest("GET", url, &services, nil)
 
 	return services, err
 }

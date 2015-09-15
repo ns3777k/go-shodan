@@ -14,7 +14,7 @@ func (c *Client) GetProtocols() (ProtocolCollection, error) {
 	}
 
 	var protocols ProtocolCollection
-	err = c.executeRequest("GET", url, &protocols)
+	err = c.executeRequest("GET", url, &protocols, nil)
 
 	return protocols, err
 }

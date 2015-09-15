@@ -38,7 +38,7 @@ type HostData struct {
 	CPE          []string               `json:"cpe"`
 	Data         string                 `json:"data"`
 	ASN          string                 `json:"asn"`
-	Port         Port                   `json:"port"`
+	Port         int                    `json:"port"`
 	HTML         string                 `json:"html"`
 	Banner       string                 `json:"banner"`
 	Link         string                 `json:"link"`
@@ -53,7 +53,7 @@ type HostData struct {
 
 type Host struct {
 	OS              string      `json:"os"`
-	Ports           []Port      `json:"ports"`
+	Ports           []int       `json:"ports"`
 	IPLong          int         `json:"ip"`
 	IP              string      `json:"ip_str"`
 	ISP             string      `json:"isp"`
@@ -95,7 +95,7 @@ func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*H
 	}
 
 	var host Host
-	err = c.executeRequest("GET", url, &host)
+	err = c.executeRequest("GET", url, &host, nil)
 
 	return &host, err
 }
@@ -110,7 +110,7 @@ func (c *Client) GetHostsCountForQuery(options *HostQueryOptions) (*HostMatch, e
 	}
 
 	var found HostMatch
-	err = c.executeRequest("GET", url, &found)
+	err = c.executeRequest("GET", url, &found, nil)
 
 	return &found, err
 }
@@ -128,7 +128,7 @@ func (c *Client) GetHostsForQuery(options *HostQueryOptions) (*HostMatch, error)
 	}
 
 	var found HostMatch
-	err = c.executeRequest("GET", url, &found)
+	err = c.executeRequest("GET", url, &found, nil)
 
 	return &found, err
 }
@@ -144,7 +144,7 @@ func (c *Client) BreakQueryIntoTokens(query string) (*HostQueryTokens, error) {
 	}
 
 	var tokens HostQueryTokens
-	err = c.executeRequest("GET", url, &tokens)
+	err = c.executeRequest("GET", url, &tokens, nil)
 
 	return &tokens, err
 }

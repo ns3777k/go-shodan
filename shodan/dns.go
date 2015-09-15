@@ -22,7 +22,7 @@ func (c *Client) GetDNSResolve(hostnames []string) (DNSResolved, error) {
 	}
 
 	dnsResolved := make(DNSResolved)
-	err = c.executeRequest("GET", url, &dnsResolved)
+	err = c.executeRequest("GET", url, &dnsResolved, nil)
 
 	return dnsResolved, err
 }
@@ -37,7 +37,7 @@ func (c *Client) GetDNSReverse(ip []string) (DNSReversed, error) {
 	}
 
 	dnsReversed := make(DNSReversed)
-	err = c.executeRequest("GET", url, &dnsReversed)
+	err = c.executeRequest("GET", url, &dnsReversed, nil)
 
 	return dnsReversed, err
 }

@@ -18,7 +18,7 @@ func (c *Client) GetMyIP() (string, error) {
 	}
 
 	var ip bytes.Buffer
-	err = c.executeRequest("GET", url, &ip)
+	err = c.executeRequest("GET", url, &ip, nil)
 
 	return strings.Trim(ip.String(), "\""), err
 }

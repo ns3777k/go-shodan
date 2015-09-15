@@ -62,7 +62,7 @@ func (c *Client) GetQueryTags(options *QueryTagsOptions) (*QueryTags, error) {
 	}
 
 	var queryTags QueryTags
-	err = c.executeRequest("GET", url, &queryTags)
+	err = c.executeRequest("GET", url, &queryTags, nil)
 
 	return &queryTags, err
 }
@@ -75,7 +75,7 @@ func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
 	}
 
 	var querySearch QuerySearch
-	err = c.executeRequest("GET", url, &querySearch)
+	err = c.executeRequest("GET", url, &querySearch, nil)
 
 	return &querySearch, err
 }
@@ -92,7 +92,7 @@ func (c *Client) SearchQueries(options *SearchQueryOptions) (*QuerySearch, error
 	}
 
 	var querySearch QuerySearch
-	err = c.executeRequest("GET", url, &querySearch)
+	err = c.executeRequest("GET", url, &querySearch, nil)
 
 	return &querySearch, err
 }

@@ -88,10 +88,14 @@ func (c *Client) buildStreamBaseURL(path string, params interface{}) (string, er
 	return c.buildURL(c.StreamBaseURL, path, params)
 }
 
-func (c *Client) executeRequest(method, path string, destination interface{}) error {
-	req, err := http.NewRequest(method, path, nil)
+func (c *Client) executeRequest(method, path string, destination interface{}, body io.Reader) error {
+	req, err := http.NewRequest(method, path, body)
 	if err != nil {
 		return err
+	}
+
+	if body != nil {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	}
 
 	res, err := c.client.Do(req)

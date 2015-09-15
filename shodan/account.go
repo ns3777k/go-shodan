@@ -19,7 +19,7 @@ func (c *Client) GetAccountProfile() (*Profile, error) {
 	}
 
 	var profile Profile
-	err = c.executeRequest("GET", url, &profile)
+	err = c.executeRequest("GET", url, &profile, nil)
 
 	return &profile, err
 }
