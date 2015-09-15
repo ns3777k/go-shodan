@@ -13,8 +13,12 @@ func TestClient_GetProtocols(t *testing.T) {
 		w.Write(getStub(t, "protocols"))
 	})
 
-	_, err := client.GetProtocols()
+	protocols, err := client.GetProtocols()
 	if err != nil {
 		t.Errorf("Client executeRequest returned error %v", err)
+	}
+
+	if len(protocols) != 116 {
+		t.Errorf("There should be 116 protocols in stub %v", err)
 	}
 }
