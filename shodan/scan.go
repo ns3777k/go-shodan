@@ -44,14 +44,14 @@ func (c *Client) ScanInternet(port int, protocol string) (int, error) {
 		return 0, err
 	}
 
-	crawlScanInternetStatus := struct {
+	crawlScanInternetStatus := new(struct {
 		ID int `json:"id"`
-	}{}
+	})
 
 	body := neturl.Values{}
 	body.Add("port", strconv.Itoa(port))
 	body.Add("protocol", protocol)
 
-	err = c.executeRequest("POST", url, &crawlScanInternetStatus, strings.NewReader(body.Encode()))
+	err = c.executeRequest("POST", url, crawlScanInternetStatus, strings.NewReader(body.Encode()))
 	return crawlScanInternetStatus.ID, err
 }

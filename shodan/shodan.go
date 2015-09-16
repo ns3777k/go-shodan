@@ -18,15 +18,13 @@ const (
 	streamBaseURL = "https://stream.shodan.io"
 )
 
-type ErrorResponse struct {
-	Error string `json:"error"`
-}
-
 func getErrorFromResponse (r *http.Response) error {
-	var errorResponse ErrorResponse
+	errorResponse := new(struct {
+		Error string `json:"error"`
+	})
 	message, err := ioutil.ReadAll(r.Body)
 	if err == nil {
-		if err := json.Unmarshal(message, &errorResponse); err == nil {
+		if err := json.Unmarshal(message, errorResponse); err == nil {
 			return errors.New(errorResponse.Error)
 		} else {
 			return errors.New(strings.TrimSpace(string(message)))
