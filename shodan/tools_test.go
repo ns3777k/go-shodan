@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strconv"
 	"fmt"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_GetMyIP(t *testing.T) {
@@ -14,15 +16,12 @@ func TestClient_GetMyIP(t *testing.T) {
 	testIP := "192.168.22.34"
 
 	mux.HandleFunc(ipPath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
 		fmt.Fprint(w, strconv.Quote(testIP))
 	})
 
 	ip, err := client.GetMyIP()
-	if err != nil {
-		t.Errorf("Client executeRequest returned error %v", err)
-	}
 
-	if ip != testIP {
-		t.Errorf("IPs are not equal, actual %v expected %s", ip, testIP)
-	}
+	assert.Nil(t, err);
+	assert.Equal(t, testIP, ip)
 }

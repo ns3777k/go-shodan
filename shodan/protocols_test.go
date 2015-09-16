@@ -3,6 +3,8 @@ package shodan
 import (
 	"testing"
 	"net/http"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_GetProtocols(t *testing.T) {
@@ -10,15 +12,12 @@ func TestClient_GetProtocols(t *testing.T) {
 	defer tearDownTestServe()
 
 	mux.HandleFunc(protocolsPath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
 		w.Write(getStub(t, "protocols"))
 	})
 
 	protocols, err := client.GetProtocols()
-	if err != nil {
-		t.Errorf("Client executeRequest returned error %v", err)
-	}
 
-	if len(protocols) != 116 {
-		t.Errorf("There should be 116 protocols in stub %v", err)
-	}
+	assert.Nil(t, err);
+	assert.Len(t, protocols, 116)
 }

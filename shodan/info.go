@@ -11,6 +11,7 @@ type APIInfo struct {
 	Plan         string `json:"plan"`
 	HTTPS        bool   `json:"https"`
 	Unlocked     bool   `json:"unlocked"`
+	UnlockedLeft int    `json:"unlocked_left"`
 }
 
 // GetAPIInfo returns information about the API plan belonging to the given API key

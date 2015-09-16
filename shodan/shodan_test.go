@@ -6,6 +6,8 @@ import (
 	"net/http/httptest"
 	"io/ioutil"
 	"fmt"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -45,9 +47,7 @@ func tearDownTestServe() {
 func TestNewClient(t *testing.T) {
 	client := NewClient(testClientToken)
 
-	if client.Token != testClientToken {
-		t.Errorf("NewClient Token is %v, expected %v", client.Token, testClientToken)
-	}
+	assert.Equal(t, testClientToken, client.Token)
 }
 
 func TestClient_buildURL_valid(t *testing.T) {
@@ -78,12 +78,8 @@ func TestClient_buildURL_valid(t *testing.T) {
 
 	for _, caseParams := range testCases {
 		url, err := client.buildURL(baseURL, caseParams.path, caseParams.params)
-		if err != nil {
-			t.Errorf("buildURL returned error %v", err)
-		}
 
-		if caseParams.expected != url {
-			t.Errorf("buildURL returned invalid url, expected %v, actual %v", caseParams.expected, url)
-		}
+		assert.Nil(t, err);
+		assert.Equal(t, caseParams.expected, url)
 	}
 }
