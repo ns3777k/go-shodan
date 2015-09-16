@@ -28,5 +28,6 @@ func TestClient_GetAPIInfo(t *testing.T) {
 	}
 
 	assert.Nil(t, err);
+	assert.IsType(t, infoExpected, info)
 	assert.EqualValues(t, infoExpected, info)
 }
