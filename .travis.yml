@@ -8,6 +8,7 @@ go:
 install:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
+  - go get github.com/stretchr/testify/assert
   - go get -v ./shodan
 script:
   - if [ "$TRAVIS_GO_VERSION" == "1.5" ]; then go test -v ./shodan -covermode=count -coverprofile=coverage.out; fi
