@@ -38,14 +38,14 @@ func (c *Client) Scan(ip []string) (*CrawlScanStatus, error) {
 // This method is restricted to security researchers and companies with a Shodan Data license. To apply for access to
 // this method as a researcher, please email jmath@shodan.io with information about your project. Access is restricted
 // to prevent abuse.
-func (c *Client) ScanInternet(port int, protocol string) (int, error) {
+func (c *Client) ScanInternet(port int, protocol string) (string, error) {
 	url, err := c.buildBaseURL(scanInternetPath, nil)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
 	crawlScanInternetStatus := new(struct {
-		ID int `json:"id"`
+		ID string `json:"id"`
 	})
 
 	body := neturl.Values{}
