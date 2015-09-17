@@ -22,7 +22,10 @@ func TestClient_Scan(t *testing.T) {
 		ips := r.FormValue("ips")
 		assert.NotEmpty(t, ips)
 
-		for _, ip := range strings.Split(ips, ",") {
+		splited := strings.Split(ips, ",")
+		assert.Len(t, splited, 2)
+
+		for _, ip := range splited {
 			assert.NotNil(t, net.ParseIP(ip))
 		}
 
