@@ -1,8 +1,8 @@
 package shodan
 
 import (
-	"testing"
 	"net/http"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -17,13 +17,13 @@ func TestClient_GetServices(t *testing.T) {
 	})
 
 	servicesExpected := map[string]string{
-		"623": "IPMI",
+		"623":  "IPMI",
 		"8181": "GlassFish Server",
-		"53": "DNS",
+		"53":   "DNS",
 	}
 	services, err := client.GetServices()
 
-	assert.Nil(t, err);
+	assert.Nil(t, err)
 	assert.Len(t, services, 3)
 	assert.EqualValues(t, servicesExpected, services)
 }

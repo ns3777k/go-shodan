@@ -1,9 +1,9 @@
 package shodan
 
 const (
-	queryTagsPath = "/shodan/query/tags"
+	queryTagsPath   = "/shodan/query/tags"
 	querySearchPath = "/shodan/query/search"
-	queryPath = "/shodan/query"
+	queryPath       = "/shodan/query"
 )
 
 type QueryTagsMatch struct {

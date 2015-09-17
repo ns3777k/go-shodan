@@ -1,13 +1,13 @@
 package shodan
 
 import (
-	"strings"
 	neturl "net/url"
 	"strconv"
+	"strings"
 )
 
 const (
-	scanPath = "/shodan/scan"
+	scanPath         = "/shodan/scan"
 	scanInternetPath = "/shodan/scan/internet"
 )
 

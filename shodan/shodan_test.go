@@ -1,22 +1,22 @@
 package shodan
 
 import (
-	"testing"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"io/ioutil"
-	"fmt"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 const (
 	testClientToken = "TEST_TOKEN"
-	stubsDir = "stubs"
+	stubsDir        = "stubs"
 )
 
 var (
-	mux *http.ServeMux
+	mux    *http.ServeMux
 	server *httptest.Server
 	client *Client
 )
@@ -53,15 +53,15 @@ func TestNewClient(t *testing.T) {
 func TestClient_buildURL_valid(t *testing.T) {
 	client := NewClient(testClientToken)
 	testOptions := struct {
-		Page int `url:"page"`
+		Page    int  `url:"page"`
 		ShowAll bool `url:"show_all"`
 	}{
 		100,
 		true,
 	}
 	testCases := []struct {
-		path string
-		params interface{}
+		path     string
+		params   interface{}
 		expected string
 	}{
 		{
@@ -79,7 +79,7 @@ func TestClient_buildURL_valid(t *testing.T) {
 	for _, caseParams := range testCases {
 		url, err := client.buildURL(baseURL, caseParams.path, caseParams.params)
 
-		assert.Nil(t, err);
+		assert.Nil(t, err)
 		assert.Equal(t, caseParams.expected, url)
 	}
 }

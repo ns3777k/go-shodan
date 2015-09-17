@@ -1,9 +1,9 @@
 package shodan
 
 const (
-	hostPath = "/shodan/host"
-	hostCountPath = "/shodan/host/count"
-	hostSearchPath = "/shodan/host/search"
+	hostPath             = "/shodan/host"
+	hostCountPath        = "/shodan/host/count"
+	hostSearchPath       = "/shodan/host/search"
 	hostSearchTokensPath = "/shodan/host/search/tokens"
 )
 
@@ -80,16 +80,16 @@ type HostMatch struct {
 }
 
 type HostQueryTokens struct {
-	Filters    []string               `json:"filters"`
-	String     string                 `json:"string"`
-	Errors     []string               `json:"errors"`
+	Filters []string `json:"filters"`
+	String  string   `json:"string"`
+	Errors  []string `json:"errors"`
 	// FIXME: should it really be interface{} ?
 	Attributes map[string]interface{} `json:"attributes"`
 }
 
 // GetServicesForHost returns all services that have been found on the given host IP
 func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*Host, error) {
-	url, err := c.buildBaseURL(hostPath + "/" + ip, options)
+	url, err := c.buildBaseURL(hostPath+"/"+ip, options)
 	if err != nil {
 		return nil, err
 	}
