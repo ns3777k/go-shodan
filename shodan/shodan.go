@@ -1,24 +1,24 @@
 package shodan
 
 import (
-	"net/http"
-	"io"
 	"encoding/json"
-	"net/url"
-	"io/ioutil"
 	"errors"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/google/go-querystring/query"
 )
 
 const (
-	baseURL = "https://api.shodan.io"
+	baseURL        = "https://api.shodan.io"
 	exploitBaseURL = "https://exploits.shodan.io/api"
-	streamBaseURL = "https://stream.shodan.io"
+	streamBaseURL  = "https://stream.shodan.io"
 )
 
-func getErrorFromResponse (r *http.Response) error {
+func getErrorFromResponse(r *http.Response) error {
 	errorResponse := new(struct {
 		Error string `json:"error"`
 	})
@@ -35,10 +35,10 @@ func getErrorFromResponse (r *http.Response) error {
 }
 
 type Client struct {
-	Token string
-	BaseURL string
+	Token          string
+	BaseURL        string
 	ExploitBaseURL string
-	StreamBaseURL string
+	StreamBaseURL  string
 
 	client *http.Client
 }
@@ -48,11 +48,11 @@ func NewClient(token string) *Client {
 	client := &http.Client{Transport: transport}
 
 	return &Client{
-		Token: token,
-		BaseURL: baseURL,
+		Token:          token,
+		BaseURL:        baseURL,
 		ExploitBaseURL: exploitBaseURL,
-		StreamBaseURL: streamBaseURL,
-		client: client,
+		StreamBaseURL:  streamBaseURL,
+		client:         client,
 	}
 }
 

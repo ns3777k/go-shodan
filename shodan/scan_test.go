@@ -1,12 +1,12 @@
 package shodan
 
 import (
-	"testing"
-	"net/http"
-	"strings"
-	"net"
-	"strconv"
 	"fmt"
+	"net"
+	"net/http"
+	"strconv"
+	"strings"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -31,8 +31,8 @@ func TestClient_Scan(t *testing.T) {
 
 	scanStatus, err := client.Scan([]string{"82.98.86.174", "93.184.216.34"})
 	scanStatusExpected := &CrawlScanStatus{
-		ID: "BOMA59VSGWX8QJR9",
-		Count: 2,
+		ID:          "BOMA59VSGWX8QJR9",
+		Count:       2,
 		CreditsLeft: 183,
 	}
 

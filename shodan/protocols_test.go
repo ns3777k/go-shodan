@@ -1,8 +1,8 @@
 package shodan
 
 import (
-	"testing"
 	"net/http"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,11 +18,11 @@ func TestClient_GetProtocols(t *testing.T) {
 
 	protocolsExpected := map[string]string{
 		"andromouse": "Checks whether the device is running the remote mouse AndroMouse service.",
-		"zookeeper": "Grab statistical information from a Zookeeper node",
+		"zookeeper":  "Grab statistical information from a Zookeeper node",
 	}
 	protocols, err := client.GetProtocols()
 
-	assert.Nil(t, err);
+	assert.Nil(t, err)
 	assert.Len(t, protocols, 2)
 	assert.EqualValues(t, protocolsExpected, protocols)
 }

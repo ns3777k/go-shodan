@@ -1,10 +1,10 @@
 package shodan
 
 import (
-	"testing"
+	"fmt"
 	"net/http"
 	"strconv"
-	"fmt"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -22,6 +22,6 @@ func TestClient_GetMyIP(t *testing.T) {
 
 	ip, err := client.GetMyIP()
 
-	assert.Nil(t, err);
+	assert.Nil(t, err)
 	assert.Equal(t, testIP, ip)
 }

@@ -1,8 +1,8 @@
 package shodan
 
 import (
-	"testing"
 	"net/http"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,13 +18,13 @@ func TestClient_GetAccountProfile(t *testing.T) {
 
 	account, err := client.GetAccountProfile()
 	accountExpected := &Profile{
-		Member: true,
-		Name: "",
+		Member:  true,
+		Name:    "",
 		Credits: 40,
 		Created: "2015-09-03T12:44:29.278000",
 	}
 
-	assert.Nil(t, err);
+	assert.Nil(t, err)
 	assert.IsType(t, accountExpected, account)
 	assert.EqualValues(t, accountExpected, account)
 }
