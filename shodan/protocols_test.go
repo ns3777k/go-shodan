@@ -16,8 +16,13 @@ func TestClient_GetProtocols(t *testing.T) {
 		w.Write(getStub(t, "protocols"))
 	})
 
+	protocolsExpected := map[string]string{
+		"andromouse": "Checks whether the device is running the remote mouse AndroMouse service.",
+		"zookeeper": "Grab statistical information from a Zookeeper node",
+	}
 	protocols, err := client.GetProtocols()
 
 	assert.Nil(t, err);
-	assert.Len(t, protocols, 116)
+	assert.Len(t, protocols, 2)
+	assert.EqualValues(t, protocolsExpected, protocols)
 }

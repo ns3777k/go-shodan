@@ -16,8 +16,14 @@ func TestClient_GetServices(t *testing.T) {
 		w.Write(getStub(t, "services"))
 	})
 
+	servicesExpected := map[string]string{
+		"623": "IPMI",
+		"8181": "GlassFish Server",
+		"53": "DNS",
+	}
 	services, err := client.GetServices()
 
 	assert.Nil(t, err);
-	assert.Len(t, services, 155)
+	assert.Len(t, services, 3)
+	assert.EqualValues(t, servicesExpected, services)
 }
