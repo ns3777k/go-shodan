@@ -1,11 +1,9 @@
 package shodan
 
 import (
+	"net"
 	"strings"
 )
-
-type DNSResolved map[string]string
-type DNSReversed map[string][]string
 
 const (
 	resolvePath = "/dns/resolve"
@@ -13,7 +11,7 @@ const (
 )
 
 // GetDNSResolve looks up the IP address for the provided list of hostnames
-func (c *Client) GetDNSResolve(hostnames []string) (DNSResolved, error) {
+func (c *Client) GetDNSResolve(hostnames []string) (map[string]*string, error) {
 	url, err := c.buildBaseURL(resolvePath, struct {
 		Hostnames string `url:"hostnames"`
 	}{strings.Join(hostnames, ",")})
@@ -21,14 +19,20 @@ func (c *Client) GetDNSResolve(hostnames []string) (DNSResolved, error) {
 		return nil, err
 	}
 
-	dnsResolved := make(DNSResolved)
+	dnsResolved := make(map[string]*string)
 	err = c.executeRequest("GET", url, &dnsResolved, nil)
 
 	return dnsResolved, err
 }
 
 // GetDNSReverse looks up the hostnames that have been defined for the given list of IP addresses
-func (c *Client) GetDNSReverse(ip []string) (DNSReversed, error) {
+func (c *Client) GetDNSReverse(ip []string) (map[string]*[]string, error) {
+	for _, ipAddress := range ip {
+		if parsedIP := net.ParseIP(ipAddress); parsedIP == nil {
+			return nil, &net.ParseError{"IP address", ipAddress}
+		}
+	}
+
 	url, err := c.buildBaseURL(reversePath, struct {
 		IP string `url:"ips"`
 	}{strings.Join(ip, ",")})
@@ -36,7 +40,7 @@ func (c *Client) GetDNSReverse(ip []string) (DNSReversed, error) {
 		return nil, err
 	}
 
-	dnsReversed := make(DNSReversed)
+	dnsReversed := make(map[string]*[]string)
 	err = c.executeRequest("GET", url, &dnsReversed, nil)
 
 	return dnsReversed, err

@@ -30,7 +30,7 @@ func main() {
     if err != nil {
         log.Panic(err)
     } else {
-        log.Println(dns["google.com"])
+        log.Println(*dns["google.com"])
     }
 }
 ```
