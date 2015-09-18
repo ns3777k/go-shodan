@@ -13,6 +13,9 @@ import (
 const (
 	testClientToken = "TEST_TOKEN"
 	stubsDir        = "stubs"
+
+	unauthorizedPath = "/http-error/401"
+	notFoundPath     = "/http-error/404"
 )
 
 var (
@@ -50,7 +53,7 @@ func TestNewClient(t *testing.T) {
 	assert.Equal(t, testClientToken, client.Token)
 }
 
-func TestClient_buildURL_valid(t *testing.T) {
+func TestClient_buildURL(t *testing.T) {
 	client := NewClient(testClientToken)
 	testOptions := struct {
 		Page    int  `url:"page"`
@@ -82,4 +85,39 @@ func TestClient_buildURL_valid(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, caseParams.expected, url)
 	}
+}
+
+func TestClient_executeRequest_textUnauthorized(t *testing.T) {
+	setUpTestServe()
+	defer tearDownTestServe()
+
+	errorText := "401 Unauthorized\n\n"
+	errorText += "This server could not verify that you are authorized to access the document you requested.  " +
+		"Either you supplied the wrong credentials (e.g., bad password), or your browser does not understand how to " +
+		"supply the credentials required."
+
+	mux.HandleFunc(unauthorizedPath, func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, errorText, http.StatusUnauthorized)
+	})
+
+	url, err := client.buildBaseURL(unauthorizedPath, nil)
+	assert.Nil(t, err)
+
+	err = client.executeRequest("GET", url, nil, nil)
+	assert.NotNil(t, err)
+}
+
+func TestClient_executeRequest_jsonNotFound(t *testing.T) {
+	setUpTestServe()
+	defer tearDownTestServe()
+
+	mux.HandleFunc(notFoundPath, func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, `{"error": "No information available for that IP."}`, http.StatusNotFound)
+	})
+
+	url, err := client.buildBaseURL(notFoundPath, nil)
+	assert.Nil(t, err)
+
+	err = client.executeRequest("GET", url, nil, nil)
+	assert.NotNil(t, err)
 }
