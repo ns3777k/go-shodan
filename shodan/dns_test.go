@@ -1,7 +1,6 @@
 package shodan
 
 import (
-	"net"
 	"net/http"
 	"strings"
 	"testing"
@@ -13,7 +12,7 @@ func TestClient_GetDNSResolve(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
 
-	hosts := []string{"google.com", "bing.com"}
+	expectedHostnames := []string{"google.com", "bing.com", "idonotexist.local"}
 
 	mux.HandleFunc(resolvePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
@@ -22,19 +21,53 @@ func TestClient_GetDNSResolve(t *testing.T) {
 		assert.NotEmpty(t, hostnames)
 
 		splited := strings.Split(hostnames, ",")
-		assert.Len(t, splited, len(hosts))
+		assert.Len(t, splited, len(expectedHostnames))
 
 		w.Write(getStub(t, "dns_resolve"))
 	})
 
-	resolve, err := client.GetDNSResolve(hosts)
+	resolve, err := client.GetDNSResolve(expectedHostnames)
 
 	assert.Nil(t, err)
-	assert.Len(t, resolve, len(hosts))
+	assert.Len(t, resolve, len(expectedHostnames))
 
-	for _, host := range hosts {
-		ip, ok := resolve[host]
+	for _, host := range expectedHostnames {
+		_, ok := resolve[host]
 		assert.True(t, ok)
-		assert.NotNil(t, net.ParseIP(ip))
 	}
+}
+
+func TestClient_GetDNSReverse(t *testing.T) {
+	setUpTestServe()
+	defer tearDownTestServe()
+
+	expectedIPs := []string{"74.125.227.244", "92.63.108.40"}
+
+	mux.HandleFunc(reversePath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+
+		ips := r.URL.Query().Get("ips")
+		assert.NotEmpty(t, ips)
+
+		splited := strings.Split(ips, ",")
+		assert.Len(t, splited, len(expectedIPs))
+
+		w.Write(getStub(t, "dns_reverse"))
+	})
+
+	reversed, err := client.GetDNSReverse(expectedIPs)
+
+	assert.Nil(t, err)
+	assert.Len(t, reversed, len(expectedIPs))
+
+	for _, ip := range expectedIPs {
+		_, ok := reversed[ip]
+		assert.True(t, ok)
+	}
+}
+
+func TestClient_GetDNSReverse_invalidIP(t *testing.T) {
+	_, err := client.GetDNSReverse([]string{"74.125.227", "63.11", "2747393"})
+
+	assert.NotNil(t, err)
 }
