@@ -1,0 +1,23 @@
+{
+  "matches": [
+    {
+      "votes": 2,
+      "description": "apache servers US",
+      "title": "apache servers",
+      "timestamp": "2013-02-21T02:25:53.018000",
+      "tags": [
+        "apache"
+      ],
+      "query": "apache country:US"
+    },
+    {
+      "votes": 5,
+      "description": "exacttouch ...smtp",
+      "title": "Centos apache",
+      "timestamp": "2010-03-07T15:47:13",
+      "tags": [],
+      "query": "country:in apache centos hostname:exacttouch.com"
+    }
+  ],
+  "total": 2
+}

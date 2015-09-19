@@ -82,7 +82,7 @@ func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
 
 // SearchQueries searches the directory of search queries that users have saved in Shodan
 func (c *Client) SearchQueries(options *SearchQueryOptions) (*QuerySearch, error) {
-	if options.Query == "" {
+	if options == nil || options.Query == "" {
 		return nil, ErrInvalidQuery
 	}
 
