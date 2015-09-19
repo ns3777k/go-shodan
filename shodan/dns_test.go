@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"net"
 )
 
 func TestClient_GetDNSResolve(t *testing.T) {
@@ -70,4 +71,6 @@ func TestClient_GetDNSReverse_invalidIP(t *testing.T) {
 	_, err := client.GetDNSReverse([]string{"74.125.227", "63.11", "2747393"})
 
 	assert.NotNil(t, err)
+	_, ok := err.(*net.ParseError)
+	assert.True(t, ok)
 }
