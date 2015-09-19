@@ -15,6 +15,8 @@ func TestClient_Scan(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
 
+	expectedIPs := []string{"82.98.86.174", "93.184.216.34"}
+
 	mux.HandleFunc(scanPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "POST", r.Method)
 
@@ -23,7 +25,7 @@ func TestClient_Scan(t *testing.T) {
 		assert.NotEmpty(t, ips)
 
 		splited := strings.Split(ips, ",")
-		assert.Len(t, splited, 2)
+		assert.Len(t, splited, len(expectedIPs))
 
 		for _, ip := range splited {
 			assert.NotNil(t, net.ParseIP(ip))
@@ -32,7 +34,7 @@ func TestClient_Scan(t *testing.T) {
 		w.Write(getStub(t, "scan"))
 	})
 
-	scanStatus, err := client.Scan([]string{"82.98.86.174", "93.184.216.34"})
+	scanStatus, err := client.Scan(expectedIPs)
 	scanStatusExpected := &CrawlScanStatus{
 		ID:          "BOMA59VSGWX8QJR9",
 		Count:       2,

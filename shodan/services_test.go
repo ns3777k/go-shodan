@@ -24,6 +24,6 @@ func TestClient_GetServices(t *testing.T) {
 	services, err := client.GetServices()
 
 	assert.Nil(t, err)
-	assert.Len(t, services, 3)
+	assert.Len(t, services, len(servicesExpected))
 	assert.EqualValues(t, servicesExpected, services)
 }

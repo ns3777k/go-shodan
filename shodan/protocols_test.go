@@ -23,6 +23,6 @@ func TestClient_GetProtocols(t *testing.T) {
 	protocols, err := client.GetProtocols()
 
 	assert.Nil(t, err)
-	assert.Len(t, protocols, 2)
+	assert.Len(t, protocols, len(protocolsExpected))
 	assert.EqualValues(t, protocolsExpected, protocols)
 }
