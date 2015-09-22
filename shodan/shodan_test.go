@@ -87,6 +87,30 @@ func TestClient_buildURL(t *testing.T) {
 	}
 }
 
+func TestClient_buildBaseURL(t *testing.T) {
+	expected := client.BaseURL + "/test-base-url-building/?key=" + testClientToken
+	actual, err := client.buildBaseURL("/test-base-url-building/", nil)
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, actual)
+}
+
+func TestClient_buildExploitBaseURL(t *testing.T) {
+	expected := client.ExploitBaseURL + "/test-exploit-url-building/?key=" + testClientToken
+	actual, err := client.buildExploitBaseURL("/test-exploit-url-building/", nil)
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, actual)
+}
+
+func TestClient_buildStreamBaseURL(t *testing.T) {
+	expected := client.BaseURL + "/test-stream-url-building/?key=" + testClientToken
+	actual, err := client.buildStreamBaseURL("/test-stream-url-building/", nil)
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, actual)
+}
+
 func TestClient_executeRequest_textUnauthorized(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
