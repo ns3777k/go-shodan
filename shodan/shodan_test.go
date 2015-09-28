@@ -13,9 +13,6 @@ import (
 const (
 	testClientToken = "TEST_TOKEN"
 	stubsDir        = "stubs"
-
-	unauthorizedPath = "/http-error/401"
-	notFoundPath     = "/http-error/404"
 )
 
 var (
@@ -115,6 +112,8 @@ func TestClient_executeRequest_textUnauthorized(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
 
+	unauthorizedPath := "/http-error/401"
+
 	errorText := "401 Unauthorized\n\n"
 	errorText += "This server could not verify that you are authorized to access the document you requested.  " +
 		"Either you supplied the wrong credentials (e.g., bad password), or your browser does not understand how to " +
@@ -134,6 +133,8 @@ func TestClient_executeRequest_textUnauthorized(t *testing.T) {
 func TestClient_executeRequest_jsonNotFound(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
+
+	notFoundPath := "/http-error/404"
 
 	mux.HandleFunc(notFoundPath, func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error": "No information available for that IP."}`, http.StatusNotFound)
