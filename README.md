@@ -73,8 +73,7 @@ func main() {
 ```
 
 ### Roadmap
-1. Streaming API
-2. Testing
+1. Testing
 
 ### Links
 * [Shodan.io](http://shodan.io) & [ShodanHQ](http://www.shodanhq.com)
