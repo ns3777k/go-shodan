@@ -13,7 +13,12 @@ Download the package:
 go get "github.com/ns3777k/go-shodan/shodan"
 ```
 
-Start using it:
+That's it. You're ready to roll :-)
+
+### Usage
+
+Simple example of resolving hostnames:
+
 ```go
 package main
 
@@ -37,6 +42,34 @@ func main() {
 Output for above:
 ```bash
 2015/09/05 18:50:52 173.194.115.35
+```
+
+Streaming example:
+
+```go
+package main
+
+import (
+    "log"
+    
+    "github.com/ns3777k/go-shodan/shodan"
+)
+
+func main() {
+    client := shodan.NewClient("MY_TOKEN")
+    go func() {
+        for {
+            banner := <- ch
+            // To something here with HostData
+        }
+    }()
+
+    go client.GetBanners(ch)
+
+    for {
+        time.Sleep(time.Second * 10)
+    }
+}
 ```
 
 ### Roadmap

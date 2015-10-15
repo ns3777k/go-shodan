@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"bufio"
 	"encoding/json"
 	"errors"
 	"io"
@@ -86,10 +87,10 @@ func (c *Client) buildStreamBaseURL(path string, params interface{}) (string, er
 	return c.buildURL(c.StreamBaseURL, path, params)
 }
 
-func (c *Client) executeRequest(method, path string, destination interface{}, body io.Reader) error {
+func (c *Client) sendRequest(method, path string, body io.Reader) (*http.Response, error) {
 	req, err := http.NewRequest(method, path, body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if body != nil {
@@ -98,21 +99,60 @@ func (c *Client) executeRequest(method, path string, destination interface{}, bo
 
 	res, err := c.client.Do(req)
 	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return nil, getErrorFromResponse(res)
+	}
+
+	return res, nil
+}
+
+func (c *Client) parseResponse(destination interface{}, body io.Reader) error {
+	var err error
+
+	if w, ok := destination.(io.Writer); ok {
+		_, err = io.Copy(w, body)
+	} else {
+		decoder := json.NewDecoder(body)
+		err = decoder.Decode(destination)
+	}
+
+	return err
+}
+
+func (c *Client) executeRequest(method, path string, destination interface{}, body io.Reader) error {
+	res, err := c.sendRequest(method, path, body)
+	if err != nil {
 		return err
 	}
 
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK {
-		return getErrorFromResponse(res)
+	return c.parseResponse(destination, res.Body)
+}
+
+func (c *Client) executeStreamRequest(method, path string, ch chan []byte) error {
+	res, err := c.sendRequest(method, path, nil)
+	if err != nil {
+		return err
 	}
 
-	if w, ok := destination.(io.Writer); ok {
-		io.Copy(w, res.Body)
-	} else {
-		decoder := json.NewDecoder(res.Body)
-		err = decoder.Decode(destination)
-	}
+	go func() {
+		reader := bufio.NewReader(res.Body)
 
-	return err
+		for {
+			chunk, err := reader.ReadBytes('\n')
+			if err != nil {
+				res.Body.Close()
+				close(ch)
+				break
+			}
+
+			ch <- chunk
+		}
+	}()
+
+	return nil
 }
