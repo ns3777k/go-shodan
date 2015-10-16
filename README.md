@@ -57,10 +57,11 @@ import (
 
 func main() {
     client := shodan.NewClient("MY_TOKEN")
+    ch := make(chan shodan.HostData)
     go func() {
         for {
             banner := <- ch
-            // To something here with HostData
+            // Do something here with HostData
         }
     }()
 
