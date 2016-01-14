@@ -57,15 +57,15 @@ import (
 
 func main() {
     client := shodan.NewClient("MY_TOKEN")
-    ch := make(chan shodan.HostData)
+
     go func() {
         for {
-            banner := <- ch
+            banner := <- client.StreamChan
             // Do something here with HostData
         }
     }()
 
-    go client.GetBanners(ch)
+    go client.GetBanners()
 
     for {
         time.Sleep(time.Second * 10)
