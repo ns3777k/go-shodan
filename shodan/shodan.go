@@ -40,6 +40,7 @@ type Client struct {
 	BaseURL        string
 	ExploitBaseURL string
 	StreamBaseURL  string
+	StreamChan     chan HostData
 
 	client *http.Client
 }
@@ -53,6 +54,7 @@ func NewClient(token string) *Client {
 		BaseURL:        baseURL,
 		ExploitBaseURL: exploitBaseURL,
 		StreamBaseURL:  streamBaseURL,
+		StreamChan:     make(chan HostData),
 		client:         client,
 	}
 }
