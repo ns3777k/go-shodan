@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"time"
 )
 
 const (
@@ -144,5 +145,58 @@ func TestClient_executeRequest_jsonNotFound(t *testing.T) {
 	assert.Nil(t, err)
 
 	err = client.executeRequest("GET", url, nil, nil)
+	assert.NotNil(t, err)
+}
+
+func TestClient_executeStreamRequest_success(t *testing.T) {
+	setUpTestServe()
+	defer tearDownTestServe()
+
+	streamPath := "/stream/success"
+	chunkLimit := 3
+
+	mux.HandleFunc(streamPath, func(w http.ResponseWriter, r *http.Request) {
+		flusher, ok := w.(http.Flusher)
+		if !ok {
+			t.Errorf("Cannot use Flush")
+		}
+
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Connection", "keep-alive")
+
+		for i := 0; i < chunkLimit; i++ {
+			fmt.Fprintln(w, "chunk")
+			flusher.Flush()
+			time.Sleep(time.Millisecond * 500)
+		}
+	})
+
+	url, err := client.buildStreamBaseURL(streamPath, nil)
+	assert.Nil(t, err)
+
+	bytesChan := make(chan []byte)
+	err = client.executeStreamRequest("GET", url, bytesChan)
+	assert.Nil(t, err)
+
+	receivedChunks := 0
+
+	for {
+		msg, open := <- bytesChan
+		if !open {
+			break
+		}
+		assert.NotEmpty(t, msg)
+		receivedChunks++
+	}
+
+	assert.Equal(t, chunkLimit, receivedChunks)
+}
+
+func TestClient_executeStreamRequest_errorRequest(t *testing.T) {
+	url, err := client.buildStreamBaseURL("/stream/error", nil)
+	assert.Nil(t, err)
+
+	bytesChan := make(chan []byte)
+	err = client.executeStreamRequest("GET", url, bytesChan)
 	assert.NotNil(t, err)
 }
