@@ -51,7 +51,7 @@ func TestNewClient(t *testing.T) {
 	assert.Equal(t, testClientToken, client.Token)
 }
 
-func TestClient_buildURL(t *testing.T) {
+func TestClient_buildURL_success(t *testing.T) {
 	client := NewClient(testClientToken)
 	testOptions := struct {
 		Page    int  `url:"page"`
@@ -83,6 +83,12 @@ func TestClient_buildURL(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, caseParams.expected, url)
 	}
+}
+
+func TestClient_buildURL_errorBaseURL(t *testing.T) {
+	client := NewClient(testClientToken)
+	_, err := client.buildURL(":/shodan.io", "", nil)
+	assert.NotNil(t, err)
 }
 
 func TestClient_buildBaseURL(t *testing.T) {
