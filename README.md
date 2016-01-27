@@ -29,7 +29,7 @@ import (
 )
 
 func main() {
-    client := shodan.NewClient("MY_TOKEN")
+    client := shodan.NewClient(nil, "MY_TOKEN")
     dns, err := client.GetDNSResolve([]string{"google.com", "ya.ru"})
     
     if err != nil {
