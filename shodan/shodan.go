@@ -45,9 +45,10 @@ type Client struct {
 	client *http.Client
 }
 
-func NewClient(token string) *Client {
-	transport := &http.Transport{Proxy: http.ProxyFromEnvironment}
-	client := &http.Client{Transport: transport}
+func NewClient(client *http.Client, token string) *Client {
+	if client == nil {
+		client = http.DefaultClient
+	}
 
 	return &Client{
 		Token:          token,

@@ -25,7 +25,7 @@ var (
 func setUpTestServe() {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
-	client = NewClient(testClientToken)
+	client = NewClient(nil, testClientToken)
 	client.BaseURL = server.URL
 	client.ExploitBaseURL = server.URL
 	client.StreamBaseURL = server.URL
@@ -46,13 +46,13 @@ func tearDownTestServe() {
 }
 
 func TestNewClient(t *testing.T) {
-	client := NewClient(testClientToken)
+	client := NewClient(nil, testClientToken)
 
 	assert.Equal(t, testClientToken, client.Token)
 }
 
 func TestClient_buildURL_success(t *testing.T) {
-	client := NewClient(testClientToken)
+	client := NewClient(nil, testClientToken)
 	testOptions := struct {
 		Page    int  `url:"page"`
 		ShowAll bool `url:"show_all"`
@@ -86,7 +86,7 @@ func TestClient_buildURL_success(t *testing.T) {
 }
 
 func TestClient_buildURL_errorBaseURL(t *testing.T) {
-	client := NewClient(testClientToken)
+	client := NewClient(nil, testClientToken)
 	_, err := client.buildURL(":/shodan.io", "", nil)
 	assert.NotNil(t, err)
 }

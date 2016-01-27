@@ -56,7 +56,7 @@ import (
 )
 
 func main() {
-    client := shodan.NewClient("MY_TOKEN")
+    client := shodan.NewClient(nil, "MY_TOKEN")
 
     go func() {
         for {
