@@ -42,7 +42,7 @@ type Client struct {
 	StreamBaseURL  string
 	StreamChan     chan HostData
 
-	client *http.Client
+	Client *http.Client
 }
 
 func NewClient(client *http.Client, token string) *Client {
@@ -56,7 +56,7 @@ func NewClient(client *http.Client, token string) *Client {
 		ExploitBaseURL: exploitBaseURL,
 		StreamBaseURL:  streamBaseURL,
 		StreamChan:     make(chan HostData),
-		client:         client,
+		Client:         client,
 	}
 }
 
@@ -100,7 +100,7 @@ func (c *Client) sendRequest(method, path string, body io.Reader) (*http.Respons
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	}
 
-	res, err := c.client.Do(req)
+	res, err := c.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
