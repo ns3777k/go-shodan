@@ -47,7 +47,7 @@ type HostData struct {
 	Timestamp    string                 `json:"timestamp"`
 	DeviceType   string                 `json:"devicetype"`
 	Location     *HostLocation          `json:"location"`
-	ShodanData   map[string]string      `json:"_shodan"`
+	ShodanData   map[string]interface{} `json:"_shodan"`
 	Opts         map[string]interface{} `json:"opts"`
 }
 

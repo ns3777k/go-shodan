@@ -35,7 +35,7 @@ func (c *Client) readBannersResponse(rawChan chan []byte) {
 // GetBannersByPorts returns only banner data for the list of specified hosts. This stream provides a filtered,
 // bandwidth-saving view of the Banners stream in case you are only interested in a specific list of ports.
 func (c *Client) GetBannersByPorts(ports []int) error {
-	stringifiedPorts := make([]string, len(ports))
+	stringifiedPorts := make([]string, 0)
 	for _, port := range ports {
 		stringifiedPorts = append(stringifiedPorts, strconv.Itoa(port))
 	}
