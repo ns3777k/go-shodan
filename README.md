@@ -60,8 +60,12 @@ func main() {
 
     go func() {
         for {
-            banner := <- client.StreamChan
-            // Do something here with HostData
+            banner, ok := <- client.StreamChan
+            if !ok {
+                log.Fatalln("channel got closed")
+            }
+
+            // Do something here with banner
         }
     }()
 

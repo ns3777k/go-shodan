@@ -15,9 +15,9 @@ const (
 func (c *Client) readBannersResponse(rawChan chan []byte) {
 	for {
 		var banner HostData
-		res := <-rawChan
+		res, ok := <-rawChan
 
-		if res == nil {
+		if !ok {
 			close(c.StreamChan)
 			break
 		}
