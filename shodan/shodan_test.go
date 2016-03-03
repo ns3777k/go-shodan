@@ -193,7 +193,7 @@ func TestClient_executeStreamRequest_success(t *testing.T) {
 	receivedChunks := 0
 
 	for {
-		msg, open := <- bytesChan
+		msg, open := <-bytesChan
 		if !open {
 			break
 		}
