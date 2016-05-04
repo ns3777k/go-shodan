@@ -23,3 +23,8 @@ func TestClient_CalcHoneyScore(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 0.5, score)
 }
+
+func TestClient_CalcHoneyScore_invalidIP(t *testing.T) {
+	_, err := client.CalcHoneyScore("invalid-ip")
+	assert.NotNil(t, err)
+}
