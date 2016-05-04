@@ -18,7 +18,7 @@ func (c *Client) CalcHoneyScore(ip string) (float64, error) {
 		return 0.0, &net.ParseError{"IP address", ip}
 	}
 
-	path := fmt.Sprintf(honeyscorePath, ip);
+	path := fmt.Sprintf(honeyscorePath, ip)
 	url, err := c.buildBaseURL(path, nil)
 	if err != nil {
 		return 0.0, err
