@@ -124,6 +124,12 @@ func TestClient_buildStreamBaseURL(t *testing.T) {
 	assert.Equal(t, expected, actual)
 }
 
+func TestClient_sendRequest_invalidURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	_, err := client.sendRequest("GET", ":/1232.22", nil)
+	assert.NotNil(t, err)
+}
+
 func TestClient_executeRequest_textUnauthorized(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
