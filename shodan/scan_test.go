@@ -46,6 +46,13 @@ func TestClient_Scan(t *testing.T) {
 	assert.EqualValues(t, scanStatusExpected, scanStatus)
 }
 
+func TestClient_Scan_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.Scan([]string{"82.98.86.174", "93.184.216.34"})
+	assert.NotNil(t, err)
+}
+
 func TestClient_ScanInternet(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
@@ -70,4 +77,11 @@ func TestClient_ScanInternet(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, "COMAD88STBX8QNN1", scanInternetStatusID)
+}
+
+func TestClient_ScanInternet_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.ScanInternet(22, "ssh")
+	assert.NotNil(t, err)
 }

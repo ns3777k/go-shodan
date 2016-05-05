@@ -35,6 +35,13 @@ func TestClient_GetQueryTags(t *testing.T) {
 	assert.EqualValues(t, queryTagsExpected, queryTags)
 }
 
+func TestClient_GetQueryTags_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetQueryTags(new(QueryTagsOptions))
+	assert.NotNil(t, err)
+}
+
 func TestClient_SearchQueries(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
@@ -85,6 +92,13 @@ func TestClient_SearchQueries_emptyQueryOption(t *testing.T) {
 	assert.IsType(t, ErrInvalidQuery, err)
 }
 
+func TestClient_SearchQueries_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.SearchQueries(&SearchQueryOptions{Query: "apache"})
+	assert.NotNil(t, err)
+}
+
 func TestClient_GetQueries(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
@@ -119,4 +133,11 @@ func TestClient_GetQueries(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, queriesExpected, queries)
+}
+
+func TestClient_GetQueries_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetQueries(new(QueryOptions))
+	assert.NotNil(t, err)
 }

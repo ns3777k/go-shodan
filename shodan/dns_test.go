@@ -38,6 +38,13 @@ func TestClient_GetDNSResolve(t *testing.T) {
 	}
 }
 
+func TestClient_GetDNSResolve_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetDNSResolve([]string{"google.com"})
+	assert.NotNil(t, err)
+}
+
 func TestClient_GetDNSReverse(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
@@ -68,9 +75,17 @@ func TestClient_GetDNSReverse(t *testing.T) {
 }
 
 func TestClient_GetDNSReverse_invalidIP(t *testing.T) {
+	client := NewClient(nil, testClientToken)
 	_, err := client.GetDNSReverse([]string{"74.125.227", "63.11", "2747393"})
 
 	assert.NotNil(t, err)
 	_, ok := err.(*net.ParseError)
 	assert.True(t, ok)
+}
+
+func TestClient_GetDNSReverse_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetDNSReverse([]string{"74.125.227.244", "92.63.108.40"})
+	assert.NotNil(t, err)
 }

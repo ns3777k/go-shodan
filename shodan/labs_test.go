@@ -2,6 +2,7 @@ package shodan
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"testing"
 
@@ -25,6 +26,17 @@ func TestClient_CalcHoneyScore(t *testing.T) {
 }
 
 func TestClient_CalcHoneyScore_invalidIP(t *testing.T) {
+	client := NewClient(nil, testClientToken)
 	_, err := client.CalcHoneyScore("invalid-ip")
+
+	assert.NotNil(t, err)
+	_, ok := err.(*net.ParseError)
+	assert.True(t, ok)
+}
+
+func TestClient_CalcHoneyScore_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.CalcHoneyScore("192.168.0.1")
 	assert.NotNil(t, err)
 }

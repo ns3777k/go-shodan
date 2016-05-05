@@ -23,3 +23,10 @@ func TestClient_GetPorts(t *testing.T) {
 	assert.Len(t, ports, len(portsExpected))
 	assert.EqualValues(t, portsExpected, ports)
 }
+
+func TestClient_GetPorts_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetPorts()
+	assert.NotNil(t, err)
+}

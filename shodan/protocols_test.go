@@ -26,3 +26,10 @@ func TestClient_GetProtocols(t *testing.T) {
 	assert.Len(t, protocols, len(protocolsExpected))
 	assert.EqualValues(t, protocolsExpected, protocols)
 }
+
+func TestClient_GetProtocols_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetProtocols()
+	assert.NotNil(t, err)
+}

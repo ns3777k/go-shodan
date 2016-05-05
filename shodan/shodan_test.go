@@ -98,6 +98,7 @@ func TestClient_buildURL_errorBaseURL(t *testing.T) {
 }
 
 func TestClient_buildBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
 	expected := client.BaseURL + "/test-base-url-building/?key=" + testClientToken
 	actual, err := client.buildBaseURL("/test-base-url-building/", nil)
 
@@ -106,6 +107,7 @@ func TestClient_buildBaseURL(t *testing.T) {
 }
 
 func TestClient_buildExploitBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
 	expected := client.ExploitBaseURL + "/test-exploit-url-building/?key=" + testClientToken
 	actual, err := client.buildExploitBaseURL("/test-exploit-url-building/", nil)
 
@@ -114,7 +116,8 @@ func TestClient_buildExploitBaseURL(t *testing.T) {
 }
 
 func TestClient_buildStreamBaseURL(t *testing.T) {
-	expected := client.BaseURL + "/test-stream-url-building/?key=" + testClientToken
+	client := NewClient(nil, testClientToken)
+	expected := client.StreamBaseURL + "/test-stream-url-building/?key=" + testClientToken
 	actual, err := client.buildStreamBaseURL("/test-stream-url-building/", nil)
 
 	assert.Nil(t, err)
@@ -205,6 +208,7 @@ func TestClient_executeStreamRequest_success(t *testing.T) {
 }
 
 func TestClient_executeStreamRequest_errorRequest(t *testing.T) {
+	client := NewClient(nil, testClientToken)
 	url, err := client.buildStreamBaseURL("/stream/error", nil)
 	assert.Nil(t, err)
 

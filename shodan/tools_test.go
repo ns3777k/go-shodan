@@ -25,3 +25,10 @@ func TestClient_GetMyIP(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, testIP, ip)
 }
+
+func TestClient_GetMyIP_invalidBaseURL(t *testing.T) {
+	client := NewClient(nil, testClientToken)
+	client.BaseURL = ":/1232.22"
+	_, err := client.GetMyIP()
+	assert.NotNil(t, err)
+}
