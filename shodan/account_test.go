@@ -28,10 +28,3 @@ func TestClient_GetAccountProfile(t *testing.T) {
 	assert.IsType(t, accountExpected, account)
 	assert.EqualValues(t, accountExpected, account)
 }
-
-func TestClient_GetAccountProfile_invalidBaseURL(t *testing.T) {
-	client := NewClient(nil, testClientToken)
-	client.BaseURL = ":/1232.22"
-	_, err := client.GetAccountProfile()
-	assert.NotNil(t, err)
-}
