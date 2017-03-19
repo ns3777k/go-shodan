@@ -78,8 +78,10 @@ func main() {
 }
 ```
 
-### Roadmap
-1. Testing
+If a method is absent or something doesn't work properly don't hesitate to create an issue.
+
+### TODO
+- Implement recently added shodan alerts
 
 ### Links
 * [Shodan.io](http://shodan.io) & [ShodanHQ](http://www.shodanhq.com)
