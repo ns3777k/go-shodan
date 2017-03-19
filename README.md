@@ -78,7 +78,7 @@ func main() {
 }
 ```
 
-### Implemented API
+### Implemented REST API
 
 #### Search Methods
 - [x] /shodan/host/{ip}
@@ -120,6 +120,18 @@ func main() {
 
 #### Experimental Methods
 - [x] /labs/honeyscore/{ip}
+
+### Implemented Streaming API
+
+#### Data Streams
+- [x] /shodan/banners
+- [ ] /shodan/asn/{asn}
+- [ ] /shodan/countries/{countries}
+- [x] /shodan/ports/{ports}
+
+#### Network Alerts
+- [ ] /shodan/alert
+- [ ] /shodan/alert/{id}
 
 If a method is absent or something doesn't work properly don't hesitate to create an issue.
 
