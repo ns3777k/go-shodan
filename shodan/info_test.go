@@ -31,10 +31,3 @@ func TestClient_GetAPIInfo(t *testing.T) {
 	assert.IsType(t, infoExpected, info)
 	assert.EqualValues(t, infoExpected, info)
 }
-
-func TestClient_GetAPIInfo_invalidBaseURL(t *testing.T) {
-	client := NewClient(nil, testClientToken)
-	client.BaseURL = ":/1232.22"
-	_, err := client.GetAPIInfo()
-	assert.NotNil(t, err)
-}

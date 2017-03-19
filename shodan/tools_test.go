@@ -46,10 +46,3 @@ func TestClient_GetHttpHeaders(t *testing.T) {
 	assert.Len(t, headers, len(headersExpected))
 	assert.EqualValues(t, headersExpected, headers)
 }
-
-func TestClient_GetMyIP_invalidBaseURL(t *testing.T) {
-	client := NewClient(nil, testClientToken)
-	client.BaseURL = ":/1232.22"
-	_, err := client.GetMyIP()
-	assert.NotNil(t, err)
-}

@@ -134,10 +134,3 @@ func TestClient_GetQueries(t *testing.T) {
 	assert.Nil(t, err)
 	assert.EqualValues(t, queriesExpected, queries)
 }
-
-func TestClient_GetQueries_invalidBaseURL(t *testing.T) {
-	client := NewClient(nil, testClientToken)
-	client.BaseURL = ":/1232.22"
-	_, err := client.GetQueries(new(QueryOptions))
-	assert.NotNil(t, err)
-}
