@@ -26,6 +26,27 @@ func TestClient_GetMyIP(t *testing.T) {
 	assert.Equal(t, testIP, ip)
 }
 
+func TestClient_GetHttpHeaders(t *testing.T) {
+	setUpTestServe()
+	defer tearDownTestServe()
+
+	mux.HandleFunc(headersPath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		w.Write(getStub(t, "headers"))
+	})
+
+	headersExpected := map[string]string{
+		"User-Agent": "Go-http-client/1.1",
+		"Host": "api.shodan.io",
+		"Accept-Encoding": "gzip",
+	}
+	headers, err := client.GetHttpHeaders()
+
+	assert.Nil(t, err)
+	assert.Len(t, headers, len(headersExpected))
+	assert.EqualValues(t, headersExpected, headers)
+}
+
 func TestClient_GetMyIP_invalidBaseURL(t *testing.T) {
 	client := NewClient(nil, testClientToken)
 	client.BaseURL = ":/1232.22"
