@@ -29,7 +29,10 @@ func (c *Client) GetDNSResolve(hostnames []string) (map[string]*string, error) {
 func (c *Client) GetDNSReverse(ip []string) (map[string]*[]string, error) {
 	for _, ipAddress := range ip {
 		if parsedIP := net.ParseIP(ipAddress); parsedIP == nil {
-			return nil, &net.ParseError{"IP address", ipAddress}
+			return nil, &net.ParseError{
+				Type: "IP address",
+				Text: ipAddress,
+			}
 		}
 	}
 

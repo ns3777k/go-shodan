@@ -15,7 +15,10 @@ func (c *Client) CalcHoneyScore(ip string) (float64, error) {
 	var score float64
 
 	if parsedIP := net.ParseIP(ip); parsedIP == nil {
-		return 0.0, &net.ParseError{"IP address", ip}
+		return 0.0, &net.ParseError{
+			Type: "IP address",
+			Text: ip,
+		}
 	}
 
 	path := fmt.Sprintf(honeyscorePath, ip)

@@ -36,8 +36,8 @@ func TestClient_GetHttpHeaders(t *testing.T) {
 	})
 
 	headersExpected := map[string]string{
-		"User-Agent": "Go-http-client/1.1",
-		"Host": "api.shodan.io",
+		"User-Agent":      "Go-http-client/1.1",
+		"Host":            "api.shodan.io",
 		"Accept-Encoding": "gzip",
 	}
 	headers, err := client.GetHttpHeaders()
