@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	ipPath = "/tools/myip"
+	ipPath      = "/tools/myip"
 	headersPath = "/tools/httpheaders"
 )
 
