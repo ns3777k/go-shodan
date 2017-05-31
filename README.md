@@ -11,7 +11,7 @@ To start working with Shodan you have to get your token first. You can do this a
 Download the package:
 
 ```bash
-go get "github.com/ns3777k/go-shodan/shodan"
+go get "gopkg.in/ns3777k/go-shodan.v1"
 ```
 
 That's it. You're ready to roll :-)
@@ -26,7 +26,7 @@ package main
 import (
     "log"
     
-    "github.com/ns3777k/go-shodan/shodan"
+    "gopkg.in/ns3777k/go-shodan.v1/shodan"
 )
 
 func main() {
@@ -53,7 +53,7 @@ package main
 import (
     "log"
     
-    "github.com/ns3777k/go-shodan/shodan"
+    "gopkg.in/ns3777k/go-shodan.v1/shodan"
 )
 
 func main() {
@@ -136,5 +136,5 @@ func main() {
 If a method is absent or something doesn't work properly don't hesitate to create an issue.
 
 ### Links
-* [Shodan.io](http://shodan.io) & [ShodanHQ](http://www.shodanhq.com)
+* [Shodan.io](http://shodan.io)
 * [API Documentation](https://developer.shodan.io/api)
