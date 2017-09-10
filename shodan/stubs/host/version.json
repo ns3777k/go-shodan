@@ -1,0 +1,115 @@
+{
+  "matches": [
+    {
+      "_shodan": {
+        "options": {},
+        "id": null,
+        "module": "steam-a2s",
+        "crawler": "4aca62e44af31a464bdc72210b84546d570e9365"
+      },
+      "product": "www.solugames.com",
+      "hash": -1224263288,
+      "version": 47,
+      "ip": 3187713176,
+      "isp": "Level 3 Communications",
+      "os": null,
+      "port": 27015,
+      "hostnames": [
+        "190-0-164-152.srv.solunet.com.ar"
+      ],
+      "location": {
+        "city": "San Martin",
+        "region_code": "13",
+        "area_code": null,
+        "longitude": -68.4681,
+        "country_code3": "ARG",
+        "country_name": "Argentina",
+        "postal_code": "5570",
+        "dma_code": null,
+        "country_code": "AR",
+        "latitude": -33.08099999999999
+      },
+      "timestamp": "2017-09-09T14:03:08.722893",
+      "domains": [
+        "solunet.com.ar"
+      ],
+      "org": "Level 3 Communications",
+      "data": "www.solugames.com Server\nName: #01 ARGENTINA CS [SOLO DE_INFERNO] [by www.solugames.com]\nPlayers: 19/32\nOperating System: Linux\nMap: de_inferno\nVersion: 47\n",
+      "asn": "AS3356",
+      "transport": "udp",
+      "ip_str": "190.0.164.152"
+    },
+    {
+      "_shodan": {
+        "options": {},
+        "id": "58861daf-58d3-43e4-92b4-1af0315a0d93",
+        "module": "pptp",
+        "crawler": "82488cbcb7dd25da13f728d04775390417d9ee4e"
+      },
+      "hash": 1909161167,
+      "os": null,
+      "tags": [
+        "vpn"
+      ],
+      "ip": 3124842572,
+      "isp": "Servicios De Tecnologia Aplicada Srl",
+      "port": 1723,
+      "hostnames": [],
+      "location": {
+        "city": null,
+        "region_code": null,
+        "area_code": null,
+        "longitude": -58.381699999999995,
+        "country_code3": "ARG",
+        "country_name": "Argentina",
+        "postal_code": null,
+        "dma_code": null,
+        "country_code": "AR",
+        "latitude": -34.60329999999999
+      },
+      "timestamp": "2017-09-10T08:54:51.236205",
+      "domains": [],
+      "org": "Servicios De Tecnologia Aplicada Srl",
+      "data": "Firmware: 1\nHostname: Eco Stim Energy Solutions Argentina SA Router\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\nVendor: MikroTik\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+      "asn": "AS52259",
+      "transport": "tcp",
+      "ip_str": "186.65.80.76"
+    },
+    {
+      "_shodan": {
+        "options": {},
+        "id": "1d5ef8d7-569c-4b2b-95f4-0c9bd78934ce",
+        "module": "ubiquiti-discover",
+        "crawler": "e9392a930ba74a5a7a9a04c307d8f2d045dad4b4"
+      },
+      "product": "P5B-300",
+      "hash": 862203420,
+      "version": "XW.ar934x.v6.0.3.30600.170329.1817",
+      "ip": 93998536,
+      "isp": "Airenetworks",
+      "os": null,
+      "port": 10001,
+      "hostnames": [],
+      "location": {
+        "city": "Madrid",
+        "region_code": "29",
+        "area_code": null,
+        "longitude": -3.7025999999999897,
+        "country_code3": "ESP",
+        "country_name": "Spain",
+        "postal_code": "28019",
+        "dma_code": null,
+        "country_code": "ES",
+        "latitude": 40.41650000000001
+      },
+      "timestamp": "2017-09-10T07:33:49.779876",
+      "domains": [],
+      "org": "Airenetworks S.L.U.",
+      "data": "Ubiquiti Networks Device\nIP: 5.154.77.200\nMAC: 44:d9:e7:aa:55:8d\nAlternate IP: 192.168.5.1\nAlternate MAC: 44:d9:e7:ab:55:8d\nHostname: RAMONA CALLE ARGENTINA-RX\nProduct: P5B-300\nVersion: XW.ar934x.v6.0.3.30600.170329.1817\n",
+      "asn": "AS29119",
+      "transport": "udp",
+      "ip_str": "5.154.77.200"
+    }
+  ],
+  "total": 3
+}
