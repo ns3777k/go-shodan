@@ -1,5 +1,9 @@
 package shodan
 
+import (
+	"encoding/json"
+)
+
 const (
 	hostPath             = "/shodan/host"
 	hostCountPath        = "/shodan/host/count"
@@ -28,7 +32,7 @@ type HostLocation struct {
 type HostData struct {
 	Product      string                 `json:"product"`
 	Hostnames    []string               `json:"hostnames"`
-	Version      string                 `json:"version"`
+	Version      json.Number            `json:"version"`
 	Title        string                 `json:"title"`
 	IPLong       int                    `json:"ip"`
 	IP           string                 `json:"ip_str"`
