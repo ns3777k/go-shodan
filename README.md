@@ -1,5 +1,6 @@
 # go-shodan
 [![Build Status](https://travis-ci.org/ns3777k/go-shodan.svg?branch=master)](https://travis-ci.org/ns3777k/go-shodan)
+[![Build status](https://ci.appveyor.com/api/projects/status/wbi5u34k5pokbypj/branch/master?svg=true)](https://ci.appveyor.com/project/ns3777k/go-shodan/branch/master)
 [![Coverage Status](https://coveralls.io/repos/ns3777k/go-shodan/badge.svg?branch=master&service=github)](https://coveralls.io/github/ns3777k/go-shodan?branch=master)
 [![GoDoc](https://godoc.org/github.com/ns3777k/go-shodan/shodan?status.svg)](https://godoc.org/github.com/ns3777k/go-shodan/shodan)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
@@ -25,14 +26,14 @@ package main
 
 import (
     "log"
-    
+
     "gopkg.in/ns3777k/go-shodan.v1/shodan"
 )
 
 func main() {
     client := shodan.NewClient(nil, "MY_TOKEN")
     dns, err := client.GetDNSResolve([]string{"google.com", "ya.ru"})
-    
+
     if err != nil {
         log.Panic(err)
     } else {
@@ -52,7 +53,7 @@ package main
 
 import (
     "log"
-    
+
     "gopkg.in/ns3777k/go-shodan.v1/shodan"
 )
 

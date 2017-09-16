@@ -1,0 +1,20 @@
+version: "{build}"
+skip_tags: true
+clone_folder: c:\gopath\src\github.com\ns3777k\go-shodan
+clone_depth: 1
+
+environment:
+  GOPATH: c:\gopath
+  GOVERSION: 1.7
+
+build: false
+deploy: false
+
+install:
+  - go version
+  - go env
+  - go get github.com/stretchr/testify/assert
+  - go get -u -v ./shodan
+
+test_script:
+  - go test -v ./shodan
