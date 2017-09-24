@@ -1,0 +1,12 @@
+hash: d61acc837a3d4a5c9de3329f3d7cc8c3bba14e1a7b7dec5689ba48495877d088
+updated: 2017-09-25T02:39:36.959226601+03:00
+imports:
+- name: github.com/google/go-querystring
+  version: 53e6ce116135b80d037921a7fdd5138cf32d7a8a
+  subpackages:
+  - query
+testImports:
+- name: github.com/stretchr/testify
+  version: ""
+  subpackages:
+  - assert

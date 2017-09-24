@@ -1,0 +1,9 @@
+package: go-shodan
+import:
+- package: github.com/google/go-querystring
+  subpackages:
+  - query
+testImport:
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert

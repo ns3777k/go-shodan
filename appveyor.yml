@@ -13,8 +13,8 @@ deploy: false
 install:
   - go version
   - go env
-  - go get github.com/stretchr/testify/assert
-  - go get -u -v ./shodan
+  - glide install github.com/stretchr/testify/assert
+  - go get -v $(glide novendor)
 
 test_script:
-  - go test -v ./shodan
+  - go test -v $(glide novendor)

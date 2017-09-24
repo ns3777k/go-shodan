@@ -1,4 +1,5 @@
 language: go
+
 go:
  - 1.1
  - 1.2
@@ -9,11 +10,22 @@ go:
  - 1.7
  - 1.8
  - 1.9
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:masterminds/glide'
+    packages:
+      - glide
+
 install:
-  - go get golang.org/x/tools/cmd/cover
-  - go get github.com/mattn/goveralls
-  - go get github.com/stretchr/testify/assert
-  - go get -v ./shodan
+  - glide install golang.org/x/tools/cmd/cover
+  - glide install github.com/mattn/goveralls
+  - glide install
+
 script:
-  - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then go test -v ./shodan -covermode=count -coverprofile=coverage.out; else go test -v ./shodan; fi
+  - go test -v $(glide novendor)
+
+after_success:
+  - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then go test -v $(glide novendor) -covermode=count -coverprofile=coverage.out; else go test -v ./shodan; fi
   - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN; fi
