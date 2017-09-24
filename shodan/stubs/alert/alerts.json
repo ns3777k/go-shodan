@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Test alert",
+    "created": "2017-09-24T18:30:43.592000",
+    "expires": 0,
+    "expiration": null,
+    "expired": true,
+    "id": "ZZ4TDUUORVE1DIIP",
+    "size": 256,
+    "filters": {
+      "ip": [
+        "198.20.22.0/24"
+      ]
+    }
+  },
+  {
+    "name": "Test alert 2",
+    "created": "2017-09-24T20:08:51.815000",
+    "expires": 100,
+    "expired": false,
+    "expiration": "2017-09-24T20:10:31.815000",
+    "id": "IU0CJDXNNEXBOPK3",
+    "size": 256,
+    "filters": {
+      "ip": [
+        "198.20.88.0/24"
+      ]
+    }
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "name": "Test alert",
+  "created": "2017-09-24T18:30:43.592000",
+  "expires": 0,
+  "expiration": null,
+  "expired": false,
+  "id": "ZZ4TDUUORVE1DIIP",
+  "size": 256,
+  "filters": {
+    "ip": [
+      "198.20.22.0/24"
+    ]
+  }
+}
