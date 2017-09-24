@@ -133,6 +133,10 @@ func (c *Client) executeRequest(method, path string, destination interface{}, bo
 
 	defer res.Body.Close()
 
+	if destination == nil {
+		return nil
+	}
+
 	return c.parseResponse(destination, res.Body)
 }
 

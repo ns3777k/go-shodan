@@ -95,10 +95,10 @@ func main() {
 - [x] /shodan/scan/{id}
 
 #### Network Alerts
-- [ ] /shodan/alert
-- [ ] /shodan/alert/{id}/info
-- [ ] /shodan/alert/{id}
-- [ ] /shodan/alert/info
+- [x] /shodan/alert
+- [x] /shodan/alert/{id}/info
+- [x] /shodan/alert/{id}
+- [x] /shodan/alert/info
 
 #### Directory Methods
 - [x] /shodan/query
