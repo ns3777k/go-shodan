@@ -22,16 +22,14 @@ type CrawlScanStatus struct {
 // This method uses API scan credits: 1 IP consumes 1 scan credit. You must have a paid API plan (either one-time
 // payment or subscription) in order to use this method.
 func (c *Client) Scan(ip []string) (*CrawlScanStatus, error) {
-	url, err := c.buildBaseURL(scanPath, nil)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(scanPath, nil)
 
 	var crawlScanStatus CrawlScanStatus
 	body := neturl.Values{}
 	body.Add("ips", strings.Join(ip, ","))
 
-	err = c.executeRequest("POST", url, &crawlScanStatus, strings.NewReader(body.Encode()))
+	err := c.executeRequest("POST", url, &crawlScanStatus, strings.NewReader(body.Encode()))
+
 	return &crawlScanStatus, err
 }
 
@@ -40,10 +38,7 @@ func (c *Client) Scan(ip []string) (*CrawlScanStatus, error) {
 // this method as a researcher, please email jmath@shodan.io with information about your project. Access is restricted
 // to prevent abuse.
 func (c *Client) ScanInternet(port int, protocol string) (string, error) {
-	url, err := c.buildBaseURL(scanInternetPath, nil)
-	if err != nil {
-		return "", err
-	}
+	url := c.buildBaseURL(scanInternetPath, nil)
 
 	crawlScanInternetStatus := new(struct {
 		ID string `json:"id"`
@@ -53,6 +48,7 @@ func (c *Client) ScanInternet(port int, protocol string) (string, error) {
 	body.Add("port", strconv.Itoa(port))
 	body.Add("protocol", protocol)
 
-	err = c.executeRequest("POST", url, crawlScanInternetStatus, strings.NewReader(body.Encode()))
+	err := c.executeRequest("POST", url, crawlScanInternetStatus, strings.NewReader(body.Encode()))
+
 	return crawlScanInternetStatus.ID, err
 }

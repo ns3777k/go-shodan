@@ -6,13 +6,10 @@ const (
 
 // GetPorts returns a list of port numbers that the crawlers are looking for
 func (c *Client) GetPorts() ([]int, error) {
-	url, err := c.buildBaseURL(portsPath, nil)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(portsPath, nil)
 
 	var ports []int
-	err = c.executeRequest("GET", url, &ports, nil)
+	err := c.executeRequest("GET", url, &ports, nil)
 
 	return ports, err
 }

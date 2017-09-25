@@ -63,26 +63,20 @@ type QueryOptions struct {
 
 // GetQueryTags obtains a list of popular tags for the saved search queries in Shodan.
 func (c *Client) GetQueryTags(options *QueryTagsOptions) (*QueryTags, error) {
-	url, err := c.buildBaseURL(queryTagsPath, options)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(queryTagsPath, options)
 
 	var queryTags QueryTags
-	err = c.executeRequest("GET", url, &queryTags, nil)
+	err := c.executeRequest("GET", url, &queryTags, nil)
 
 	return &queryTags, err
 }
 
 // GetQueries obtains a list of search queries that users have saved in Shodan.
 func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
-	url, err := c.buildBaseURL(queryPath, options)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(queryPath, options)
 
 	var querySearch QuerySearch
-	err = c.executeRequest("GET", url, &querySearch, nil)
+	err := c.executeRequest("GET", url, &querySearch, nil)
 
 	return &querySearch, err
 }
@@ -93,13 +87,10 @@ func (c *Client) SearchQueries(options *SearchQueryOptions) (*QuerySearch, error
 		return nil, ErrInvalidQuery
 	}
 
-	url, err := c.buildBaseURL(querySearchPath, options)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(querySearchPath, options)
 
 	var querySearch QuerySearch
-	err = c.executeRequest("GET", url, &querySearch, nil)
+	err := c.executeRequest("GET", url, &querySearch, nil)
 
 	return &querySearch, err
 }

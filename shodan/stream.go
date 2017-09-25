@@ -41,10 +41,7 @@ func (c *Client) GetBannersByPorts(ports []int) error {
 	}
 
 	path := fmt.Sprintf(bannersPortsPath, strings.Join(stringifiedPorts, ","))
-	url, err := c.buildStreamBaseURL(path, nil)
-	if err != nil {
-		return err
-	}
+	url := c.buildStreamBaseURL(path, nil)
 
 	rawChan := make(chan []byte)
 	go c.readBannersResponse(rawChan)
@@ -56,10 +53,7 @@ func (c *Client) GetBannersByPorts(ports []int) error {
 // GetBanners provides ALL of the data that Shodan collects. Use this stream if you need access to everything and / or
 // want to store your own Shodan database locally. If you only care about specific ports, please use the Ports stream.
 func (c *Client) GetBanners() error {
-	url, err := c.buildStreamBaseURL(bannersPath, nil)
-	if err != nil {
-		return err
-	}
+	url := c.buildStreamBaseURL(bannersPath, nil)
 
 	rawChan := make(chan []byte)
 	go c.readBannersResponse(rawChan)

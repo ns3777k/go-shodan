@@ -101,13 +101,10 @@ type HostQueryTokens struct {
 
 // GetServicesForHost returns all services that have been found on the given host IP
 func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*Host, error) {
-	url, err := c.buildBaseURL(hostPath+"/"+ip, options)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(hostPath+"/"+ip, options)
 
 	var host Host
-	err = c.executeRequest("GET", url, &host, nil)
+	err := c.executeRequest("GET", url, &host, nil)
 
 	return &host, err
 }
@@ -116,13 +113,10 @@ func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*H
 // does not return any host results, it only returns the total number of results that matched the query and any facet
 // information that was requested. As a result this method does not consume query credits
 func (c *Client) GetHostsCountForQuery(options *HostQueryOptions) (*HostMatch, error) {
-	url, err := c.buildBaseURL(hostCountPath, options)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(hostCountPath, options)
 
 	var found HostMatch
-	err = c.executeRequest("GET", url, &found, nil)
+	err := c.executeRequest("GET", url, &found, nil)
 
 	return &found, err
 }
@@ -134,13 +128,10 @@ func (c *Client) GetHostsCountForQuery(options *HostQueryOptions) (*HostMatch, e
 // 2. Accessing results past the 1st page using the "page". For every 100 results past the 1st page 1 query credit is
 // deducted
 func (c *Client) GetHostsForQuery(options *HostQueryOptions) (*HostMatch, error) {
-	url, err := c.buildBaseURL(hostSearchPath, options)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(hostSearchPath, options)
 
 	var found HostMatch
-	err = c.executeRequest("GET", url, &found, nil)
+	err := c.executeRequest("GET", url, &found, nil)
 
 	return &found, err
 }
@@ -148,15 +139,12 @@ func (c *Client) GetHostsForQuery(options *HostQueryOptions) (*HostMatch, error)
 // BreakQueryIntoTokens determines which filters are being used by the query string
 // and what parameters were provided to the filters.
 func (c *Client) BreakQueryIntoTokens(query string) (*HostQueryTokens, error) {
-	url, err := c.buildBaseURL(hostSearchTokensPath, struct {
+	url := c.buildBaseURL(hostSearchTokensPath, struct {
 		Query string `url:"query"`
 	}{Query: query})
-	if err != nil {
-		return nil, err
-	}
 
 	var tokens HostQueryTokens
-	err = c.executeRequest("GET", url, &tokens, nil)
+	err := c.executeRequest("GET", url, &tokens, nil)
 
 	return &tokens, err
 }

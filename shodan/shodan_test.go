@@ -84,43 +84,33 @@ func TestClient_buildURL_success(t *testing.T) {
 	}
 
 	for _, caseParams := range testCases {
-		url, err := client.buildURL(baseURL, caseParams.path, caseParams.params)
+		url := client.buildURL(baseURL, caseParams.path, caseParams.params)
 
-		assert.Nil(t, err)
 		assert.Equal(t, caseParams.expected, url)
 	}
-}
-
-func TestClient_buildURL_errorBaseURL(t *testing.T) {
-	client := NewClient(nil, testClientToken)
-	_, err := client.buildURL(":/shodan.io", "", nil)
-	assert.NotNil(t, err)
 }
 
 func TestClient_buildBaseURL(t *testing.T) {
 	client := NewClient(nil, testClientToken)
 	expected := client.BaseURL + "/test-base-url-building/?key=" + testClientToken
-	actual, err := client.buildBaseURL("/test-base-url-building/", nil)
+	actual := client.buildBaseURL("/test-base-url-building/", nil)
 
-	assert.Nil(t, err)
 	assert.Equal(t, expected, actual)
 }
 
 func TestClient_buildExploitBaseURL(t *testing.T) {
 	client := NewClient(nil, testClientToken)
 	expected := client.ExploitBaseURL + "/test-exploit-url-building/?key=" + testClientToken
-	actual, err := client.buildExploitBaseURL("/test-exploit-url-building/", nil)
+	actual := client.buildExploitBaseURL("/test-exploit-url-building/", nil)
 
-	assert.Nil(t, err)
 	assert.Equal(t, expected, actual)
 }
 
 func TestClient_buildStreamBaseURL(t *testing.T) {
 	client := NewClient(nil, testClientToken)
 	expected := client.StreamBaseURL + "/test-stream-url-building/?key=" + testClientToken
-	actual, err := client.buildStreamBaseURL("/test-stream-url-building/", nil)
+	actual := client.buildStreamBaseURL("/test-stream-url-building/", nil)
 
-	assert.Nil(t, err)
 	assert.Equal(t, expected, actual)
 }
 
@@ -145,10 +135,9 @@ func TestClient_executeRequest_textUnauthorized(t *testing.T) {
 		http.Error(w, errorText, http.StatusUnauthorized)
 	})
 
-	url, err := client.buildBaseURL(unauthorizedPath, nil)
-	assert.Nil(t, err)
+	url := client.buildBaseURL(unauthorizedPath, nil)
+	err := client.executeRequest("GET", url, nil, nil)
 
-	err = client.executeRequest("GET", url, nil, nil)
 	assert.NotNil(t, err)
 }
 
@@ -162,10 +151,9 @@ func TestClient_executeRequest_jsonNotFound(t *testing.T) {
 		http.Error(w, `{"error": "No information available for that IP."}`, http.StatusNotFound)
 	})
 
-	url, err := client.buildBaseURL(notFoundPath, nil)
-	assert.Nil(t, err)
+	url := client.buildBaseURL(notFoundPath, nil)
+	err := client.executeRequest("GET", url, nil, nil)
 
-	err = client.executeRequest("GET", url, nil, nil)
 	assert.NotNil(t, err)
 }
 
@@ -192,11 +180,10 @@ func TestClient_executeStreamRequest_success(t *testing.T) {
 		}
 	})
 
-	url, err := client.buildStreamBaseURL(streamPath, nil)
-	assert.Nil(t, err)
+	url := client.buildStreamBaseURL(streamPath, nil)
 
 	bytesChan := make(chan []byte)
-	err = client.executeStreamRequest("GET", url, bytesChan)
+	err := client.executeStreamRequest("GET", url, bytesChan)
 	assert.Nil(t, err)
 
 	receivedChunks := 0
@@ -215,10 +202,10 @@ func TestClient_executeStreamRequest_success(t *testing.T) {
 
 func TestClient_executeStreamRequest_errorRequest(t *testing.T) {
 	client := NewClient(nil, testClientToken)
-	url, err := client.buildStreamBaseURL("/stream/error", nil)
-	assert.Nil(t, err)
+	url := client.buildStreamBaseURL("/stream/error", nil)
 
 	bytesChan := make(chan []byte)
-	err = client.executeStreamRequest("GET", url, bytesChan)
+	err := client.executeStreamRequest("GET", url, bytesChan)
+
 	assert.NotNil(t, err)
 }
