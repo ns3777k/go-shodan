@@ -5,7 +5,7 @@ clone_depth: 1
 
 environment:
   GOPATH: c:\gopath
-  GOVERSION: 1.7
+  GOVERSION: 1.9
 
 build: false
 deploy: false
@@ -13,8 +13,9 @@ deploy: false
 install:
   - go version
   - go env
+  - go get github.com/Masterminds/glide
   - glide install github.com/stretchr/testify/assert
-  - go get -v $(glide novendor)
+  - glide install
 
 test_script:
   - go test -v $(glide novendor)
