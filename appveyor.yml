@@ -5,16 +5,17 @@ clone_depth: 1
 
 environment:
   GOPATH: c:\gopath
-  GOVERSION: 1.7
+  GOVERSION: 1.9
 
 build: false
 deploy: false
 
 install:
+  - set PATH=%GOPATH%\bin;C:\gopath\bin;%PATH%
   - go version
   - go env
-  - go get github.com/stretchr/testify/assert
-  - go get -u -v ./shodan
+  - go get -v github.com/Masterminds/glide
+  - glide install
 
 test_script:
   - go test -v ./shodan
