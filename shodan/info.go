@@ -4,6 +4,7 @@ const (
 	infoPath = "/api-info"
 )
 
+// APIInfo holds API information.
 type APIInfo struct {
 	QueryCredits int    `json:"query_credits"`
 	ScanCredits  int    `json:"scan_credits"`
@@ -14,7 +15,7 @@ type APIInfo struct {
 	UnlockedLeft int    `json:"unlocked_left"`
 }
 
-// GetAPIInfo returns information about the API plan belonging to the given API key
+// GetAPIInfo returns information about the API plan belonging to the given API key.
 func (c *Client) GetAPIInfo() (*APIInfo, error) {
 	url, err := c.buildBaseURL(infoPath, nil)
 	if err != nil {

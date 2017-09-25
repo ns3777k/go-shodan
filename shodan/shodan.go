@@ -27,14 +27,15 @@ func getErrorFromResponse(r *http.Response) error {
 	if err == nil {
 		if err := json.Unmarshal(message, errorResponse); err == nil {
 			return errors.New(errorResponse.Error)
-		} else {
-			return errors.New(strings.TrimSpace(string(message)))
 		}
+
+		return errors.New(strings.TrimSpace(string(message)))
 	}
 
 	return ErrBodyRead
 }
 
+// Client represents Shodan HTTP client
 type Client struct {
 	Token          string
 	BaseURL        string
@@ -45,6 +46,7 @@ type Client struct {
 	Client *http.Client
 }
 
+// NewClient creates new Shodan client
 func NewClient(client *http.Client, token string) *Client {
 	if client == nil {
 		client = http.DefaultClient

@@ -11,11 +11,13 @@ const (
 	hostSearchTokensPath = "/shodan/host/search/tokens"
 )
 
+// HostServicesOptions is options for querying services.
 type HostServicesOptions struct {
 	History bool `url:"history,omitempty"`
 	Minify  bool `url:"minify,omitempty"`
 }
 
+// HostLocation is the location of the host.
 type HostLocation struct {
 	City         string  `json:"city"`
 	RegionCode   string  `json:"region_code"`
@@ -29,6 +31,7 @@ type HostLocation struct {
 	DMA          int     `json:"dma_code"`
 }
 
+// HostData is all services that have been found on the given host IP.
 type HostData struct {
 	Product      string                 `json:"product"`
 	Hostnames    []string               `json:"hostnames"`
@@ -55,6 +58,7 @@ type HostData struct {
 	Opts         map[string]interface{} `json:"opts"`
 }
 
+// Host is the all information about the host.
 type Host struct {
 	OS              string      `json:"os"`
 	Ports           []int       `json:"ports"`
@@ -70,6 +74,7 @@ type Host struct {
 	HostLocation
 }
 
+// HostQueryOptions is Shodan search query options.
 type HostQueryOptions struct {
 	Query  string `url:"query"`
 	Facets string `url:"facets,omitempty"`
@@ -77,12 +82,15 @@ type HostQueryOptions struct {
 	Page   int    `url:"page,omitempty"`
 }
 
+// HostMatch is the search results with all matched hosts.
 type HostMatch struct {
 	Total   int                 `json:"total"`
 	Facets  map[string][]*Facet `json:"facets"`
 	Matches []*HostData         `json:"matches"`
 }
 
+// HostQueryTokens is filters are being used by the query string and what
+// parameters were provided to the filters.
 type HostQueryTokens struct {
 	Filters []string `json:"filters"`
 	String  string   `json:"string"`
@@ -104,7 +112,7 @@ func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*H
 	return &host, err
 }
 
-// GetServicesCountForHost behaves identical to "/shodan/host/search" with the only difference that this method
+// GetHostsCountForQuery behaves identical to "/shodan/host/search" with the only difference that this method
 // does not return any host results, it only returns the total number of results that matched the query and any facet
 // information that was requested. As a result this method does not consume query credits
 func (c *Client) GetHostsCountForQuery(options *HostQueryOptions) (*HostMatch, error) {
@@ -137,8 +145,8 @@ func (c *Client) GetHostsForQuery(options *HostQueryOptions) (*HostMatch, error)
 	return &found, err
 }
 
-// This method lets you determine which filters are being used by the query string and what parameters were provided
-// to the filters.
+// BreakQueryIntoTokens determines which filters are being used by the query string
+// and what parameters were provided to the filters.
 func (c *Client) BreakQueryIntoTokens(query string) (*HostQueryTokens, error) {
 	url, err := c.buildBaseURL(hostSearchTokensPath, struct {
 		Query string `url:"query"`

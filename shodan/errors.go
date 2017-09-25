@@ -5,6 +5,9 @@ import (
 )
 
 var (
-	ErrInvalidQuery = errors.New("Query is invalid")
-	ErrBodyRead     = errors.New("Could not read error response")
+	// ErrInvalidQuery is returned when query is not valid.
+	ErrInvalidQuery = errors.New("query is invalid")
+
+	// ErrBodyRead is returned when response's body cannot be read.
+	ErrBodyRead = errors.New("could not read error response")
 )
