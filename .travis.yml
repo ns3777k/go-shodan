@@ -18,13 +18,11 @@ cache:
     - vendor
 
 install:
-  - glide install golang.org/x/tools/cmd/cover
-  - glide install github.com/mattn/goveralls
+  - go get -v golang.org/x/tools/cmd/cover
+  - go get -v github.com/mattn/goveralls
   - glide install
 
 script:
   - go test -v $(glide novendor)
-
-after_success:
   - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then go test -v $(glide novendor) -covermode=count -coverprofile=coverage.out; else go test -v ./shodan; fi
   - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN; fi
