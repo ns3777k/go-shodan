@@ -14,13 +14,10 @@ type Profile struct {
 
 // GetAccountProfile returns information about the Shodan account linked to the API key
 func (c *Client) GetAccountProfile() (*Profile, error) {
-	url, err := c.buildBaseURL(profilePath, nil)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(profilePath, nil)
 
 	var profile Profile
-	err = c.executeRequest("GET", url, &profile, nil)
+	err := c.executeRequest("GET", url, &profile, nil)
 
 	return &profile, err
 }

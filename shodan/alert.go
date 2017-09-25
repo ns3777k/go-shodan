@@ -39,10 +39,7 @@ type alertCreateRequest struct {
 // CreateAlert creates a network alert for a defined IP/ netblock which can be used to
 // subscribe to changes/ events that are discovered within that range.
 func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, error) {
-	url, err := c.buildBaseURL(alertCreatePath, nil)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(alertCreatePath, nil)
 
 	payload := &alertCreateRequest{
 		Name:    name,
@@ -66,13 +63,10 @@ func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, err
 // GetAlerts returns a listing of all the network alerts
 // that are currently active on the account.
 func (c *Client) GetAlerts() ([]*Alert, error) {
-	url, err := c.buildBaseURL(alertsInfoListPath, nil)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(alertsInfoListPath, nil)
 
 	alerts := make([]*Alert, 0, 0)
-	err = c.executeRequest("GET", url, &alerts, nil)
+	err := c.executeRequest("GET", url, &alerts, nil)
 
 	return alerts, err
 }
@@ -80,13 +74,10 @@ func (c *Client) GetAlerts() ([]*Alert, error) {
 // GetAlert returns the information about a specific network alert.
 func (c *Client) GetAlert(id string) (*Alert, error) {
 	path := fmt.Sprintf(alertInfoPath, id)
-	url, err := c.buildBaseURL(path, nil)
-	if err != nil {
-		return nil, err
-	}
+	url := c.buildBaseURL(path, nil)
 
 	var alert Alert
-	err = c.executeRequest("GET", url, &alert, nil)
+	err := c.executeRequest("GET", url, &alert, nil)
 
 	return &alert, err
 }
@@ -94,12 +85,9 @@ func (c *Client) GetAlert(id string) (*Alert, error) {
 // DeleteAlert removes the specified network alert.
 func (c *Client) DeleteAlert(id string) (bool, error) {
 	path := fmt.Sprintf(alertDeletePath, id)
-	url, err := c.buildBaseURL(path, nil)
-	if err != nil {
-		return false, err
-	}
+	url := c.buildBaseURL(path, nil)
 
-	err = c.executeRequest("DELETE", url, nil, nil)
+	err := c.executeRequest("DELETE", url, nil, nil)
 	if err != nil {
 		return false, err
 	}

@@ -22,11 +22,8 @@ func (c *Client) CalcHoneyScore(ip string) (float64, error) {
 	}
 
 	path := fmt.Sprintf(honeyscorePath, ip)
-	url, err := c.buildBaseURL(path, nil)
-	if err != nil {
-		return 0.0, err
-	}
+	url := c.buildBaseURL(path, nil)
+	err := c.executeRequest("GET", url, &score, nil)
 
-	err = c.executeRequest("GET", url, &score, nil)
 	return score, err
 }

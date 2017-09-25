@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strings"
 
+	"fmt"
 	"github.com/google/go-querystring/query"
 )
 
@@ -62,33 +63,33 @@ func NewClient(client *http.Client, token string) *Client {
 	}
 }
 
-func (c *Client) buildURL(base, path string, params interface{}) (string, error) {
+func (c *Client) buildURL(base, path string, params interface{}) string {
 	baseURL, err := url.Parse(base + path)
 	if err != nil {
-		return "", err
+		panic(fmt.Sprintf("Error: %s. This must never happen!", err))
 	}
 
 	qs, err := query.Values(params)
 	if err != nil {
-		return baseURL.String(), err
+		panic(fmt.Sprintf("Error: %s. BaseURL: %s. This must never happen!", err, baseURL.String()))
 	}
 
 	qs.Add("key", c.Token)
 
 	baseURL.RawQuery = qs.Encode()
 
-	return baseURL.String(), nil
+	return baseURL.String()
 }
 
-func (c *Client) buildBaseURL(path string, params interface{}) (string, error) {
+func (c *Client) buildBaseURL(path string, params interface{}) string {
 	return c.buildURL(c.BaseURL, path, params)
 }
 
-func (c *Client) buildExploitBaseURL(path string, params interface{}) (string, error) {
+func (c *Client) buildExploitBaseURL(path string, params interface{}) string {
 	return c.buildURL(c.ExploitBaseURL, path, params)
 }
 
-func (c *Client) buildStreamBaseURL(path string, params interface{}) (string, error) {
+func (c *Client) buildStreamBaseURL(path string, params interface{}) string {
 	return c.buildURL(c.StreamBaseURL, path, params)
 }
 
