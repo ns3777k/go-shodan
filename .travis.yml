@@ -18,11 +18,18 @@ cache:
     - vendor
 
 install:
-  - go get -v golang.org/x/tools/cmd/cover
-  - go get -v github.com/mattn/goveralls
+  - go get -u github.com/modocache/gover
+  - go get -u github.com/golang/lint/golint
+  - go get -u github.com/gordonklaus/ineffassign
+  - go get -u github.com/client9/misspell/cmd/misspell
   - glide install
 
 script:
-  - go test -v $(glide novendor)
-  - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then go test -v $(glide novendor) -covermode=count -coverprofile=coverage.out; else go test -v ./shodan; fi
-  - if [ "$TRAVIS_GO_VERSION" == "1.9" ]; then $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN; fi
+  - golint -set_exit_status ./shodan/...
+  - ineffassign ./shodan/
+  - misspell -error README.md ./shodan/**/*
+  - gofmt -d -s -e ./shodan/
+  - go test -race -coverprofile=coverage.txt -covermode=atomic ./shodan/
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -f ./coverage.txt

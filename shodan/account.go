@@ -4,6 +4,7 @@ const (
 	profilePath = "/account/profile"
 )
 
+// Profile holds account's information
 type Profile struct {
 	Member  bool   `json:"member"`
 	Credits int    `json:"credits"`

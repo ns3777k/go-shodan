@@ -11,6 +11,7 @@ const (
 	scanInternetPath = "/shodan/scan/internet"
 )
 
+// CrawlScanStatus is the result of a scan.
 type CrawlScanStatus struct {
 	ID          string `json:"id"`
 	Count       int    `json:"count"`

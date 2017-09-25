@@ -13,10 +13,12 @@ const (
 	alertCreatePath    = "/shodan/alert"
 )
 
+// AlertFilters holds alert criteria (only ip for now).
 type AlertFilters struct {
 	IP []string `json:"ip"`
 }
 
+// Alert represents a trigger to react to network scan request.
 type Alert struct {
 	ID         string        `json:"id"`
 	Name       string        `json:"name"`
@@ -34,8 +36,8 @@ type alertCreateRequest struct {
 	Filters *AlertFilters `json:"filters"`
 }
 
-// Use this method to create a network alert for a defined IP/ netblock which
-// can be used to subscribe to changes/ events that are discovered within that range.
+// CreateAlert creates a network alert for a defined IP/ netblock which can be used to
+// subscribe to changes/ events that are discovered within that range.
 func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, error) {
 	url, err := c.buildBaseURL(alertCreatePath, nil)
 	if err != nil {

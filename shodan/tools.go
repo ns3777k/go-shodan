@@ -24,9 +24,9 @@ func (c *Client) GetMyIP() (string, error) {
 	return strings.Trim(ip.String(), "\""), err
 }
 
-// GetHttpHeaders shows the HTTP headers that your client sends
+// GetHTTPHeaders shows the HTTP headers that your client sends
 // when connecting to a webserver.
-func (c *Client) GetHttpHeaders() (map[string]string, error) {
+func (c *Client) GetHTTPHeaders() (map[string]string, error) {
 	url, err := c.buildBaseURL(headersPath, nil)
 	if err != nil {
 		return nil, err
