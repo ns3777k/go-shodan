@@ -1,7 +1,7 @@
 # go-shodan
 [![Build Status](https://travis-ci.org/ns3777k/go-shodan.svg?branch=master)](https://travis-ci.org/ns3777k/go-shodan)
 [![Build status](https://ci.appveyor.com/api/projects/status/wbi5u34k5pokbypj/branch/master?svg=true)](https://ci.appveyor.com/project/ns3777k/go-shodan/branch/master)
-[![Coverage Status](https://coveralls.io/repos/ns3777k/go-shodan/badge.svg?branch=master&service=github)](https://coveralls.io/github/ns3777k/go-shodan?branch=master)
+[![codecov](https://codecov.io/gh/ns3777k/go-shodan/branch/master/graph/badge.svg)](https://codecov.io/gh/ns3777k/go-shodan)
 [![GoDoc](https://godoc.org/github.com/ns3777k/go-shodan/shodan?status.svg)](https://godoc.org/github.com/ns3777k/go-shodan/shodan)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ns3777k/go-shodan)](https://goreportcard.com/report/github.com/ns3777k/go-shodan)
