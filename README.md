@@ -13,6 +13,21 @@ To start working with Shodan you have to get your token first. You can do this a
 Download the package:
 
 ```bash
+go get "gopkg.in/ns3777k/go-shodan.v2"
+```
+
+2nd version has some breaking changes:
+
+* Dropped support for old golang versions (`1.1` - `1.5`)
+* `GetHttpHeaders` is renamed to `GetHTTPHeaders`
+* Invalid url will now `panic`
+* Stream methods no longer return error
+
+*Streaming API methods will be totally reworked at version 3.*
+
+To use the old version:
+
+```bash
 go get "gopkg.in/ns3777k/go-shodan.v1"
 ```
 
@@ -28,7 +43,7 @@ package main
 import (
     "log"
 
-    "gopkg.in/ns3777k/go-shodan.v1/shodan"
+    "gopkg.in/ns3777k/go-shodan.v2/shodan"
 )
 
 func main() {
@@ -55,7 +70,7 @@ package main
 import (
     "log"
 
-    "gopkg.in/ns3777k/go-shodan.v1/shodan"
+    "gopkg.in/ns3777k/go-shodan.v2/shodan"
 )
 
 func main() {
@@ -132,8 +147,8 @@ func main() {
 - [x] /shodan/ports/{ports}
 
 #### Network Alerts
-- [ ] /shodan/alert
-- [ ] /shodan/alert/{id}
+- [x] /shodan/alert
+- [x] /shodan/alert/{id}
 
 If a method is absent or something doesn't work properly don't hesitate to create an issue.
 
