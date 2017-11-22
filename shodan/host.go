@@ -2,6 +2,7 @@ package shodan
 
 import (
 	"encoding/json"
+	"strconv"
 )
 
 const (
@@ -31,11 +32,33 @@ type HostLocation struct {
 	DMA          int     `json:"dma_code"`
 }
 
+// HostVersion is string with custom unmarshaling.
+type HostVersion string
+
+// UnmarshalJSON handles either a string or a number
+// and casts it to string.
+func (v *HostVersion) UnmarshalJSON(b []byte) error {
+	var s string
+	if err := json.Unmarshal(b, &s); err == nil {
+		*v = HostVersion(s)
+		return nil
+	}
+
+	var n int
+	if err := json.Unmarshal(b, &n); err != nil {
+		return err
+	}
+
+	*v = HostVersion(strconv.Itoa(n))
+
+	return nil
+}
+
 // HostData is all services that have been found on the given host IP.
 type HostData struct {
 	Product      string                 `json:"product"`
 	Hostnames    []string               `json:"hostnames"`
-	Version      json.Number            `json:"version"`
+	Version      HostVersion            `json:"version"`
 	Title        string                 `json:"title"`
 	IPLong       int                    `json:"ip"`
 	IP           string                 `json:"ip_str"`
