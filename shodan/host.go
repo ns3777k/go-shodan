@@ -54,6 +54,10 @@ func (v *HostVersion) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+func (v *HostVersion) String() string {
+	return string(*v)
+}
+
 // HostData is all services that have been found on the given host IP.
 type HostData struct {
 	Product      string                 `json:"product"`
