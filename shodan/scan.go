@@ -1,17 +1,41 @@
 package shodan
 
 import (
+	"fmt"
 	neturl "net/url"
 	"strconv"
 	"strings"
 )
 
+// ScanStatusState is an alias to string that represents a scan state.
+type ScanStatusState string
+
 const (
+	scanStatusPath   = "/shodan/scan/%s"
 	scanPath         = "/shodan/scan"
 	scanInternetPath = "/shodan/scan/internet"
+
+	// ScanStatusSubmitting is "SUBMITTING"
+	ScanStatusSubmitting ScanStatusState = "SUBMITTING"
+
+	// ScanStatusQueue is "QUEUE"
+	ScanStatusQueue ScanStatusState = "QUEUE"
+
+	// ScanStatusProcessing is "PROCESSING"
+	ScanStatusProcessing ScanStatusState = "PROCESSING"
+
+	// ScanStatusDone is "DONE"
+	ScanStatusDone ScanStatusState = "DONE"
 )
 
-// CrawlScanStatus is the result of a scan.
+// ScanStatus is a current scan status.
+type ScanStatus struct {
+	ID     string          `json:"id"`
+	Count  int             `json:"count"`
+	Status ScanStatusState `json:"status"`
+}
+
+// CrawlScanStatus is the response to a scan request.
 type CrawlScanStatus struct {
 	ID          string `json:"id"`
 	Count       int    `json:"count"`
@@ -51,4 +75,15 @@ func (c *Client) ScanInternet(port int, protocol string) (string, error) {
 	err := c.executeRequest("POST", url, crawlScanInternetStatus, strings.NewReader(body.Encode()))
 
 	return crawlScanInternetStatus.ID, err
+}
+
+// GetScanStatus checks the progress of a previously submitted scan request.
+func (c *Client) GetScanStatus(id string) (*ScanStatus, error) {
+	path := fmt.Sprintf(scanStatusPath, id)
+	url := c.buildBaseURL(path, nil)
+
+	var scanStatus ScanStatus
+	err := c.executeRequest("GET", url, &scanStatus, nil)
+
+	return &scanStatus, err
 }

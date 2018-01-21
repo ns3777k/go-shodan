@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"encoding/json"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_GetHostsForQuery_DifferentVersionFormats(t *testing.T) {
