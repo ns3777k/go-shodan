@@ -71,3 +71,26 @@ func TestClient_ScanInternet(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "COMAD88STBX8QNN1", scanInternetStatusID)
 }
+
+func TestClient_GetScanStatus(t *testing.T) {
+	path := fmt.Sprintf(scanStatusPath, "BOMA59VSGWX8QJR9")
+	setUpTestServe()
+	defer tearDownTestServe()
+
+	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		w.Write(getStub(t, "scan_status"))
+	})
+
+	scanStatus, err := client.GetScanStatus("BOMA59VSGWX8QJR9")
+	assert.Nil(t, err)
+
+	scanStatusExpected := &ScanStatus{
+		ID:     "BOMA59VSGWX8QJR9",
+		Count:  2,
+		Status: ScanStatusProcessing,
+	}
+
+	assert.IsType(t, scanStatusExpected, scanStatus)
+	assert.EqualValues(t, scanStatusExpected, scanStatus)
+}
