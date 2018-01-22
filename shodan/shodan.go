@@ -14,6 +14,7 @@ import (
 	"github.com/google/go-querystring/query"
 	"github.com/moul/http2curl"
 	"log"
+	"os"
 )
 
 const (
@@ -64,6 +65,12 @@ func NewClient(client *http.Client, token string) *Client {
 		StreamChan:     make(chan HostData),
 		Client:         client,
 	}
+}
+
+// NewEnvClient creates new Shodan client using environment variable
+// SHODAN_KEY as the token.
+func NewEnvClient(client *http.Client) *Client {
+	return NewClient(client, os.Getenv("SHODAN_KEY"))
 }
 
 // SetDebug toggles the debug mode
