@@ -3,6 +3,7 @@ import:
 - package: github.com/google/go-querystring
   subpackages:
   - query
+- package: github.com/moul/http2curl
 testImport:
 - package: github.com/stretchr/testify
   subpackages:

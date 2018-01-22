@@ -12,6 +12,8 @@ import (
 
 	"fmt"
 	"github.com/google/go-querystring/query"
+	"github.com/moul/http2curl"
+	"log"
 )
 
 const (
@@ -43,6 +45,7 @@ type Client struct {
 	ExploitBaseURL string
 	StreamBaseURL  string
 	StreamChan     chan HostData
+	Debug          bool
 
 	Client *http.Client
 }
@@ -61,6 +64,11 @@ func NewClient(client *http.Client, token string) *Client {
 		StreamChan:     make(chan HostData),
 		Client:         client,
 	}
+}
+
+// SetDebug toggles the debug mode
+func (c *Client) SetDebug(debug bool) {
+	c.Debug = debug
 }
 
 func (c *Client) buildURL(base, path string, params interface{}) string {
@@ -101,6 +109,12 @@ func (c *Client) sendRequest(method, path string, body io.Reader) (*http.Respons
 
 	if body != nil {
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
+
+	if c.Debug {
+		if command, err := http2curl.GetCurlCommand(req); err == nil {
+			log.Printf("shodan.sendRequest: %s\n", command)
+		}
 	}
 
 	res, err := c.Client.Do(req)
