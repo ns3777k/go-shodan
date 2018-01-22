@@ -47,7 +47,7 @@ import (
 )
 
 func main() {
-    client := shodan.NewClient(nil, "MY_TOKEN")
+    client := shodan.NewEnvClient(nil)
     dns, err := client.GetDNSResolve([]string{"google.com", "ya.ru"})
 
     if err != nil {
@@ -74,7 +74,7 @@ import (
 )
 
 func main() {
-    client := shodan.NewClient(nil, "MY_TOKEN")
+    client := shodan.NewEnvClient(nil)
 
     go func() {
         for {
