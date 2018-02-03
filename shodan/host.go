@@ -2,6 +2,7 @@ package shodan
 
 import (
 	"encoding/json"
+	"net"
 	"strconv"
 )
 
@@ -64,8 +65,7 @@ type HostData struct {
 	Hostnames    []string               `json:"hostnames"`
 	Version      HostVersion            `json:"version"`
 	Title        string                 `json:"title"`
-	IPLong       int64                  `json:"ip"`
-	IP           string                 `json:"ip_str"`
+	IP           net.IP                 `json:"ip_str"`
 	OS           string                 `json:"os"`
 	Organization string                 `json:"org"`
 	ISP          string                 `json:"isp"`
@@ -89,8 +89,7 @@ type HostData struct {
 type Host struct {
 	OS              string      `json:"os"`
 	Ports           []int       `json:"ports"`
-	IPLong          int64       `json:"ip"`
-	IP              string      `json:"ip_str"`
+	IP              net.IP      `json:"ip_str"`
 	ISP             string      `json:"isp"`
 	Hostnames       []string    `json:"hostnames"`
 	Organization    string      `json:"org"`

@@ -10,7 +10,6 @@
       "product": "www.solugames.com",
       "hash": -1224263288,
       "version": 47,
-      "ip": 3187713176,
       "isp": "Level 3 Communications",
       "os": null,
       "port": 27015,
@@ -51,7 +50,6 @@
       "tags": [
         "vpn"
       ],
-      "ip": 3124842572,
       "isp": "Servicios De Tecnologia Aplicada Srl",
       "port": 1723,
       "hostnames": [],
@@ -85,7 +83,6 @@
       "product": "P5B-300",
       "hash": 862203420,
       "version": "XW.ar934x.v6.0.3.30600.170329.1817",
-      "ip": 93998536,
       "isp": "Airenetworks",
       "os": null,
       "port": 10001,

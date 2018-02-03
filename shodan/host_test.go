@@ -45,3 +45,23 @@ func TestHostVersion_MarshalJSON(t *testing.T) {
 	_, err := json.Marshal(h)
 	assert.Nil(t, err)
 }
+
+func TestHostIP_Unmarshal(t *testing.T) {
+	testCases := []struct {
+		expected    string
+		jsonPayload []byte
+	}{
+		{"127.231.78.5", []byte(`
+{"ip_str": "127.231.78.5", "ip": 3424324323, "data": [ {"ip_str": "127.231.78.5"} ]}`)},
+		{"2600:1802:12::1", []byte(`
+{"ip_str": "2600:1802:12::1", "ip": "2600:1802:12::1", "data": [ {"ip_str": "2600:1802:12::1"} ]}`)},
+	}
+
+	for _, testCase := range testCases {
+		var h Host
+
+		assert.Nil(t, json.Unmarshal(testCase.jsonPayload, &h))
+		assert.Equal(t, testCase.expected, h.IP.String())
+		assert.Equal(t, testCase.expected, h.Data[0].IP.String())
+	}
+}
