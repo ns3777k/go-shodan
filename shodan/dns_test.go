@@ -42,7 +42,8 @@ func TestClient_GetDNSReverse(t *testing.T) {
 	setUpTestServe()
 	defer tearDownTestServe()
 
-	expectedIPs := []string{"74.125.227.244", "92.63.108.40"}
+	expectedIPs := []net.IP{
+		net.ParseIP("74.125.227.244"), net.ParseIP("92.63.108.40")}
 
 	mux.HandleFunc(reversePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
@@ -62,16 +63,7 @@ func TestClient_GetDNSReverse(t *testing.T) {
 	assert.Len(t, reversed, len(expectedIPs))
 
 	for _, ip := range expectedIPs {
-		_, ok := reversed[ip]
+		_, ok := reversed[ip.String()]
 		assert.True(t, ok)
 	}
-}
-
-func TestClient_GetDNSReverse_invalidIP(t *testing.T) {
-	client := NewClient(nil, testClientToken)
-	_, err := client.GetDNSReverse([]string{"74.125.227", "63.11", "2747393"})
-
-	assert.NotNil(t, err)
-	_, ok := err.(*net.ParseError)
-	assert.True(t, ok)
 }

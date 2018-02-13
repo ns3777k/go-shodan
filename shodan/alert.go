@@ -36,7 +36,7 @@ type alertCreateRequest struct {
 	Filters *AlertFilters `json:"filters"`
 }
 
-// CreateAlert creates a network alert for a defined IP/ netblock which can be used to
+// CreateAlert creates a network alert for a defined IP/netblock which can be used to
 // subscribe to changes/ events that are discovered within that range.
 func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, error) {
 	url := c.buildBaseURL(alertCreatePath, nil)
@@ -44,9 +44,7 @@ func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, err
 	payload := &alertCreateRequest{
 		Name:    name,
 		Expires: expires,
-		Filters: &AlertFilters{
-			IP: ip,
-		},
+		Filters: &AlertFilters{IP: ip},
 	}
 
 	b, err := json.Marshal(payload)

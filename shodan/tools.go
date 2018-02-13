@@ -2,6 +2,7 @@ package shodan
 
 import (
 	"bytes"
+	"net"
 	"strings"
 )
 
@@ -12,13 +13,13 @@ const (
 
 // GetMyIP returns your current IP address as seen from the Internet
 // API key for this method is unnecessary
-func (c *Client) GetMyIP() (string, error) {
+func (c *Client) GetMyIP() (net.IP, error) {
 	url := c.buildBaseURL(ipPath, nil)
 
 	var ip bytes.Buffer
 	err := c.executeRequest("GET", url, &ip, nil)
 
-	return strings.Trim(ip.String(), "\""), err
+	return net.ParseIP(strings.Trim(ip.String(), "\"")), err
 }
 
 // GetHTTPHeaders shows the HTTP headers that your client sends
