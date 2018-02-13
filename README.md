@@ -152,6 +152,11 @@ func main() {
 
 If a method is absent or something doesn't work properly don't hesitate to create an issue.
 
+### V3 roadmap
+- Support context
+- Rewrite streaming functions
+- Transform every ip address from string to `net.IP`
+
 ### Links
 * [Shodan.io](http://shodan.io)
 * [API Documentation](https://developer.shodan.io/api)
