@@ -16,15 +16,6 @@ Download the package:
 go get "gopkg.in/ns3777k/go-shodan.v2"
 ```
 
-2nd version has some breaking changes:
-
-* Dropped support for old golang versions (`1.1` - `1.5`)
-* `GetHttpHeaders` is renamed to `GetHTTPHeaders`
-* Invalid url will now `panic`
-* Stream methods no longer return error
-
-*Streaming API methods will be totally reworked at version 3.*
-
 To use the old version:
 
 ```bash
@@ -32,6 +23,8 @@ go get "gopkg.in/ns3777k/go-shodan.v1"
 ```
 
 That's it. You're ready to roll :-)
+
+`master`-branch is kind of stable but might have some breaking changes. See the changelog for details.
 
 ### Usage
 
