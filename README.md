@@ -53,7 +53,7 @@ func main() {
     if err != nil {
         log.Panic(err)
     } else {
-        log.Println(*dns["google.com"])
+        log.Println(dns["google.com"])
     }
 }
 ```
@@ -155,7 +155,6 @@ If a method is absent or something doesn't work properly don't hesitate to creat
 ### V3 roadmap
 - Support context
 - Rewrite streaming functions
-- Transform every ip address from string to `net.IP`
 
 ### Links
 * [Shodan.io](http://shodan.io)

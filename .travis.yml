@@ -28,7 +28,7 @@ script:
   - golint -set_exit_status ./shodan/...
   - ineffassign ./shodan/
   - misspell -error README.md ./shodan/**/*
-  - gofmt -d -s -e ./shodan/
+  - gofmt -l shodan/ | read && echo "Code differs from gofmt's style" 1>&2 && exit 1 || true
   - go test -race -coverprofile=coverage.txt -covermode=atomic ./shodan/
 
 after_success:

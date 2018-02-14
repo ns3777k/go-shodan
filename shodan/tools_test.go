@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"net"
 )
 
 func TestClient_GetMyIP(t *testing.T) {
@@ -23,7 +24,7 @@ func TestClient_GetMyIP(t *testing.T) {
 	ip, err := client.GetMyIP()
 
 	assert.Nil(t, err)
-	assert.Equal(t, testIP, ip)
+	assert.Equal(t, net.ParseIP(testIP), ip)
 }
 
 func TestClient_GetHTTPHeaders(t *testing.T) {
