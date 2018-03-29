@@ -19,7 +19,7 @@ func TestClient_DeleteAlert(t *testing.T) {
 		fmt.Fprint(w, `{}`)
 	})
 
-	result, err := client.DeleteAlert(id)
+	result, err := client.DeleteAlert(nil, id)
 
 	assert.Nil(t, err)
 	assert.True(t, result)
@@ -37,7 +37,7 @@ func TestClient_GetAlert(t *testing.T) {
 		w.Write(getStub(t, "alert/alert"))
 	})
 
-	alert, err := client.GetAlert(id)
+	alert, err := client.GetAlert(nil, id)
 	alertExpected := &Alert{
 		ID:         "ZZ4TDUUORVE1DIIP",
 		Name:       "Test alert",
@@ -64,7 +64,7 @@ func TestClient_GetAlerts(t *testing.T) {
 		w.Write(getStub(t, "alert/alerts"))
 	})
 
-	alerts, err := client.GetAlerts()
+	alerts, err := client.GetAlerts(nil)
 	alertsExpected := []*Alert{
 		{
 			ID:         "ZZ4TDUUORVE1DIIP",
@@ -105,7 +105,7 @@ func TestClient_CreateAlert(t *testing.T) {
 		w.Write(getStub(t, "alert/create_alert"))
 	})
 
-	alert, err := client.CreateAlert("Test alert API", []string{"198.20.88.0/24"}, 0)
+	alert, err := client.CreateAlert(nil, "Test alert API", []string{"198.20.88.0/24"}, 0)
 	alertExpected := &Alert{
 		ID:         "JZT8NVWEZWCY79OO",
 		Name:       "Test alert API",

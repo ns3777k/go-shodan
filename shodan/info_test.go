@@ -16,7 +16,7 @@ func TestClient_GetAPIInfo(t *testing.T) {
 		w.Write(getStub(t, "info"))
 	})
 
-	info, err := client.GetAPIInfo()
+	info, err := client.GetAPIInfo(nil)
 	infoExpected := &APIInfo{
 		HTTPS:        true,
 		Unlocked:     true,

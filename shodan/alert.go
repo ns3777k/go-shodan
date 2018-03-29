@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"context"
 )
 
 const (
@@ -38,9 +39,8 @@ type alertCreateRequest struct {
 
 // CreateAlert creates a network alert for a defined IP/netblock which can be used to
 // subscribe to changes/ events that are discovered within that range.
-func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, error) {
-	url := c.buildBaseURL(alertCreatePath, nil)
-
+func (c *Client) CreateAlert(ctx context.Context, name string, ip []string, expires int) (*Alert, error) {
+	var alert Alert
 	payload := &alertCreateRequest{
 		Name:    name,
 		Expires: expires,
@@ -52,41 +52,61 @@ func (c *Client) CreateAlert(name string, ip []string, expires int) (*Alert, err
 		return nil, err
 	}
 
-	var alert Alert
-	err = c.executeRequest("POST", url, &alert, bytes.NewReader(b))
+	req, err := c.NewRequest("POST", alertCreatePath, nil, bytes.NewReader(b))
+	if err != nil {
+		return nil, err
+	}
 
-	return &alert, err
+	if err := c.Do(ctx, req, &alert); err != nil {
+		return nil, err
+	}
+
+	return &alert, nil
 }
 
-// GetAlerts returns a listing of all the network alerts
-// that are currently active on the account.
-func (c *Client) GetAlerts() ([]*Alert, error) {
-	url := c.buildBaseURL(alertsInfoListPath, nil)
-
+// GetAlerts returns a listing of all the network alerts that are currently active on the account.
+func (c *Client) GetAlerts(ctx context.Context) ([]*Alert, error) {
 	alerts := make([]*Alert, 0, 0)
-	err := c.executeRequest("GET", url, &alerts, nil)
+
+	req, err := c.NewRequest("GET", alertsInfoListPath, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &alerts); err != nil {
+		return nil, err
+	}
 
 	return alerts, err
 }
 
 // GetAlert returns the information about a specific network alert.
-func (c *Client) GetAlert(id string) (*Alert, error) {
-	path := fmt.Sprintf(alertInfoPath, id)
-	url := c.buildBaseURL(path, nil)
-
+func (c *Client) GetAlert(ctx context.Context, id string) (*Alert, error) {
 	var alert Alert
-	err := c.executeRequest("GET", url, &alert, nil)
+	path := fmt.Sprintf(alertInfoPath, id)
+
+	req, err := c.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &alert); err != nil {
+		return nil, err
+	}
 
 	return &alert, err
 }
 
 // DeleteAlert removes the specified network alert.
-func (c *Client) DeleteAlert(id string) (bool, error) {
+func (c *Client) DeleteAlert(ctx context.Context, id string) (bool, error) {
 	path := fmt.Sprintf(alertDeletePath, id)
-	url := c.buildBaseURL(path, nil)
 
-	err := c.executeRequest("DELETE", url, nil, nil)
+	req, err := c.NewRequest("DELETE", path, nil, nil)
 	if err != nil {
+		return false, err
+	}
+
+	if err := c.Do(ctx, req, nil); err != nil {
 		return false, err
 	}
 

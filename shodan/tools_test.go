@@ -21,7 +21,7 @@ func TestClient_GetMyIP(t *testing.T) {
 		fmt.Fprint(w, strconv.Quote(testIP))
 	})
 
-	ip, err := client.GetMyIP()
+	ip, err := client.GetMyIP(nil)
 
 	assert.Nil(t, err)
 	assert.Equal(t, net.ParseIP(testIP), ip)
@@ -41,7 +41,7 @@ func TestClient_GetHTTPHeaders(t *testing.T) {
 		"Host":            "api.shodan.io",
 		"Accept-Encoding": "gzip",
 	}
-	headers, err := client.GetHTTPHeaders()
+	headers, err := client.GetHTTPHeaders(nil)
 
 	assert.Nil(t, err)
 	assert.Len(t, headers, len(headersExpected))

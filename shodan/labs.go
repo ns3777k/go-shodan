@@ -3,6 +3,7 @@ package shodan
 import (
 	"fmt"
 	"net"
+	"context"
 )
 
 const (
@@ -10,13 +11,19 @@ const (
 )
 
 // CalcHoneyScore calculates a honeypot probability score ranging from
-// 0 (not a honeypot) to 1.0 (is a honeypot)
-func (c *Client) CalcHoneyScore(ip net.IP) (float64, error) {
+// 0 (not a honeypot) to 1.0 (is a honeypot).
+func (c *Client) CalcHoneyScore(ctx context.Context, ip net.IP) (float64, error) {
 	var score float64
 
 	path := fmt.Sprintf(honeyscorePath, ip.String())
-	url := c.buildBaseURL(path, nil)
-	err := c.executeRequest("GET", url, &score, nil)
+	req, err := c.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return 0.0, err
+	}
+
+	if err := c.Do(ctx, req, &score); err != nil {
+		return 0.0, err
+	}
 
 	return score, err
 }

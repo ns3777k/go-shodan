@@ -1,7 +1,6 @@
 package shodan
 
 import (
-	"bufio"
 	"encoding/json"
 	"errors"
 	"io"
@@ -15,6 +14,7 @@ import (
 	"github.com/moul/http2curl"
 	"log"
 	"os"
+	"context"
 )
 
 const (
@@ -73,12 +73,83 @@ func NewEnvClient(client *http.Client) *Client {
 	return NewClient(client, os.Getenv("SHODAN_KEY"))
 }
 
-// SetDebug toggles the debug mode
+// SetDebug toggles the debug mode.
 func (c *Client) SetDebug(debug bool) {
 	c.Debug = debug
 }
 
-func (c *Client) buildURL(base, path string, params interface{}) string {
+// NewRequest prepares new request to exploit shodan api.
+func (c *Client) NewExploitRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
+	u, err := url.Parse(c.ExploitBaseURL + path)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.newRequest(method, u, params, body)
+}
+
+// NewRequest prepares new request to common shodan api.
+func (c *Client) NewRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
+	u, err := url.Parse(c.BaseURL + path)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.newRequest(method, u, params, body)
+}
+
+func (c *Client) newRequest(method string, u *url.URL, params interface{}, body io.Reader) (*http.Request, error) {
+	qs, err := query.Values(params)
+	if err != nil {
+		return nil, err
+	}
+
+	qs.Add("key", c.Token)
+
+	u.RawQuery = qs.Encode()
+
+	req, err := http.NewRequest(method, u.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	if body != nil {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
+
+	return req, nil
+}
+
+func (c *Client) Do(ctx context.Context, req *http.Request, destination interface{}) error {
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	if c.Debug {
+		if command, err := http2curl.GetCurlCommand(req); err == nil {
+			log.Printf("shodan.sendRequest: %s\n", command)
+		}
+	}
+
+	resp, err := c.Client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return getErrorFromResponse(resp)
+	}
+
+	if destination == nil {
+		return nil
+	}
+
+	return c.parseResponse(destination, resp.Body)
+}
+
+func (c *Client) buildURL(base string, path string, params interface{}) string {
 	baseURL, err := url.Parse(base + path)
 	if err != nil {
 		panic(fmt.Sprintf("Error: %s. This must never happen!", err))
@@ -108,15 +179,8 @@ func (c *Client) buildStreamBaseURL(path string, params interface{}) string {
 	return c.buildURL(c.StreamBaseURL, path, params)
 }
 
-func (c *Client) sendRequest(method, path string, body io.Reader) (*http.Response, error) {
-	req, err := http.NewRequest(method, path, body)
-	if err != nil {
-		return nil, err
-	}
-
-	if body != nil {
-		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	}
+func (c *Client) sendRequest(ctx context.Context, req *http.Request) (*http.Response, error) {
+	req = req.WithContext(ctx)
 
 	if c.Debug {
 		if command, err := http2curl.GetCurlCommand(req); err == nil {
@@ -149,8 +213,8 @@ func (c *Client) parseResponse(destination interface{}, body io.Reader) error {
 	return err
 }
 
-func (c *Client) executeRequest(method, path string, destination interface{}, body io.Reader) error {
-	res, err := c.sendRequest(method, path, body)
+func (c *Client) executeRequest(ctx context.Context, req *http.Request, destination interface{}) error {
+	res, err := c.sendRequest(ctx, req)
 	if err != nil {
 		return err
 	}
@@ -165,25 +229,25 @@ func (c *Client) executeRequest(method, path string, destination interface{}, bo
 }
 
 func (c *Client) executeStreamRequest(method, path string, ch chan []byte) error {
-	res, err := c.sendRequest(method, path, nil)
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		reader := bufio.NewReader(res.Body)
-
-		for {
-			chunk, err := reader.ReadBytes('\n')
-			if err != nil {
-				res.Body.Close()
-				close(ch)
-				break
-			}
-
-			ch <- chunk
-		}
-	}()
+	//res, err := c.sendRequest(method, path, nil)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//go func() {
+	//	reader := bufio.NewReader(res.Body)
+	//
+	//	for {
+	//		chunk, err := reader.ReadBytes('\n')
+	//		if err != nil {
+	//			res.Body.Close()
+	//			close(ch)
+	//			break
+	//		}
+	//
+	//		ch <- chunk
+	//	}
+	//}()
 
 	return nil
 }

@@ -20,7 +20,7 @@ func TestClient_CalcHoneyScore(t *testing.T) {
 		fmt.Fprint(w, `0.5`)
 	})
 
-	score, err := client.CalcHoneyScore(ip)
+	score, err := client.CalcHoneyScore(nil, ip)
 	assert.Nil(t, err)
 	assert.Equal(t, 0.5, score)
 }

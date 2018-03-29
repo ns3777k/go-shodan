@@ -16,7 +16,7 @@ func TestClient_GetAccountProfile(t *testing.T) {
 		w.Write(getStub(t, "profile"))
 	})
 
-	account, err := client.GetAccountProfile()
+	account, err := client.GetAccountProfile(nil)
 	accountExpected := &Profile{
 		Member:  true,
 		Name:    "",

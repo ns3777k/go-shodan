@@ -1,5 +1,9 @@
 package shodan
 
+import (
+	"context"
+)
+
 const (
 	infoPath = "/api-info"
 )
@@ -16,11 +20,17 @@ type APIInfo struct {
 }
 
 // GetAPIInfo returns information about the API plan belonging to the given API key.
-func (c *Client) GetAPIInfo() (*APIInfo, error) {
-	url := c.buildBaseURL(infoPath, nil)
-
+func (c *Client) GetAPIInfo(ctx context.Context) (*APIInfo, error) {
 	var apiInfo APIInfo
-	err := c.executeRequest("GET", url, &apiInfo, nil)
 
-	return &apiInfo, err
+	req, err := c.NewRequest("GET", infoPath, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &apiInfo); err != nil {
+		return nil, err
+	}
+
+	return &apiInfo, nil
 }

@@ -17,7 +17,7 @@ func TestClient_GetPorts(t *testing.T) {
 	})
 
 	portsExpected := []int{22, 771, 5353, 110, 8139}
-	ports, err := client.GetPorts()
+	ports, err := client.GetPorts(nil)
 
 	assert.Nil(t, err)
 	assert.Len(t, ports, len(portsExpected))

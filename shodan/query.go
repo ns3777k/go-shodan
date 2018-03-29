@@ -1,5 +1,7 @@
 package shodan
 
+import "context"
+
 const (
 	queryTagsPath   = "/shodan/query/tags"
 	querySearchPath = "/shodan/query/search"
@@ -62,35 +64,53 @@ type QueryOptions struct {
 }
 
 // GetQueryTags obtains a list of popular tags for the saved search queries in Shodan.
-func (c *Client) GetQueryTags(options *QueryTagsOptions) (*QueryTags, error) {
-	url := c.buildBaseURL(queryTagsPath, options)
-
+func (c *Client) GetQueryTags(ctx context.Context, options *QueryTagsOptions) (*QueryTags, error) {
 	var queryTags QueryTags
-	err := c.executeRequest("GET", url, &queryTags, nil)
 
-	return &queryTags, err
+	req, err := c.NewRequest("GET", queryTagsPath, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &queryTags); err != nil {
+		return nil, err
+	}
+
+	return &queryTags, nil
 }
 
 // GetQueries obtains a list of search queries that users have saved in Shodan.
-func (c *Client) GetQueries(options *QueryOptions) (*QuerySearch, error) {
-	url := c.buildBaseURL(queryPath, options)
-
+func (c *Client) GetQueries(ctx context.Context, options *QueryOptions) (*QuerySearch, error) {
 	var querySearch QuerySearch
-	err := c.executeRequest("GET", url, &querySearch, nil)
 
-	return &querySearch, err
+	req, err := c.NewRequest("GET", queryPath, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &querySearch); err != nil {
+		return nil, err
+	}
+
+	return &querySearch, nil
 }
 
 // SearchQueries searches the directory of search queries that users have saved in Shodan.
-func (c *Client) SearchQueries(options *SearchQueryOptions) (*QuerySearch, error) {
+func (c *Client) SearchQueries(ctx context.Context, options *SearchQueryOptions) (*QuerySearch, error) {
 	if options == nil || options.Query == "" {
 		return nil, ErrInvalidQuery
 	}
 
-	url := c.buildBaseURL(querySearchPath, options)
-
 	var querySearch QuerySearch
-	err := c.executeRequest("GET", url, &querySearch, nil)
 
-	return &querySearch, err
+	req, err := c.NewRequest("GET", querySearchPath, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &querySearch); err != nil {
+		return nil, err
+	}
+
+	return &querySearch, nil
 }

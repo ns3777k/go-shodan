@@ -1,9 +1,10 @@
 package shodan
 
 import (
-	"encoding/json"
 	"net"
+	"encoding/json"
 	"strconv"
+	"context"
 )
 
 const (
@@ -13,7 +14,7 @@ const (
 	hostSearchTokensPath = "/shodan/host/search/tokens"
 )
 
-// HostServicesOptions is options for querying services.
+//HostServicesOptions is options for querying services.
 type HostServicesOptions struct {
 	History bool `url:"history,omitempty"`
 	Minify  bool `url:"minify,omitempty"`
@@ -121,30 +122,41 @@ type HostQueryTokens struct {
 	Filters []string `json:"filters"`
 	String  string   `json:"string"`
 	Errors  []string `json:"errors"`
-	// FIXME: should it really be interface{} ?
 	Attributes map[string]interface{} `json:"attributes"`
 }
 
 // GetServicesForHost returns all services that have been found on the given host IP
-func (c *Client) GetServicesForHost(ip string, options *HostServicesOptions) (*Host, error) {
-	url := c.buildBaseURL(hostPath+"/"+ip, options)
-
+func (c *Client) GetServicesForHost(ctx context.Context, ip string, options *HostServicesOptions) (*Host, error) {
 	var host Host
-	err := c.executeRequest("GET", url, &host, nil)
 
-	return &host, err
+	req, err := c.NewRequest("GET", hostPath+"/"+ip, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &host); err != nil {
+		return nil, err
+	}
+
+	return &host, nil
 }
 
 // GetHostsCountForQuery behaves identical to "/shodan/host/search" with the only difference that this method
 // does not return any host results, it only returns the total number of results that matched the query and any facet
 // information that was requested. As a result this method does not consume query credits
-func (c *Client) GetHostsCountForQuery(options *HostQueryOptions) (*HostMatch, error) {
-	url := c.buildBaseURL(hostCountPath, options)
-
+func (c *Client) GetHostsCountForQuery(ctx context.Context, options *HostQueryOptions) (*HostMatch, error) {
 	var found HostMatch
-	err := c.executeRequest("GET", url, &found, nil)
 
-	return &found, err
+	req, err := c.NewRequest("GET", hostCountPath, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &found); err != nil {
+		return nil, err
+	}
+
+	return &found, nil
 }
 
 // GetHostsForQuery searches Shodan using the same query syntax as the website and use facets to get summary
@@ -153,24 +165,37 @@ func (c *Client) GetHostsCountForQuery(options *HostQueryOptions) (*HostMatch, e
 // 1. The search query contains a filter
 // 2. Accessing results past the 1st page using the "page". For every 100 results past the 1st page 1 query credit is
 // deducted
-func (c *Client) GetHostsForQuery(options *HostQueryOptions) (*HostMatch, error) {
-	url := c.buildBaseURL(hostSearchPath, options)
-
+func (c *Client) GetHostsForQuery(ctx context.Context, options *HostQueryOptions) (*HostMatch, error) {
 	var found HostMatch
-	err := c.executeRequest("GET", url, &found, nil)
 
-	return &found, err
+	req, err := c.NewRequest("GET", hostSearchPath, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &found); err != nil {
+		return nil, err
+	}
+
+	return &found, nil
 }
 
 // BreakQueryIntoTokens determines which filters are being used by the query string
 // and what parameters were provided to the filters.
-func (c *Client) BreakQueryIntoTokens(query string) (*HostQueryTokens, error) {
-	url := c.buildBaseURL(hostSearchTokensPath, struct {
-		Query string `url:"query"`
-	}{Query: query})
-
+func (c *Client) BreakQueryIntoTokens(ctx context.Context, query string) (*HostQueryTokens, error) {
 	var tokens HostQueryTokens
-	err := c.executeRequest("GET", url, &tokens, nil)
 
-	return &tokens, err
+	options := struct {
+		Query string `url:"query"`
+	}{Query: query}
+	req, err := c.NewRequest("GET", hostSearchTokensPath, options, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &tokens); err != nil {
+		return nil, err
+	}
+
+	return &tokens, nil
 }

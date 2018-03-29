@@ -34,7 +34,7 @@ func TestClient_Scan(t *testing.T) {
 		w.Write(getStub(t, "scan"))
 	})
 
-	scanStatus, err := client.Scan(expectedIPs)
+	scanStatus, err := client.Scan(nil, expectedIPs)
 	scanStatusExpected := &CrawlScanStatus{
 		ID:          "BOMA59VSGWX8QJR9",
 		Count:       2,
@@ -66,7 +66,7 @@ func TestClient_ScanInternet(t *testing.T) {
 		fmt.Fprint(w, `{"id": "COMAD88STBX8QNN1"}`)
 	})
 
-	scanInternetStatusID, err := client.ScanInternet(22, "ssh")
+	scanInternetStatusID, err := client.ScanInternet(nil, 22, "ssh")
 
 	assert.Nil(t, err)
 	assert.Equal(t, "COMAD88STBX8QNN1", scanInternetStatusID)
@@ -82,7 +82,7 @@ func TestClient_GetScanStatus(t *testing.T) {
 		w.Write(getStub(t, "scan_status"))
 	})
 
-	scanStatus, err := client.GetScanStatus("BOMA59VSGWX8QJR9")
+	scanStatus, err := client.GetScanStatus(nil, "BOMA59VSGWX8QJR9")
 	assert.Nil(t, err)
 
 	scanStatusExpected := &ScanStatus{
