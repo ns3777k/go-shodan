@@ -9,13 +9,12 @@ import (
 	"net/url"
 	"strings"
 
-	"bufio"
-	"bytes"
 	"context"
 	"github.com/google/go-querystring/query"
 	"github.com/moul/http2curl"
 	"log"
 	"os"
+	"sync"
 )
 
 const (
@@ -42,14 +41,14 @@ func getErrorFromResponse(r *http.Response) error {
 
 // Client represents Shodan HTTP client
 type Client struct {
+	m *sync.Mutex
+
 	Token          string
 	BaseURL        string
 	ExploitBaseURL string
 	StreamBaseURL  string
-	StreamChan     chan HostData
 	Debug          bool
-
-	Client *http.Client
+	Client         *http.Client
 }
 
 // NewClient creates new Shodan client
@@ -64,6 +63,7 @@ func NewClient(client *http.Client, token string) *Client {
 		ExploitBaseURL: exploitBaseURL,
 		StreamBaseURL:  streamBaseURL,
 		Client:         client,
+		m:              &sync.Mutex{},
 	}
 }
 
@@ -75,6 +75,9 @@ func NewEnvClient(client *http.Client) *Client {
 
 // SetDebug toggles the debug mode.
 func (c *Client) SetDebug(debug bool) {
+	c.m.Lock()
+	defer c.m.Unlock()
+
 	c.Debug = debug
 }
 
@@ -91,16 +94,6 @@ func (c *Client) NewExploitRequest(method string, path string, params interface{
 // NewRequest prepares new request to common shodan api.
 func (c *Client) NewRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
 	u, err := url.Parse(c.BaseURL + path)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.newRequest(method, u, params, body)
-}
-
-// NewStreamingRequest prepares new request to streaming api.
-func (c *Client) NewStreamingRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
-	u, err := url.Parse(c.StreamBaseURL + path)
 	if err != nil {
 		return nil, err
 	}
@@ -130,8 +123,7 @@ func (c *Client) newRequest(method string, u *url.URL, params interface{}, body 
 	return req, nil
 }
 
-// DoStream executes streaming request.
-func (c *Client) DoStream(ctx context.Context, req *http.Request) (*http.Response, error) {
+func (c *Client) do(ctx context.Context, req *http.Request) (*http.Response, error) {
 	if ctx != nil {
 		req = req.WithContext(ctx)
 	}
@@ -142,61 +134,12 @@ func (c *Client) DoStream(ctx context.Context, req *http.Request) (*http.Respons
 		}
 	}
 
-	resp, err := c.Client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		resp.Body.Close()
-		return nil, getErrorFromResponse(resp)
-	}
-
-	return resp, nil
-}
-
-func (c *Client) handleResponseStream(resp *http.Response, ch chan *HostData) {
-	reader := bufio.NewReader(resp.Body)
-
-	for {
-		banner := new(HostData)
-
-		chunk, err := reader.ReadBytes('\n')
-		if err != nil {
-			resp.Body.Close()
-			close(ch)
-			break
-		}
-
-		chunk = bytes.TrimRight(chunk, "\n\r")
-
-		if len(chunk) == 0 {
-			continue
-		}
-
-		if err := c.parseResponse(banner, bytes.NewBuffer(chunk)); err != nil {
-			resp.Body.Close()
-			close(ch)
-			break
-		}
-
-		ch <- banner
-	}
+	return c.Client.Do(req)
 }
 
 // Do executes common (non-streaming) request.
 func (c *Client) Do(ctx context.Context, req *http.Request, destination interface{}) error {
-	if ctx != nil {
-		req = req.WithContext(ctx)
-	}
-
-	if c.Debug {
-		if command, err := http2curl.GetCurlCommand(req); err == nil {
-			log.Printf("shodan client request: %s\n", command)
-		}
-	}
-
-	resp, err := c.Client.Do(req)
+	resp, err := c.do(ctx, req)
 	if err != nil {
 		return err
 	}
