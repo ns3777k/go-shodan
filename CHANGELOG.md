@@ -1,6 +1,7 @@
 # Changelog
 
 ## [3.0.0] UNRELEASED
+- Drop support for go 1.6
 - Lots of refactoring to support `context.Context` in all methods.
 - Rewritten streaming methods and implemented some more.
 - `GetMyIP` now returns `net.IP` instead of `string`.
