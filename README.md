@@ -135,8 +135,8 @@ func main() {
 
 #### Data Streams
 - [x] /shodan/banners
-- [ ] /shodan/asn/{asn}
-- [ ] /shodan/countries/{countries}
+- [x] /shodan/asn/{asn}
+- [x] /shodan/countries/{countries}
 - [x] /shodan/ports/{ports}
 
 #### Network Alerts
