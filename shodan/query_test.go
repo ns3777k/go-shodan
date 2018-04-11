@@ -29,7 +29,7 @@ func TestClient_GetQueryTags(t *testing.T) {
 			},
 		},
 	}
-	queryTags, err := client.GetQueryTags(new(QueryTagsOptions))
+	queryTags, err := client.GetQueryTags(nil, new(QueryTagsOptions))
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, queryTagsExpected, queryTags)
@@ -65,21 +65,21 @@ func TestClient_SearchQueries(t *testing.T) {
 			},
 		},
 	}
-	searchQuery, err := client.SearchQueries(&SearchQueryOptions{Query: "apache"})
+	searchQuery, err := client.SearchQueries(nil, &SearchQueryOptions{Query: "apache"})
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, searchQueryExpected, searchQuery)
 }
 
 func TestClient_SearchQueries_nilOptions(t *testing.T) {
-	_, err := client.SearchQueries(nil)
+	_, err := client.SearchQueries(nil, nil)
 
 	assert.NotNil(t, err)
 	assert.IsType(t, ErrInvalidQuery, err)
 }
 
 func TestClient_SearchQueries_emptyQueryOption(t *testing.T) {
-	_, err := client.SearchQueries(&SearchQueryOptions{Query: ""})
+	_, err := client.SearchQueries(nil, &SearchQueryOptions{Query: ""})
 
 	assert.NotNil(t, err)
 	assert.IsType(t, ErrInvalidQuery, err)
@@ -115,7 +115,7 @@ func TestClient_GetQueries(t *testing.T) {
 			},
 		},
 	}
-	queries, err := client.GetQueries(new(QueryOptions))
+	queries, err := client.GetQueries(nil, new(QueryOptions))
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, queriesExpected, queries)

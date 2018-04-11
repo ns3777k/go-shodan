@@ -1,7 +1,6 @@
 package shodan
 
 import (
-	"bufio"
 	"encoding/json"
 	"errors"
 	"io"
@@ -10,11 +9,12 @@ import (
 	"net/url"
 	"strings"
 
-	"fmt"
+	"context"
 	"github.com/google/go-querystring/query"
 	"github.com/moul/http2curl"
 	"log"
 	"os"
+	"sync"
 )
 
 const (
@@ -41,14 +41,14 @@ func getErrorFromResponse(r *http.Response) error {
 
 // Client represents Shodan HTTP client
 type Client struct {
+	m *sync.Mutex
+
 	Token          string
 	BaseURL        string
 	ExploitBaseURL string
 	StreamBaseURL  string
-	StreamChan     chan HostData
 	Debug          bool
-
-	Client *http.Client
+	Client         *http.Client
 }
 
 // NewClient creates new Shodan client
@@ -62,8 +62,8 @@ func NewClient(client *http.Client, token string) *Client {
 		BaseURL:        baseURL,
 		ExploitBaseURL: exploitBaseURL,
 		StreamBaseURL:  streamBaseURL,
-		StreamChan:     make(chan HostData),
 		Client:         client,
+		m:              &sync.Mutex{},
 	}
 }
 
@@ -73,43 +73,45 @@ func NewEnvClient(client *http.Client) *Client {
 	return NewClient(client, os.Getenv("SHODAN_KEY"))
 }
 
-// SetDebug toggles the debug mode
+// SetDebug toggles the debug mode.
 func (c *Client) SetDebug(debug bool) {
+	c.m.Lock()
+	defer c.m.Unlock()
+
 	c.Debug = debug
 }
 
-func (c *Client) buildURL(base, path string, params interface{}) string {
-	baseURL, err := url.Parse(base + path)
+// NewExploitRequest prepares new request to exploit shodan api.
+func (c *Client) NewExploitRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
+	u, err := url.Parse(c.ExploitBaseURL + path)
 	if err != nil {
-		panic(fmt.Sprintf("Error: %s. This must never happen!", err))
+		return nil, err
 	}
 
+	return c.newRequest(method, u, params, body)
+}
+
+// NewRequest prepares new request to common shodan api.
+func (c *Client) NewRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
+	u, err := url.Parse(c.BaseURL + path)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.newRequest(method, u, params, body)
+}
+
+func (c *Client) newRequest(method string, u *url.URL, params interface{}, body io.Reader) (*http.Request, error) {
 	qs, err := query.Values(params)
 	if err != nil {
-		panic(fmt.Sprintf("Error: %s. BaseURL: %s. This must never happen!", err, baseURL.String()))
+		return nil, err
 	}
 
 	qs.Add("key", c.Token)
 
-	baseURL.RawQuery = qs.Encode()
+	u.RawQuery = qs.Encode()
 
-	return baseURL.String()
-}
-
-func (c *Client) buildBaseURL(path string, params interface{}) string {
-	return c.buildURL(c.BaseURL, path, params)
-}
-
-func (c *Client) buildExploitBaseURL(path string, params interface{}) string {
-	return c.buildURL(c.ExploitBaseURL, path, params)
-}
-
-func (c *Client) buildStreamBaseURL(path string, params interface{}) string {
-	return c.buildURL(c.StreamBaseURL, path, params)
-}
-
-func (c *Client) sendRequest(method, path string, body io.Reader) (*http.Response, error) {
-	req, err := http.NewRequest(method, path, body)
+	req, err := http.NewRequest(method, u.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -118,22 +120,41 @@ func (c *Client) sendRequest(method, path string, body io.Reader) (*http.Respons
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	}
 
+	return req, nil
+}
+
+func (c *Client) do(ctx context.Context, req *http.Request) (*http.Response, error) {
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
 	if c.Debug {
 		if command, err := http2curl.GetCurlCommand(req); err == nil {
-			log.Printf("shodan.sendRequest: %s\n", command)
+			log.Printf("shodan client request: %s\n", command)
 		}
 	}
 
-	res, err := c.Client.Do(req)
+	return c.Client.Do(req)
+}
+
+// Do executes common (non-streaming) request.
+func (c *Client) Do(ctx context.Context, req *http.Request, destination interface{}) error {
+	resp, err := c.do(ctx, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if res.StatusCode != http.StatusOK {
-		return nil, getErrorFromResponse(res)
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return getErrorFromResponse(resp)
 	}
 
-	return res, nil
+	if destination == nil {
+		return nil
+	}
+
+	return c.parseResponse(destination, resp.Body)
 }
 
 func (c *Client) parseResponse(destination interface{}, body io.Reader) error {
@@ -147,43 +168,4 @@ func (c *Client) parseResponse(destination interface{}, body io.Reader) error {
 	}
 
 	return err
-}
-
-func (c *Client) executeRequest(method, path string, destination interface{}, body io.Reader) error {
-	res, err := c.sendRequest(method, path, body)
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-
-	if destination == nil {
-		return nil
-	}
-
-	return c.parseResponse(destination, res.Body)
-}
-
-func (c *Client) executeStreamRequest(method, path string, ch chan []byte) error {
-	res, err := c.sendRequest(method, path, nil)
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		reader := bufio.NewReader(res.Body)
-
-		for {
-			chunk, err := reader.ReadBytes('\n')
-			if err != nil {
-				res.Body.Close()
-				close(ch)
-				break
-			}
-
-			ch <- chunk
-		}
-	}()
-
-	return nil
 }

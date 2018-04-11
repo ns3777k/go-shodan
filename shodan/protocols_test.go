@@ -20,7 +20,7 @@ func TestClient_GetProtocols(t *testing.T) {
 		"andromouse": "Checks whether the device is running the remote mouse AndroMouse service.",
 		"zookeeper":  "Grab statistical information from a Zookeeper node",
 	}
-	protocols, err := client.GetProtocols()
+	protocols, err := client.GetProtocols(nil)
 
 	assert.Nil(t, err)
 	assert.Len(t, protocols, len(protocolsExpected))

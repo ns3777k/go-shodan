@@ -1,5 +1,9 @@
 package shodan
 
+import (
+	"context"
+)
+
 const (
 	profilePath = "/account/profile"
 )
@@ -13,11 +17,17 @@ type Profile struct {
 }
 
 // GetAccountProfile returns information about the Shodan account linked to the API key
-func (c *Client) GetAccountProfile() (*Profile, error) {
-	url := c.buildBaseURL(profilePath, nil)
-
+func (c *Client) GetAccountProfile(ctx context.Context) (*Profile, error) {
 	var profile Profile
-	err := c.executeRequest("GET", url, &profile, nil)
+
+	req, err := c.NewRequest("GET", profilePath, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &profile); err != nil {
+		return nil, err
+	}
 
 	return &profile, err
 }

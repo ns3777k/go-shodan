@@ -21,7 +21,8 @@ func TestClient_GetServices(t *testing.T) {
 		"8181": "GlassFish Server",
 		"53":   "DNS",
 	}
-	services, err := client.GetServices()
+
+	services, err := client.GetServices(nil)
 
 	assert.Nil(t, err)
 	assert.Len(t, services, len(servicesExpected))

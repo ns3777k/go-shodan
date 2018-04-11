@@ -18,7 +18,7 @@ func TestClient_GetHostsForQuery_DifferentVersionFormats(t *testing.T) {
 	})
 
 	options := &HostQueryOptions{Query: "argentina"}
-	_, err := client.GetHostsForQuery(options)
+	_, err := client.GetHostsForQuery(nil, options)
 
 	assert.Nil(t, err)
 }

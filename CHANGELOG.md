@@ -1,6 +1,10 @@
 # Changelog
 
 ## [3.0.0] UNRELEASED
+- `SetDebug` is goroutine-safe now
+- Drop support for go 1.6
+- Lots of refactoring to support `context.Context` in all methods.
+- Rewritten streaming methods and implemented some more.
 - `GetMyIP` now returns `net.IP` instead of `string`.
 - `CalcHoneyScore` now accepts `net.IP` instead of `string`.
 - `GetDNSResolve` now returns `map[string]*net.IP` instead of `map[string]string`.

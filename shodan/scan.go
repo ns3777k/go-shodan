@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"fmt"
 	neturl "net/url"
 	"strconv"
@@ -45,25 +46,27 @@ type CrawlScanStatus struct {
 // Scan requests Shodan to crawl a network.
 // This method uses API scan credits: 1 IP consumes 1 scan credit. You must have a paid API plan (either one-time
 // payment or subscription) in order to use this method.
-func (c *Client) Scan(ip []string) (*CrawlScanStatus, error) {
-	url := c.buildBaseURL(scanPath, nil)
-
+func (c *Client) Scan(ctx context.Context, ip []string) (*CrawlScanStatus, error) {
 	var crawlScanStatus CrawlScanStatus
+
 	body := neturl.Values{}
 	body.Add("ips", strings.Join(ip, ","))
 
-	err := c.executeRequest("POST", url, &crawlScanStatus, strings.NewReader(body.Encode()))
+	req, err := c.NewRequest("POST", scanPath, nil, strings.NewReader(body.Encode()))
+	if err != nil {
+		return nil, err
+	}
 
-	return &crawlScanStatus, err
+	if err := c.Do(ctx, req, &crawlScanStatus); err != nil {
+		return nil, err
+	}
+
+	return &crawlScanStatus, nil
 }
 
 // ScanInternet requests Shodan to crawl the Internet for a specific port.
-// This method is restricted to security researchers and companies with a Shodan Data license. To apply for access to
-// this method as a researcher, please email jmath@shodan.io with information about your project. Access is restricted
-// to prevent abuse.
-func (c *Client) ScanInternet(port int, protocol string) (string, error) {
-	url := c.buildBaseURL(scanInternetPath, nil)
-
+// This method is restricted to security researchers and companies with a Shodan Data license.
+func (c *Client) ScanInternet(ctx context.Context, port int, protocol string) (string, error) {
 	crawlScanInternetStatus := new(struct {
 		ID string `json:"id"`
 	})
@@ -72,18 +75,31 @@ func (c *Client) ScanInternet(port int, protocol string) (string, error) {
 	body.Add("port", strconv.Itoa(port))
 	body.Add("protocol", protocol)
 
-	err := c.executeRequest("POST", url, crawlScanInternetStatus, strings.NewReader(body.Encode()))
+	req, err := c.NewRequest("POST", scanInternetPath, nil, strings.NewReader(body.Encode()))
+	if err != nil {
+		return "", err
+	}
 
-	return crawlScanInternetStatus.ID, err
+	if err := c.Do(ctx, req, crawlScanInternetStatus); err != nil {
+		return "", err
+	}
+
+	return crawlScanInternetStatus.ID, nil
 }
 
 // GetScanStatus checks the progress of a previously submitted scan request.
-func (c *Client) GetScanStatus(id string) (*ScanStatus, error) {
-	path := fmt.Sprintf(scanStatusPath, id)
-	url := c.buildBaseURL(path, nil)
-
+func (c *Client) GetScanStatus(ctx context.Context, id string) (*ScanStatus, error) {
 	var scanStatus ScanStatus
-	err := c.executeRequest("GET", url, &scanStatus, nil)
+	path := fmt.Sprintf(scanStatusPath, id)
 
-	return &scanStatus, err
+	req, err := c.NewRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &scanStatus); err != nil {
+		return nil, err
+	}
+
+	return &scanStatus, nil
 }

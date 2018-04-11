@@ -21,13 +21,13 @@ func TestClient_GetDNSResolve(t *testing.T) {
 		hostnames := r.URL.Query().Get("hostnames")
 		assert.NotEmpty(t, hostnames)
 
-		splited := strings.Split(hostnames, ",")
-		assert.Len(t, splited, len(expectedHostnames))
+		split := strings.Split(hostnames, ",")
+		assert.Len(t, split, len(expectedHostnames))
 
 		w.Write(getStub(t, "dns_resolve"))
 	})
 
-	resolve, err := client.GetDNSResolve(expectedHostnames)
+	resolve, err := client.GetDNSResolve(nil, expectedHostnames)
 
 	assert.Nil(t, err)
 	assert.Len(t, resolve, len(expectedHostnames))
@@ -51,13 +51,13 @@ func TestClient_GetDNSReverse(t *testing.T) {
 		ips := r.URL.Query().Get("ips")
 		assert.NotEmpty(t, ips)
 
-		splited := strings.Split(ips, ",")
-		assert.Len(t, splited, len(expectedIPs))
+		split := strings.Split(ips, ",")
+		assert.Len(t, split, len(expectedIPs))
 
 		w.Write(getStub(t, "dns_reverse"))
 	})
 
-	reversed, err := client.GetDNSReverse(expectedIPs)
+	reversed, err := client.GetDNSReverse(nil, expectedIPs)
 
 	assert.Nil(t, err)
 	assert.Len(t, reversed, len(expectedIPs))
