@@ -149,10 +149,6 @@ func main() {
 
 If a method is absent or something doesn't work properly don't hesitate to create an issue.
 
-### V3 roadmap
-- Support context
-- Rewrite streaming functions
-
 ### Links
 * [Shodan.io](http://shodan.io)
 * [API Documentation](https://developer.shodan.io/api)

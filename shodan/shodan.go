@@ -78,7 +78,7 @@ func (c *Client) SetDebug(debug bool) {
 	c.Debug = debug
 }
 
-// NewRequest prepares new request to exploit shodan api.
+// NewExploitRequest prepares new request to exploit shodan api.
 func (c *Client) NewExploitRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
 	u, err := url.Parse(c.ExploitBaseURL + path)
 	if err != nil {
@@ -130,6 +130,7 @@ func (c *Client) newRequest(method string, u *url.URL, params interface{}, body 
 	return req, nil
 }
 
+// DoStream executes streaming request.
 func (c *Client) DoStream(ctx context.Context, req *http.Request) (*http.Response, error) {
 	if ctx != nil {
 		req = req.WithContext(ctx)
@@ -183,6 +184,7 @@ func (c *Client) handleResponseStream(resp *http.Response, ch chan *HostData) {
 	}
 }
 
+// Do executes common (non-streaming) request.
 func (c *Client) Do(ctx context.Context, req *http.Request, destination interface{}) error {
 	if ctx != nil {
 		req = req.WithContext(ctx)
