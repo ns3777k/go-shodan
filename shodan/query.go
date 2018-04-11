@@ -1,6 +1,8 @@
 package shodan
 
-import "context"
+import (
+	"context"
+)
 
 const (
 	queryTagsPath   = "/shodan/query/tags"
