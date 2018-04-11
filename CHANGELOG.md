@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] UNRELEASED
+## [3.0.0] STABLE
 - `SetDebug` is goroutine-safe now
 - Drop support for go 1.6
 - Lots of refactoring to support `context.Context` in all methods.
