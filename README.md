@@ -121,6 +121,10 @@ func main() {
 - [x] /dns/resolve
 - [x] /dns/reverse
 
+#### Bulk Data
+- [ ] /shodan/data
+- [ ] /shodan/data/{dataset}
+
 #### Utility Methods
 - [x] /tools/httpheaders
 - [x] /tools/myip
