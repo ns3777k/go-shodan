@@ -12,18 +12,14 @@ To start working with Shodan you have to get your token first. You can do this a
 Download the package:
 
 ```bash
-go get "gopkg.in/ns3777k/go-shodan.v2"
+go get "gopkg.in/ns3777k/go-shodan.v3"
 ```
 
-To use the old version:
+That's it. You're ready to roll :-) v3 is the latest release and thus has some breaking changing (take a look at changelog).
 
-```bash
-go get "gopkg.in/ns3777k/go-shodan.v1"
-```
+Older releases can be found under v1 and v2 tags.
 
-That's it. You're ready to roll :-)
-
-`master`-branch is kind of stable but might have some breaking changes. See the changelog for details.
+`master`-branch is considered to be unstable.
 
 ### Usage
 
@@ -33,20 +29,21 @@ Simple example of resolving hostnames:
 package main
 
 import (
-    "log"
+	"log"
+	"context"
 
-    "gopkg.in/ns3777k/go-shodan.v2/shodan"
+	"gopkg.in/ns3777k/go-shodan.v3/shodan"
 )
 
 func main() {
-    client := shodan.NewEnvClient(nil)
-    dns, err := client.GetDNSResolve([]string{"google.com", "ya.ru"})
+	client := shodan.NewEnvClient(nil)
+	dns, err := client.GetDNSResolve(context.Background(), []string{"google.com", "ya.ru"})
 
-    if err != nil {
-        log.Panic(err)
-    } else {
-        log.Println(dns["google.com"])
-    }
+	if err != nil {
+		log.Panic(err)
+	} else {
+		log.Println(dns["google.com"])
+	}
 }
 ```
 Output for above:
@@ -60,32 +57,38 @@ Streaming example:
 package main
 
 import (
-    "log"
+	"log"
+	"context"
 
-    "gopkg.in/ns3777k/go-shodan.v2/shodan"
+	"gopkg.in/ns3777k/go-shodan.v3/shodan"
 )
 
 func main() {
-    client := shodan.NewEnvClient(nil)
+	client := shodan.NewEnvClient(nil)
+	ch := make(chan *shodan.HostData)
+	err := client.GetBannersByASN(context.Background(), []string{"3303", "32475"}, ch)
+	if err != nil {
+		panic(err)
+	}
 
-    go func() {
-        for {
-            banner, ok := <- client.StreamChan
-            if !ok {
-                log.Fatalln("channel got closed")
-            }
+	for {
+		banner, ok := <-ch
 
-            // Do something here with banner
-        }
-    }()
+		if !ok {
+			log.Println("channel was closed")
+			break
+		}
 
-    go client.GetBanners()
-
-    for {
-        time.Sleep(time.Second * 10)
-    }
+		log.Println(banner.Product)
+	}
 }
 ```
+
+### Tips and tricks
+
+Every method accepts context in the first argument so you can easily cancel any request.
+
+You can also use `SetDebug(true)` to see the curl version of your requests.
 
 ### Implemented REST API
 
