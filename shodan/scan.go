@@ -1,11 +1,11 @@
 package shodan
 
 import (
-	neturl "net/url"
-	"strings"
 	"context"
-	"strconv"
 	"fmt"
+	neturl "net/url"
+	"strconv"
+	"strings"
 )
 
 // ScanStatusState is an alias to string that represents a scan state.

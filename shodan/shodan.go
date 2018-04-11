@@ -9,11 +9,13 @@ import (
 	"net/url"
 	"strings"
 
+	"bufio"
+	"bytes"
+	"context"
 	"github.com/google/go-querystring/query"
 	"github.com/moul/http2curl"
 	"log"
 	"os"
-	"context"
 )
 
 const (
@@ -126,6 +128,59 @@ func (c *Client) newRequest(method string, u *url.URL, params interface{}, body 
 	}
 
 	return req, nil
+}
+
+func (c *Client) DoStream(ctx context.Context, req *http.Request) (*http.Response, error) {
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	if c.Debug {
+		if command, err := http2curl.GetCurlCommand(req); err == nil {
+			log.Printf("shodan client request: %s\n", command)
+		}
+	}
+
+	resp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		resp.Body.Close()
+		return nil, getErrorFromResponse(resp)
+	}
+
+	return resp, nil
+}
+
+func (c *Client) handleResponseStream(resp *http.Response, ch chan *HostData) {
+	reader := bufio.NewReader(resp.Body)
+
+	for {
+		banner := new(HostData)
+
+		chunk, err := reader.ReadBytes('\n')
+		if err != nil {
+			resp.Body.Close()
+			close(ch)
+			break
+		}
+
+		chunk = bytes.TrimRight(chunk, "\n\r")
+
+		if len(chunk) == 0 {
+			continue
+		}
+
+		if err := c.parseResponse(banner, bytes.NewBuffer(chunk)); err != nil {
+			resp.Body.Close()
+			close(ch)
+			break
+		}
+
+		ch <- banner
+	}
 }
 
 func (c *Client) Do(ctx context.Context, req *http.Request, destination interface{}) error {

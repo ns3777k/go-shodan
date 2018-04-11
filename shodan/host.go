@@ -1,10 +1,10 @@
 package shodan
 
 import (
-	"net"
-	"encoding/json"
-	"strconv"
 	"context"
+	"encoding/json"
+	"net"
+	"strconv"
 )
 
 const (
@@ -119,9 +119,9 @@ type HostMatch struct {
 // HostQueryTokens is filters are being used by the query string and what
 // parameters were provided to the filters.
 type HostQueryTokens struct {
-	Filters []string `json:"filters"`
-	String  string   `json:"string"`
-	Errors  []string `json:"errors"`
+	Filters    []string               `json:"filters"`
+	String     string                 `json:"string"`
+	Errors     []string               `json:"errors"`
 	Attributes map[string]interface{} `json:"attributes"`
 }
 

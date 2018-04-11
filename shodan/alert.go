@@ -2,9 +2,9 @@ package shodan
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
-	"context"
 )
 
 const (

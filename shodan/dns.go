@@ -1,9 +1,9 @@
 package shodan
 
 import (
+	"context"
 	"net"
 	"strings"
-	"context"
 )
 
 const (
