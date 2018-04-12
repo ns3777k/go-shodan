@@ -1,6 +1,7 @@
 # Changelog
 
-## [3.0.0] STABLE
+## [3.0.1] STABLE
+- Make use of dep instead of glide
 - `SetDebug` is goroutine-safe now
 - Drop support for go 1.6
 - Lots of refactoring to support `context.Context` in all methods.
