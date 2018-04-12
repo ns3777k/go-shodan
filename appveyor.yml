@@ -5,7 +5,8 @@ clone_depth: 1
 
 environment:
   GOPATH: c:\gopath
-  GOVERSION: 1.9
+  GOVERSION: 1.10
+  GOBIN: c:\gopath\bin
 
 build: false
 deploy: false
@@ -14,8 +15,8 @@ install:
   - set PATH=%GOPATH%\bin;C:\gopath\bin;%PATH%
   - go version
   - go env
-  - go get -v github.com/Masterminds/glide
-  - glide install
+  - curl -L -o dep.exe https://github.com/golang/dep/releases/download/v0.4.1/dep-windows-amd64.exe
+  - dep.exe ensure
 
 test_script:
   - go test -v ./shodan
