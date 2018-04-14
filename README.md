@@ -124,8 +124,8 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /dns/reverse
 
 #### Bulk Data
-- [ ] /shodan/data
-- [ ] /shodan/data/{dataset}
+- [x] /shodan/data
+- [x] /shodan/data/{dataset}
 
 #### Utility Methods
 - [x] /tools/httpheaders
