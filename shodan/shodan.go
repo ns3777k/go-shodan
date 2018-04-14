@@ -1,18 +1,14 @@
 package shodan
 
 import (
-	"encoding/json"
-	"errors"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"context"
+	"encoding/json"
 	"github.com/google/go-querystring/query"
 	"github.com/moul/http2curl"
+	"io"
 	"log"
+	"net/http"
+	"net/url"
 	"os"
 	"sync"
 )
@@ -22,22 +18,6 @@ const (
 	exploitBaseURL = "https://exploits.shodan.io/api"
 	streamBaseURL  = "https://stream.shodan.io"
 )
-
-func getErrorFromResponse(r *http.Response) error {
-	errorResponse := new(struct {
-		Error string `json:"error"`
-	})
-	message, err := ioutil.ReadAll(r.Body)
-	if err == nil {
-		if err := json.Unmarshal(message, errorResponse); err == nil {
-			return errors.New(errorResponse.Error)
-		}
-
-		return errors.New(strings.TrimSpace(string(message)))
-	}
-
-	return ErrBodyRead
-}
 
 // Client represents Shodan HTTP client
 type Client struct {

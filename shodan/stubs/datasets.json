@@ -1,0 +1,7 @@
+[
+  {
+    "name": "raw-daily",
+    "scope": "daily",
+    "description": "Data files containing all the information collected during a day"
+  }
+]
