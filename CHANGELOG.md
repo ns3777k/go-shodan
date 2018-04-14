@@ -1,6 +1,7 @@
 # Changelog
 
-## [3.0.1] STABLE
+## [3.0.2] STABLE
+- Implement data bulk api
 - Make use of dep instead of glide
 - `SetDebug` is goroutine-safe now
 - Drop support for go 1.6
