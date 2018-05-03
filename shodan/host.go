@@ -2,9 +2,8 @@ package shodan
 
 import (
 	"context"
-	"encoding/json"
+	"math/big"
 	"net"
-	"strconv"
 )
 
 const (
@@ -34,38 +33,83 @@ type HostLocation struct {
 	DMA          int     `json:"dma_code"`
 }
 
-// HostVersion is string with custom unmarshaling.
-type HostVersion string
-
-// UnmarshalJSON handles either a string or a number
-// and casts it to string.
-func (v *HostVersion) UnmarshalJSON(b []byte) error {
-	var s string
-	if err := json.Unmarshal(b, &s); err == nil {
-		*v = HostVersion(s)
-		return nil
-	}
-
-	var n int
-	if err := json.Unmarshal(b, &n); err != nil {
-		return err
-	}
-
-	*v = HostVersion(strconv.Itoa(n))
-
-	return nil
+// HostDHParams is the Diffie-Hellman parameters if available.
+type HostDHParams struct {
+	Prime       string     `json:"prime"`
+	PublicKey   string     `json:"public_key"`
+	Bits        int        `json:"bits"`
+	Generator   *IntString `json:"generator"`
+	Fingerprint string     `json:"fingerprint"`
 }
 
-func (v *HostVersion) String() string {
-	return string(*v)
+// HostTLSExtEntry contains id and name.
+type HostTLSExtEntry struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+// HostCipher is a cipher description.
+type HostCipher struct {
+	Version string `json:"version"`
+	Bits    int    `json:"bits"`
+	Name    string `json:"name"`
+}
+
+// HostCertificatePublicKey holds type and bits length of the key.
+type HostCertificatePublicKey struct {
+	Type string `json:"type"`
+	Bits int    `json:"bits"`
+}
+
+// HostCertificateAttributes is an ordinary certificate attributes description.
+type HostCertificateAttributes struct {
+	CountryName         string `json:"C,omitempty"`
+	CommonName          string `json:"CN,omitempty"`
+	Locality            string `json:"L,omitempty"`
+	Organization        string `json:"O,omitempty"`
+	StateOrProvinceName string `json:"ST,omitempty"`
+	OrganizationalUnit  string `json:"OU,omitempty"`
+}
+
+// HostCertificateExtension represent single cert extension.
+type HostCertificateExtension struct {
+	Data       string `json:"data"`
+	Name       string `json:"name"`
+	IsCritical bool   `json:"critical,omitempty"`
+}
+
+// HostCertificate contains common certificate description.
+type HostCertificate struct {
+	SignatureAlgorithm string                      `json:"sig_alg"`
+	IsExpired          bool                        `json:"expired"`
+	Version            int                         `json:"version"`
+	Serial             *big.Int                    `json:"serial"`
+	Issued             string                      `json:"issued"`
+	Expires            string                      `json:"expires"`
+	Fingerprint        map[string]string           `json:"fingerprint"`
+	Issuer             *HostCertificateAttributes  `json:"issuer"`
+	Subject            *HostCertificateAttributes  `json:"subject"`
+	PublicKey          *HostCertificatePublicKey   `json:"pubkey"`
+	Extensions         []*HostCertificateExtension `json:"extensions"`
+}
+
+// HostSSL holds ssl host information.
+type HostSSL struct {
+	Versions    []string           `json:"versions"`
+	Chain       []string           `json:"chain"`
+	DHParams    *HostDHParams      `json:"dhparams"`
+	TLSExt      []*HostTLSExtEntry `json:"tlsext"`
+	Cipher      *HostCipher        `json:"cipher"`
+	Certificate *HostCertificate   `json:"cert"`
 }
 
 // HostData is all services that have been found on the given host IP.
 type HostData struct {
 	Product      string                 `json:"product"`
 	Hostnames    []string               `json:"hostnames"`
-	Version      HostVersion            `json:"version"`
+	Version      IntString              `json:"version"`
 	Title        string                 `json:"title"`
+	SSL          *HostSSL               `json:"ssl"`
 	IP           net.IP                 `json:"ip_str"`
 	OS           string                 `json:"os"`
 	Organization string                 `json:"org"`

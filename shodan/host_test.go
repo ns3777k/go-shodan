@@ -23,11 +23,11 @@ func TestClient_GetHostsForQuery_DifferentVersionFormats(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestHostVersion_UnmarshalJSON(t *testing.T) {
+func TestIntString_UnmarshalJSON(t *testing.T) {
 	payload := []byte(`{"vstr": "1.0", "vnum": 47}`)
 	h := struct {
-		VersionStr HostVersion `json:"vstr"`
-		VersionNum HostVersion `json:"vnum"`
+		VersionStr IntString `json:"vstr"`
+		VersionNum IntString `json:"vnum"`
 	}{}
 
 	assert.Nil(t, json.Unmarshal(payload, &h))
@@ -35,9 +35,9 @@ func TestHostVersion_UnmarshalJSON(t *testing.T) {
 	assert.Equal(t, "47", h.VersionNum.String())
 }
 
-func TestHostVersion_MarshalJSON(t *testing.T) {
+func TestIntString_MarshalJSON(t *testing.T) {
 	h := struct {
-		VersionStr HostVersion `json:"v"`
+		VersionStr IntString `json:"v"`
 	}{
 		VersionStr: "25",
 	}
