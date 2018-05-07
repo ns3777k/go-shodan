@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.1.0] Unreleased
+## [3.1.0]
 - Add ssl-related data to `HostData`.
 
 ## [3.0.2]
