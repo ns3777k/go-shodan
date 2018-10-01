@@ -127,6 +127,10 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /shodan/data
 - [x] /shodan/data/{dataset}
 
+#### Manage Organization
+- [ ] /org
+- [ ] /org/member/{user}
+
 #### Utility Methods
 - [x] /tools/httpheaders
 - [x] /tools/myip
