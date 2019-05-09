@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,14 +14,14 @@ func TestClient_GetProtocols(t *testing.T) {
 
 	mux.HandleFunc(protocolsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "protocols"))
+		w.Write(getStub(t, "protocols")) //nolint:errcheck
 	})
 
 	protocolsExpected := map[string]string{
 		"andromouse": "Checks whether the device is running the remote mouse AndroMouse service.",
 		"zookeeper":  "Grab statistical information from a Zookeeper node",
 	}
-	protocols, err := client.GetProtocols(nil)
+	protocols, err := client.GetProtocols(context.TODO())
 
 	assert.Nil(t, err)
 	assert.Len(t, protocols, len(protocolsExpected))

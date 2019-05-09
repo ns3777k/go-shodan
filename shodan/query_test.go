@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,7 +14,7 @@ func TestClient_GetQueryTags(t *testing.T) {
 
 	mux.HandleFunc(queryTagsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "query_tags"))
+		w.Write(getStub(t, "query_tags")) //nolint:errcheck
 	})
 
 	queryTagsExpected := &QueryTags{
@@ -29,7 +30,7 @@ func TestClient_GetQueryTags(t *testing.T) {
 			},
 		},
 	}
-	queryTags, err := client.GetQueryTags(nil, new(QueryTagsOptions))
+	queryTags, err := client.GetQueryTags(context.TODO(), new(QueryTagsOptions))
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, queryTagsExpected, queryTags)
@@ -41,7 +42,7 @@ func TestClient_SearchQueries(t *testing.T) {
 
 	mux.HandleFunc(querySearchPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "query_search_results"))
+		w.Write(getStub(t, "query_search_results")) //nolint:errcheck
 	})
 
 	searchQueryExpected := &QuerySearch{
@@ -65,21 +66,21 @@ func TestClient_SearchQueries(t *testing.T) {
 			},
 		},
 	}
-	searchQuery, err := client.SearchQueries(nil, &SearchQueryOptions{Query: "apache"})
+	searchQuery, err := client.SearchQueries(context.TODO(), &SearchQueryOptions{Query: "apache"})
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, searchQueryExpected, searchQuery)
 }
 
 func TestClient_SearchQueries_nilOptions(t *testing.T) {
-	_, err := client.SearchQueries(nil, nil)
+	_, err := client.SearchQueries(context.TODO(), nil)
 
 	assert.NotNil(t, err)
 	assert.IsType(t, ErrInvalidQuery, err)
 }
 
 func TestClient_SearchQueries_emptyQueryOption(t *testing.T) {
-	_, err := client.SearchQueries(nil, &SearchQueryOptions{Query: ""})
+	_, err := client.SearchQueries(context.TODO(), &SearchQueryOptions{Query: ""})
 
 	assert.NotNil(t, err)
 	assert.IsType(t, ErrInvalidQuery, err)
@@ -91,7 +92,7 @@ func TestClient_GetQueries(t *testing.T) {
 
 	mux.HandleFunc(queryPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "query_search_results"))
+		w.Write(getStub(t, "query_search_results")) //nolint:errcheck
 	})
 
 	queriesExpected := &QuerySearch{
@@ -115,7 +116,7 @@ func TestClient_GetQueries(t *testing.T) {
 			},
 		},
 	}
-	queries, err := client.GetQueries(nil, new(QueryOptions))
+	queries, err := client.GetQueries(context.TODO(), new(QueryOptions))
 
 	assert.Nil(t, err)
 	assert.EqualValues(t, queriesExpected, queries)

@@ -3,14 +3,15 @@ package shodan
 import (
 	"context"
 	"encoding/json"
-	"github.com/google/go-querystring/query"
-	"github.com/moul/http2curl"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"sync"
+
+	"github.com/google/go-querystring/query"
+	"github.com/moul/http2curl"
 )
 
 const (
@@ -62,7 +63,12 @@ func (c *Client) SetDebug(debug bool) {
 }
 
 // NewExploitRequest prepares new request to exploit shodan api.
-func (c *Client) NewExploitRequest(method string, path string, params interface{}, body io.Reader) (*http.Request, error) {
+func (c *Client) NewExploitRequest(
+	method string,
+	path string,
+	params interface{},
+	body io.Reader,
+) (*http.Request, error) {
 	u, err := url.Parse(c.ExploitBaseURL + path)
 	if err != nil {
 		return nil, err

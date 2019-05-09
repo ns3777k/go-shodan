@@ -10,10 +10,10 @@ const (
 
 // APIInfo holds API information.
 type APIInfo struct {
+	Plan         string `json:"plan"`
 	QueryCredits int    `json:"query_credits"`
 	ScanCredits  int    `json:"scan_credits"`
 	Telnet       bool   `json:"telnet"`
-	Plan         string `json:"plan"`
 	HTTPS        bool   `json:"https"`
 	Unlocked     bool   `json:"unlocked"`
 	UnlockedLeft int    `json:"unlocked_left"`

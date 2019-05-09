@@ -1,10 +1,12 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
 	"encoding/json"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,11 +16,11 @@ func TestClient_GetHostsForQuery_DifferentVersionFormats(t *testing.T) {
 
 	mux.HandleFunc(hostSearchPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "host/version"))
+		w.Write(getStub(t, "host/version")) //nolint:errcheck
 	})
 
 	options := &HostQueryOptions{Query: "argentina"}
-	_, err := client.GetHostsForQuery(nil, options)
+	_, err := client.GetHostsForQuery(context.TODO(), options)
 
 	assert.Nil(t, err)
 }

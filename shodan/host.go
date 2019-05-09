@@ -10,7 +10,7 @@ const (
 	hostPath             = "/shodan/host"
 	hostCountPath        = "/shodan/host/count"
 	hostSearchPath       = "/shodan/host/search"
-	hostSearchTokensPath = "/shodan/host/search/tokens"
+	hostSearchTokensPath = "/shodan/host/search/tokens" //nolint:gosec
 )
 
 //HostServicesOptions is options for querying services.

@@ -1,10 +1,12 @@
 package shodan
 
 import (
+	"context"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_DeleteAlert(t *testing.T) {
@@ -19,7 +21,7 @@ func TestClient_DeleteAlert(t *testing.T) {
 		fmt.Fprint(w, `{}`)
 	})
 
-	result, err := client.DeleteAlert(nil, id)
+	result, err := client.DeleteAlert(context.TODO(), id)
 
 	assert.Nil(t, err)
 	assert.True(t, result)
@@ -34,10 +36,10 @@ func TestClient_GetAlert(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "alert/alert"))
+		w.Write(getStub(t, "alert/alert")) //nolint:errcheck
 	})
 
-	alert, err := client.GetAlert(nil, id)
+	alert, err := client.GetAlert(context.TODO(), id)
 	alertExpected := &Alert{
 		ID:         "ZZ4TDUUORVE1DIIP",
 		Name:       "Test alert",
@@ -61,10 +63,10 @@ func TestClient_GetAlerts(t *testing.T) {
 
 	mux.HandleFunc(alertsInfoListPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "alert/alerts"))
+		w.Write(getStub(t, "alert/alerts")) //nolint:errcheck
 	})
 
-	alerts, err := client.GetAlerts(nil)
+	alerts, err := client.GetAlerts(context.TODO())
 	alertsExpected := []*Alert{
 		{
 			ID:         "ZZ4TDUUORVE1DIIP",
@@ -102,10 +104,10 @@ func TestClient_CreateAlert(t *testing.T) {
 
 	mux.HandleFunc(alertCreatePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "POST", r.Method)
-		w.Write(getStub(t, "alert/create_alert"))
+		w.Write(getStub(t, "alert/create_alert")) //nolint:errcheck
 	})
 
-	alert, err := client.CreateAlert(nil, "Test alert API", []string{"198.20.88.0/24"}, 0)
+	alert, err := client.CreateAlert(context.TODO(), "Test alert API", []string{"198.20.88.0/24"}, 0)
 	alertExpected := &Alert{
 		ID:         "JZT8NVWEZWCY79OO",
 		Name:       "Test alert API",

@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/http"
@@ -20,7 +21,7 @@ func TestClient_CalcHoneyScore(t *testing.T) {
 		fmt.Fprint(w, `0.5`)
 	})
 
-	score, err := client.CalcHoneyScore(nil, ip)
+	score, err := client.CalcHoneyScore(context.TODO(), ip)
 	assert.Nil(t, err)
 	assert.Equal(t, 0.5, score)
 }

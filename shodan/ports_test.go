@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,11 +14,11 @@ func TestClient_GetPorts(t *testing.T) {
 
 	mux.HandleFunc(portsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "ports"))
+		w.Write(getStub(t, "ports")) //nolint:errcheck
 	})
 
 	portsExpected := []int{22, 771, 5353, 110, 8139}
-	ports, err := client.GetPorts(nil)
+	ports, err := client.GetPorts(context.TODO())
 
 	assert.Nil(t, err)
 	assert.Len(t, ports, len(portsExpected))

@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,10 +14,10 @@ func TestClient_GetAccountProfile(t *testing.T) {
 
 	mux.HandleFunc(profilePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "profile"))
+		w.Write(getStub(t, "profile")) //nolint:errcheck
 	})
 
-	account, err := client.GetAccountProfile(nil)
+	account, err := client.GetAccountProfile(context.TODO())
 	accountExpected := &Profile{
 		Member:  true,
 		Name:    "",
