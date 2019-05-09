@@ -66,7 +66,7 @@ func (c *Client) CreateAlert(ctx context.Context, name string, ip []string, expi
 
 // GetAlerts returns a listing of all the network alerts that are currently active on the account.
 func (c *Client) GetAlerts(ctx context.Context) ([]*Alert, error) {
-	alerts := make([]*Alert, 0, 0)
+	alerts := make([]*Alert, 0)
 
 	req, err := c.NewRequest("GET", alertsInfoListPath, nil, nil)
 	if err != nil {

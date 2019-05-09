@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/http"
@@ -20,7 +21,11 @@ func TestClient_Scan(t *testing.T) {
 	mux.HandleFunc(scanPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "POST", r.Method)
 
-		r.ParseForm()
+		if err := r.ParseForm(); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		ips := r.FormValue("ips")
 		assert.NotEmpty(t, ips)
 
@@ -31,10 +36,10 @@ func TestClient_Scan(t *testing.T) {
 			assert.NotNil(t, net.ParseIP(ip))
 		}
 
-		w.Write(getStub(t, "scan"))
+		w.Write(getStub(t, "scan")) //nolint:errcheck
 	})
 
-	scanStatus, err := client.Scan(nil, expectedIPs)
+	scanStatus, err := client.Scan(context.TODO(), expectedIPs)
 	scanStatusExpected := &CrawlScanStatus{
 		ID:          "BOMA59VSGWX8QJR9",
 		Count:       2,
@@ -53,7 +58,11 @@ func TestClient_ScanInternet(t *testing.T) {
 	mux.HandleFunc(scanInternetPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "POST", r.Method)
 
-		r.ParseForm()
+		if err := r.ParseForm(); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		port := r.FormValue("port")
 		protocol := r.FormValue("protocol")
 
@@ -66,7 +75,7 @@ func TestClient_ScanInternet(t *testing.T) {
 		fmt.Fprint(w, `{"id": "COMAD88STBX8QNN1"}`)
 	})
 
-	scanInternetStatusID, err := client.ScanInternet(nil, 22, "ssh")
+	scanInternetStatusID, err := client.ScanInternet(context.TODO(), 22, "ssh")
 
 	assert.Nil(t, err)
 	assert.Equal(t, "COMAD88STBX8QNN1", scanInternetStatusID)
@@ -79,10 +88,10 @@ func TestClient_GetScanStatus(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "scan_status"))
+		w.Write(getStub(t, "scan_status")) //nolint:errcheck
 	})
 
-	scanStatus, err := client.GetScanStatus(nil, "BOMA59VSGWX8QJR9")
+	scanStatus, err := client.GetScanStatus(context.TODO(), "BOMA59VSGWX8QJR9")
 	assert.Nil(t, err)
 
 	scanStatusExpected := &ScanStatus{

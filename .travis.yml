@@ -13,17 +13,12 @@ go:
   - "1.12"
 
 install:
+  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.16.0
   - go get -u github.com/modocache/gover
-  - go get -u golang.org/x/lint/golint
-  - go get -u github.com/gordonklaus/ineffassign
-  - go get -u github.com/client9/misspell/cmd/misspell
   - go get
 
 script:
-  - golint -set_exit_status ./shodan/...
-  - ineffassign ./shodan/
-  - misspell -error README.md ./shodan/**/*
-  - gofmt -l shodan/ | read && echo "Code differs from gofmt's style" 1>&2 && exit 1 || true
+  - golangci-lint run shodan
   - go test -race -coverprofile=coverage.txt -covermode=atomic ./shodan/
 
 after_success:

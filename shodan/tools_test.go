@@ -1,13 +1,15 @@
 package shodan
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strconv"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"net"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_GetMyIP(t *testing.T) {
@@ -21,7 +23,7 @@ func TestClient_GetMyIP(t *testing.T) {
 		fmt.Fprint(w, strconv.Quote(testIP))
 	})
 
-	ip, err := client.GetMyIP(nil)
+	ip, err := client.GetMyIP(context.TODO())
 
 	assert.Nil(t, err)
 	assert.Equal(t, net.ParseIP(testIP), ip)
@@ -33,7 +35,7 @@ func TestClient_GetHTTPHeaders(t *testing.T) {
 
 	mux.HandleFunc(headersPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "headers"))
+		w.Write(getStub(t, "headers")) //nolint:errcheck
 	})
 
 	headersExpected := map[string]string{
@@ -41,7 +43,7 @@ func TestClient_GetHTTPHeaders(t *testing.T) {
 		"Host":            "api.shodan.io",
 		"Accept-Encoding": "gzip",
 	}
-	headers, err := client.GetHTTPHeaders(nil)
+	headers, err := client.GetHTTPHeaders(context.TODO())
 
 	assert.Nil(t, err)
 	assert.Len(t, headers, len(headersExpected))

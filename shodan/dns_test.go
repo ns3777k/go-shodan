@@ -1,12 +1,14 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"net"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_GetDNSResolve(t *testing.T) {
@@ -24,10 +26,10 @@ func TestClient_GetDNSResolve(t *testing.T) {
 		split := strings.Split(hostnames, ",")
 		assert.Len(t, split, len(expectedHostnames))
 
-		w.Write(getStub(t, "dns_resolve"))
+		w.Write(getStub(t, "dns_resolve")) //nolint:errcheck
 	})
 
-	resolve, err := client.GetDNSResolve(nil, expectedHostnames)
+	resolve, err := client.GetDNSResolve(context.TODO(), expectedHostnames)
 
 	assert.Nil(t, err)
 	assert.Len(t, resolve, len(expectedHostnames))
@@ -54,10 +56,10 @@ func TestClient_GetDNSReverse(t *testing.T) {
 		split := strings.Split(ips, ",")
 		assert.Len(t, split, len(expectedIPs))
 
-		w.Write(getStub(t, "dns_reverse"))
+		w.Write(getStub(t, "dns_reverse")) //nolint:errcheck
 	})
 
-	reversed, err := client.GetDNSReverse(nil, expectedIPs)
+	reversed, err := client.GetDNSReverse(context.TODO(), expectedIPs)
 
 	assert.Nil(t, err)
 	assert.Len(t, reversed, len(expectedIPs))

@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,7 +14,7 @@ func TestClient_GetServices(t *testing.T) {
 
 	mux.HandleFunc(servicesPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "services"))
+		w.Write(getStub(t, "services")) //nolint:errcheck
 	})
 
 	servicesExpected := map[string]string{
@@ -22,7 +23,7 @@ func TestClient_GetServices(t *testing.T) {
 		"53":   "DNS",
 	}
 
-	services, err := client.GetServices(nil)
+	services, err := client.GetServices(context.TODO())
 
 	assert.Nil(t, err)
 	assert.Len(t, services, len(servicesExpected))

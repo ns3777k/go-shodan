@@ -1,6 +1,7 @@
 package shodan
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -13,10 +14,10 @@ func TestClient_GetAPIInfo(t *testing.T) {
 
 	mux.HandleFunc(infoPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "info"))
+		w.Write(getStub(t, "info")) //nolint:errcheck
 	})
 
-	info, err := client.GetAPIInfo(nil)
+	info, err := client.GetAPIInfo(context.TODO())
 	infoExpected := &APIInfo{
 		HTTPS:        true,
 		Unlocked:     true,
