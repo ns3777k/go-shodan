@@ -1,0 +1,17 @@
+{
+  "id": "OIj8DS0lks9",
+  "name": "ACME",
+  "created": "2018-05-20T01:35:20.604000",
+  "admins": [
+    {
+      "username": "acme-admin",
+      "email": "admin@acme.com"
+    }
+  ],
+  "members": [],
+  "upgrade_type": "dev",
+  "domains": [
+    "acme.com"
+  ],
+  "logo": null
+}
