@@ -29,6 +29,8 @@ type Alert struct {
 	Expired    bool          `json:"expired"`
 	Size       int           `json:"size"`
 	Filters    *AlertFilters `json:"filters"`
+	// not documented for now :-(
+	Triggers map[string]interface{} `json:"triggers"`
 }
 
 type alertCreateRequest struct {
