@@ -5,6 +5,7 @@
 - Remove Godep in favor of go modules
 - Add bunch of linters (golangci lint)
 - Implement alert triggers API
+- Implement orgs API
 
 ## [3.1.0]
 - Add ssl-related data to `HostData`.

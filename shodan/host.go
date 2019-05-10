@@ -13,7 +13,7 @@ const (
 	hostSearchTokensPath = "/shodan/host/search/tokens" //nolint:gosec
 )
 
-//HostServicesOptions is options for querying services.
+// HostServicesOptions is options for querying services.
 type HostServicesOptions struct {
 	History bool `url:"history,omitempty"`
 	Minify  bool `url:"minify,omitempty"`
