@@ -6,6 +6,7 @@
 - Add bunch of linters (golangci lint)
 - Implement alert triggers API
 - Implement orgs API
+- Refactor tests to remove global variables
 
 ## [3.1.0]
 - Add ssl-related data to `HostData`.
