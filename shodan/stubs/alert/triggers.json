@@ -1,0 +1,12 @@
+[
+  {
+    "name": "any",
+    "rule": "*",
+    "description": "Match any service that is discovered"
+  },
+  {
+    "name": "industrial_control_system",
+    "rule": "tag:ics",
+    "description": "Services associated with industrial control systems"
+  }
+]

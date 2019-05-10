@@ -38,7 +38,7 @@ type alertCreateRequest struct {
 }
 
 // CreateAlert creates a network alert for a defined IP/netblock which can be used to
-// subscribe to changes/ events that are discovered within that range.
+// subscribe to changes/events that are discovered within that range.
 func (c *Client) CreateAlert(ctx context.Context, name string, ip []string, expires int) (*Alert, error) {
 	var alert Alert
 	payload := &alertCreateRequest{

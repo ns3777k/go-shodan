@@ -110,9 +110,9 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /shodan/alert/{id}/info
 - [x] /shodan/alert/{id}
 - [x] /shodan/alert/info
-- [ ] /shodan/alert/triggers
-- [ ] /shodan/alert/{id}/trigger/{trigger}
-- [ ] /shodan/alert/{id}/trigger/{trigger}/ignore/{service}
+- [x] /shodan/alert/triggers
+- [x] /shodan/alert/{id}/trigger/{trigger}
+- [x] /shodan/alert/{id}/trigger/{trigger}/ignore/{service}
 
 #### Directory Methods
 - [x] /shodan/query
