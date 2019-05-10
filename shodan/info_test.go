@@ -9,7 +9,7 @@ import (
 )
 
 func TestClient_GetAPIInfo(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(infoPath, func(w http.ResponseWriter, r *http.Request) {

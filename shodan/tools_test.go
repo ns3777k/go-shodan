@@ -13,7 +13,7 @@ import (
 )
 
 func TestClient_GetMyIP(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	testIP := "192.168.22.34"
@@ -30,7 +30,7 @@ func TestClient_GetMyIP(t *testing.T) {
 }
 
 func TestClient_GetHTTPHeaders(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(headersPath, func(w http.ResponseWriter, r *http.Request) {

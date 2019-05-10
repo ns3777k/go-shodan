@@ -9,7 +9,7 @@ import (
 )
 
 func TestClient_GetQueryTags(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(queryTagsPath, func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestClient_GetQueryTags(t *testing.T) {
 }
 
 func TestClient_SearchQueries(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(querySearchPath, func(w http.ResponseWriter, r *http.Request) {
@@ -73,6 +73,9 @@ func TestClient_SearchQueries(t *testing.T) {
 }
 
 func TestClient_SearchQueries_nilOptions(t *testing.T) {
+	_, tearDownTestServe, client := setUpTestServe()
+	defer tearDownTestServe()
+
 	_, err := client.SearchQueries(context.TODO(), nil)
 
 	assert.NotNil(t, err)
@@ -80,6 +83,9 @@ func TestClient_SearchQueries_nilOptions(t *testing.T) {
 }
 
 func TestClient_SearchQueries_emptyQueryOption(t *testing.T) {
+	_, tearDownTestServe, client := setUpTestServe()
+	defer tearDownTestServe()
+
 	_, err := client.SearchQueries(context.TODO(), &SearchQueryOptions{Query: ""})
 
 	assert.NotNil(t, err)
@@ -87,7 +93,7 @@ func TestClient_SearchQueries_emptyQueryOption(t *testing.T) {
 }
 
 func TestClient_GetQueries(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(queryPath, func(w http.ResponseWriter, r *http.Request) {

@@ -12,7 +12,7 @@ import (
 )
 
 func TestClient_GetDatasets(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(datasetsPath, func(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +33,7 @@ func TestClient_GetDatasets(t *testing.T) {
 }
 
 func TestClient_GetDatasetFiles(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	path := fmt.Sprintf(datasetFilesPath, "raw-daily")

@@ -13,7 +13,7 @@ import (
 )
 
 func TestClient_Scan(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	expectedIPs := []string{"82.98.86.174", "93.184.216.34"}
@@ -52,7 +52,7 @@ func TestClient_Scan(t *testing.T) {
 }
 
 func TestClient_ScanInternet(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(scanInternetPath, func(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +83,7 @@ func TestClient_ScanInternet(t *testing.T) {
 
 func TestClient_GetScanStatus(t *testing.T) {
 	path := fmt.Sprintf(scanStatusPath, "BOMA59VSGWX8QJR9")
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {

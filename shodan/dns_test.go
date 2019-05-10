@@ -12,7 +12,7 @@ import (
 )
 
 func TestClient_GetDNSResolve(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	expectedHostnames := []string{"google.com", "bing.com", "idonotexist.local"}
@@ -41,7 +41,7 @@ func TestClient_GetDNSResolve(t *testing.T) {
 }
 
 func TestClient_GetDNSReverse(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	expectedIPs := []net.IP{

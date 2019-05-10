@@ -10,7 +10,7 @@ import (
 )
 
 func TestClient_GetOrganization(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(organizationPath, func(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ func TestClient_GetOrganization(t *testing.T) {
 }
 
 func TestClient_AddMemberToOrganization(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	user := "username"
@@ -54,7 +54,7 @@ func TestClient_AddMemberToOrganization(t *testing.T) {
 }
 
 func TestClient_AddMemberToOrganizationWithNotifications(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	user := "testing_user"
@@ -74,7 +74,7 @@ func TestClient_AddMemberToOrganizationWithNotifications(t *testing.T) {
 }
 
 func TestClient_RemoveMemberFromOrganization(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	user := "removing_user"

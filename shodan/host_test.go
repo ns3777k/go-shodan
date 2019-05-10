@@ -11,7 +11,7 @@ import (
 )
 
 func TestClient_GetHostsForQuery_DifferentVersionFormats(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(hostSearchPath, func(w http.ResponseWriter, r *http.Request) {

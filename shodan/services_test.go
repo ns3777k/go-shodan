@@ -9,7 +9,7 @@ import (
 )
 
 func TestClient_GetServices(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(servicesPath, func(w http.ResponseWriter, r *http.Request) {

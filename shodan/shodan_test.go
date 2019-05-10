@@ -15,19 +15,18 @@ const (
 	stubsDir        = "stubs"
 )
 
-var (
-	mux    *http.ServeMux
-	server *httptest.Server
-	client *Client
-)
-
-func setUpTestServe() {
-	mux = http.NewServeMux()
-	server = httptest.NewServer(mux)
-	client = NewClient(nil, testClientToken)
+func setUpTestServe() (*http.ServeMux, func(), *Client) {
+	mux := http.NewServeMux()
+	server := httptest.NewServer(mux)
+	client := NewClient(nil, testClientToken)
 	client.BaseURL = server.URL
 	client.ExploitBaseURL = server.URL
 	client.StreamBaseURL = server.URL
+	tearDownTestServe := func() {
+		server.Close()
+	}
+
+	return mux, tearDownTestServe, client
 }
 
 func getStub(t *testing.T, stubName string) []byte {
@@ -38,10 +37,6 @@ func getStub(t *testing.T, stubName string) []byte {
 	}
 
 	return content
-}
-
-func tearDownTestServe() {
-	server.Close()
 }
 
 func TestNewClient(t *testing.T) {

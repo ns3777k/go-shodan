@@ -10,7 +10,7 @@ import (
 )
 
 func TestClient_DeleteAlert(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	id := "ZZ4TDUUORVE1DIIP"
@@ -28,7 +28,7 @@ func TestClient_DeleteAlert(t *testing.T) {
 }
 
 func TestClient_GetAlert(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	id := "ZZ4TDUUORVE1DIIP"
@@ -58,7 +58,7 @@ func TestClient_GetAlert(t *testing.T) {
 }
 
 func TestClient_GetAlerts(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(alertsInfoListPath, func(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +99,7 @@ func TestClient_GetAlerts(t *testing.T) {
 }
 
 func TestClient_CreateAlert(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(alertCreatePath, func(w http.ResponseWriter, r *http.Request) {
