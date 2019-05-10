@@ -10,7 +10,7 @@ import (
 )
 
 func TestClient_GetAlertTriggers(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(alertTriggersListPath, func(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func TestClient_GetAlertTriggers(t *testing.T) {
 }
 
 func TestClient_EnableAlertTrigger(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	id := "TestClient_EnableAlertTrigger"
@@ -57,7 +57,7 @@ func TestClient_EnableAlertTrigger(t *testing.T) {
 }
 
 func TestClient_DisableAlertTrigger(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	id := "TestClient_DisableAlertTrigger"
@@ -77,7 +77,7 @@ func TestClient_DisableAlertTrigger(t *testing.T) {
 }
 
 func TestClient_AddServiceToAlertTriggerWhitelist(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	id := "TestClient_AddServiceToAlertTriggerWhitelist"
@@ -99,7 +99,7 @@ func TestClient_AddServiceToAlertTriggerWhitelist(t *testing.T) {
 }
 
 func TestClient_RemoveServiceFromAlertTriggerWhitelist(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	id := "TestClient_RemoveServiceFromAlertTriggerWhitelist"

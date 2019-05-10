@@ -11,7 +11,7 @@ import (
 )
 
 func TestClient_CalcHoneyScore(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	ip := net.ParseIP("192.168.0.1")

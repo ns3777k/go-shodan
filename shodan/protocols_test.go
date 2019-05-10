@@ -9,7 +9,7 @@ import (
 )
 
 func TestClient_GetProtocols(t *testing.T) {
-	setUpTestServe()
+	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
 	mux.HandleFunc(protocolsPath, func(w http.ResponseWriter, r *http.Request) {
