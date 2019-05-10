@@ -18,7 +18,7 @@ func TestClient_DeleteAlert(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{}`)
+		fmt.Fprint(w, `{}`) //nolint:errcheck
 	})
 
 	result, err := client.DeleteAlert(context.TODO(), id)

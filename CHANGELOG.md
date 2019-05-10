@@ -4,6 +4,7 @@
 - Dropped support for golang < 1.11
 - Remove Godep in favor of go modules
 - Add bunch of linters (golangci lint)
+- Implement alert triggers API
 
 ## [3.1.0]
 - Add ssl-related data to `HostData`.
