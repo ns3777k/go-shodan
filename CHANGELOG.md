@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [4.0.0]
 - Dropped support for golang < 1.11
 - Remove Godep in favor of go modules
 - Add bunch of linters (golangci lint)

@@ -12,12 +12,12 @@ To start working with Shodan you have to get your token first. You can do this a
 Download the package:
 
 ```bash
-go get "gopkg.in/ns3777k/go-shodan.v3"
+go get "gopkg.in/ns3777k/go-shodan.v4"
 ```
 
-That's it. You're ready to roll :-) v3 is the latest release and thus has some breaking changing (take a look at changelog).
+That's it. You're ready to roll :-) v4 is the latest release and thus has some breaking changing (take a look at changelog).
 
-Older releases can be found under v1 and v2 tags.
+Older releases can be found under tags.
 
 `master`-branch is considered to be unstable.
 
@@ -32,7 +32,7 @@ import (
 	"log"
 	"context"
 
-	"gopkg.in/ns3777k/go-shodan.v3/shodan"
+	"gopkg.in/ns3777k/go-shodan.v4/shodan"
 )
 
 func main() {
@@ -60,7 +60,7 @@ import (
 	"log"
 	"context"
 
-	"gopkg.in/ns3777k/go-shodan.v3/shodan"
+	"gopkg.in/ns3777k/go-shodan.v4/shodan"
 )
 
 func main() {
