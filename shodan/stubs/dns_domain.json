@@ -1,0 +1,30 @@
+{
+  "domain": "example.com",
+  "subdomains": [
+    "www"
+  ],
+  "data": [
+    {
+      "subdomain": "",
+      "type": "NS",
+      "value": "b.iana-servers.net",
+      "last_seen": "2019-09-30T08:49:55.868410+00:00"
+    },
+    {
+      "subdomain": "",
+      "type": "NS",
+      "value": "a.iana-servers.net",
+      "last_seen": "2019-09-30T08:49:55.867057+00:00"
+    },
+    {
+      "subdomain": "www",
+      "type": "AAAA",
+      "value": "2606:2800:220:1:248:1893:25c8:1946",
+      "last_seen": "2019-10-06T17:01:04.237057+00:00"
+    }
+  ],
+  "tags": [
+    "ipv6",
+    "spf"
+  ]
+}
