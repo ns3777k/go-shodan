@@ -1,5 +1,8 @@
 # Changelog
 
+## [4.1.0]
+- Implement dns entries for domain API
+
 ## [4.0.0]
 - Dropped support for golang < 1.11
 - Remove Godep in favor of go modules
