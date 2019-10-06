@@ -1,3 +1,5 @@
 .idea/
 vendor
 coverage.txt
+*.iml
+/main.go

@@ -125,6 +125,7 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 #### DNS Methods
 - [x] /dns/resolve
 - [x] /dns/reverse
+- [x] /dns/domain/{domain}
 
 #### Bulk Data
 - [x] /shodan/data
