@@ -5,4 +5,3 @@ require (
 	github.com/moul/http2curl v1.0.0
 )
 
-go 1.13
