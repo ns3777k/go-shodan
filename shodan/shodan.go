@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/google/go-querystring/query"
-	"github.com/moul/http2curl"
+	"moul.io/http2curl"
 )
 
 const (
