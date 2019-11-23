@@ -1,4 +1,4 @@
-module github.com/ns3777k/go-shodan
+module github.com/ns3777k/go-shodan/v4
 
 require (
 	github.com/google/go-querystring v1.0.0
