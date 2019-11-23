@@ -8,19 +8,6 @@
 
 To start working with Shodan you have to get your token first. You can do this at [https://www.shodan.io](https://www.shodan.io).
 
-### Installation
-Download the package:
-
-```bash
-go get "gopkg.in/ns3777k/go-shodan.v4"
-```
-
-That's it. You're ready to roll :-) v4 is the latest release and thus has some breaking changing (take a look at changelog).
-
-Older releases can be found under tags.
-
-`master`-branch is considered to be unstable.
-
 ### Usage
 
 Simple example of resolving hostnames:
@@ -32,7 +19,7 @@ import (
 	"log"
 	"context"
 
-	"gopkg.in/ns3777k/go-shodan.v4/shodan"
+	"github.com/ns3777k/go-shodan/v4/shodan"
 )
 
 func main() {
@@ -60,7 +47,7 @@ import (
 	"log"
 	"context"
 
-	"gopkg.in/ns3777k/go-shodan.v4/shodan"
+	"github.com/ns3777k/go-shodan/v4/shodan"
 )
 
 func main() {

@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.1]
+- Remove `http2curl` dependency
+- Fix readme on how to get the library up and running
+
 ## [4.1.0]
 - Implement dns entries for domain API
 
