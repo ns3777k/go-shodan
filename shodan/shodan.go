@@ -1,9 +1,12 @@
 package shodan
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -11,7 +14,6 @@ import (
 	"sync"
 
 	"github.com/google/go-querystring/query"
-	"github.com/moul/http2curl"
 )
 
 const (
@@ -109,15 +111,30 @@ func (c *Client) newRequest(method string, u *url.URL, params interface{}, body 
 	return req, nil
 }
 
+func (c *Client) dumpRequest(req *http.Request) {
+	var body string
+
+	if req.Body != nil {
+		bodyBytes, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			log.Printf("[DEBUG] ns3777k/go-shodan: failed to read body: %s\n", err)
+		}
+
+		req.Body = ioutil.NopCloser(bytes.NewReader(bodyBytes))
+		body = string(bodyBytes)
+	}
+
+	message := fmt.Sprintf("%s %s %s", req.Method, req.URL.String(), body)
+	log.Printf("[DEBUG] ns3777k/go-shodan: client request: %s\n", message)
+}
+
 func (c *Client) do(ctx context.Context, req *http.Request) (*http.Response, error) {
 	if ctx != nil {
 		req = req.WithContext(ctx)
 	}
 
 	if c.Debug {
-		if command, err := http2curl.GetCurlCommand(req); err == nil {
-			log.Printf("shodan client request: %s\n", command)
-		}
+		c.dumpRequest(req)
 	}
 
 	return c.Client.Do(req)

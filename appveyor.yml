@@ -19,7 +19,6 @@ install:
   - set PATH=%GOPATH%\bin;C:\gopath\bin;%PATH%
   - go version
   - go env
-  - go get
 
 test_script:
   - go test -v ./shodan
