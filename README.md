@@ -8,6 +8,10 @@
 
 To start working with Shodan you have to get your token first. You can do this at [https://www.shodan.io](https://www.shodan.io).
 
+### To get package
+
+```go get github.com/ns3777k/go-shodan/shodan```
+
 ### Usage
 
 Simple example of resolving hostnames:
@@ -19,7 +23,7 @@ import (
 	"log"
 	"context"
 
-	"github.com/ns3777k/go-shodan/v4/shodan"
+	"github.com/ns3777k/go-shodan/shodan"
 )
 
 func main() {
@@ -47,7 +51,7 @@ import (
 	"log"
 	"context"
 
-	"github.com/ns3777k/go-shodan/v4/shodan"
+	"github.com/ns3777k/go-shodan/shodan"
 )
 
 func main() {
