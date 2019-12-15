@@ -1,5 +1,9 @@
 # Changelog
 
+## [UNRELEASED]
+- Implement `/shodan/host/search/facets` in method `GetFacets`
+- Implement `/shodan/host/search/filters` in method `GetFilters`
+
 ## [4.1.1]
 - Remove `http2curl` dependency
 - Fix readme on how to get the library up and running

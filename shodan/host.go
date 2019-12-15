@@ -7,10 +7,12 @@ import (
 )
 
 const (
-	hostPath             = "/shodan/host"
-	hostCountPath        = "/shodan/host/count"
-	hostSearchPath       = "/shodan/host/search"
-	hostSearchTokensPath = "/shodan/host/search/tokens" //nolint:gosec
+	hostPath              = "/shodan/host"
+	hostCountPath         = "/shodan/host/count"
+	hostSearchPath        = "/shodan/host/search"
+	hostSearchFacetsPath  = "/shodan/host/search/facets"
+	hostSearchFiltersPath = "/shodan/host/search/filters"
+	hostSearchTokensPath  = "/shodan/host/search/tokens" //nolint:gosec
 )
 
 // HostServicesOptions is options for querying services.
@@ -242,4 +244,36 @@ func (c *Client) BreakQueryIntoTokens(ctx context.Context, query string) (*HostQ
 	}
 
 	return &tokens, nil
+}
+
+// GetFacets returns a list of facets that can be used to get a breakdown of the top values for a property.
+func (c *Client) GetFacets(ctx context.Context) ([]string, error) {
+	var facets []string
+
+	req, err := c.NewRequest("GET", hostSearchFacetsPath, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &facets); err != nil {
+		return nil, err
+	}
+
+	return facets, nil
+}
+
+// GetFilters returns a list of search filters that can be used in the search query.
+func (c *Client) GetFilters(ctx context.Context) ([]string, error) {
+	var filters []string
+
+	req, err := c.NewRequest("GET", hostSearchFiltersPath, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.Do(ctx, req, &filters); err != nil {
+		return nil, err
+	}
+
+	return filters, nil
 }

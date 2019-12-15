@@ -67,3 +67,39 @@ func TestHostIP_Unmarshal(t *testing.T) {
 		assert.Equal(t, testCase.expected, h.Data[0].IP.String())
 	}
 }
+
+func TestClient_GetFacets(t *testing.T) {
+	expectedFacets := []string{"bitcoin.ip_count", "ssl.version"}
+
+	mux, tearDownTestServe, client := setUpTestServe()
+	defer tearDownTestServe()
+
+	mux.HandleFunc(hostSearchFacetsPath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		b, _ := json.Marshal(expectedFacets)
+		w.Write(b) //nolint:errcheck
+	})
+
+	actualFacets, err := client.GetFacets(context.TODO())
+
+	assert.Nil(t, err)
+	assert.Equal(t, expectedFacets, actualFacets)
+}
+
+func TestClient_GetFilters(t *testing.T) {
+	expectedFilters := []string{"bitcoin.ip_count", "all"}
+
+	mux, tearDownTestServe, client := setUpTestServe()
+	defer tearDownTestServe()
+
+	mux.HandleFunc(hostSearchFiltersPath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		b, _ := json.Marshal(expectedFilters)
+		w.Write(b) //nolint:errcheck
+	})
+
+	actualFilters, err := client.GetFilters(context.TODO())
+
+	assert.Nil(t, err)
+	assert.Equal(t, expectedFilters, actualFilters)
+}
