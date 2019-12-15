@@ -90,8 +90,8 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /shodan/host/{ip}
 - [x] /shodan/host/count
 - [x] /shodan/host/search
-- [ ] /shodan/host/search/facets
-- [ ] /shodan/host/search/filters
+- [x] /shodan/host/search/facets
+- [x] /shodan/host/search/filters
 - [x] /shodan/host/search/tokens
 - [x] /shodan/ports
 
