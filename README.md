@@ -90,6 +90,8 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /shodan/host/{ip}
 - [x] /shodan/host/count
 - [x] /shodan/host/search
+- [ ] /shodan/host/search/facets
+- [ ] /shodan/host/search/filters
 - [x] /shodan/host/search/tokens
 - [x] /shodan/ports
 
@@ -105,8 +107,14 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /shodan/alert/{id}
 - [x] /shodan/alert/info
 - [x] /shodan/alert/triggers
+- [ ] /shodan/alert/{id}/notifier/{notifier_id}
 - [x] /shodan/alert/{id}/trigger/{trigger}
 - [x] /shodan/alert/{id}/trigger/{trigger}/ignore/{service}
+
+#### Notifiers
+- [ ] /notifier
+- [ ] /notifier/provider
+- [ ] /notifier/{id}
 
 #### Directory Methods
 - [x] /shodan/query
@@ -138,6 +146,10 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 
 #### Experimental Methods
 - [x] /labs/honeyscore/{ip}
+
+#### Exploits
+- [x] /search
+- [x] /count
 
 ### Implemented Streaming API
 
