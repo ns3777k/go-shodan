@@ -5,6 +5,10 @@ import (
 	"strconv"
 )
 
+type genericSuccessResponse struct {
+	Success bool `json:"success"`
+}
+
 // IntString is string with custom unmarshaling.
 type IntString string
 

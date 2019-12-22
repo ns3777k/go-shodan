@@ -28,10 +28,6 @@ type AlertTriggerServiceIdent struct {
 	ServiceName string
 }
 
-type alertTriggerSuccessResponse struct {
-	Success bool `json:"success"`
-}
-
 // Returns a list of all the triggers that can be enabled on network alerts.
 func (c *Client) GetAlertTriggers(ctx context.Context) ([]*AlertTrigger, error) {
 	triggers := make([]*AlertTrigger, 0)
@@ -49,7 +45,7 @@ func (c *Client) GetAlertTriggers(ctx context.Context) ([]*AlertTrigger, error) 
 }
 
 func (c *Client) toggleAlertTrigger(ctx context.Context, method string, trigger *AlertTriggerIdent) (bool, error) {
-	var response alertTriggerSuccessResponse
+	var response genericSuccessResponse
 	path := fmt.Sprintf(alertTriggerEnablePath, trigger.AlertID, trigger.TriggerName)
 
 	req, err := c.NewRequest(method, path, nil, nil)
@@ -69,7 +65,7 @@ func (c *Client) toggleAlertTriggerWhitelist(
 	method string,
 	service *AlertTriggerServiceIdent,
 ) (bool, error) {
-	var response alertTriggerSuccessResponse
+	var response genericSuccessResponse
 	path := fmt.Sprintf(alertTriggerWhitelistPath, service.AlertID, service.TriggerName, service.ServiceName)
 
 	req, err := c.NewRequest(method, path, nil, nil)

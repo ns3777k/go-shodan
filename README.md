@@ -107,14 +107,14 @@ You can also use `SetDebug(true)` to see the curl version of your requests.
 - [x] /shodan/alert/{id}
 - [x] /shodan/alert/info
 - [x] /shodan/alert/triggers
-- [ ] /shodan/alert/{id}/notifier/{notifier_id}
+- [x] /shodan/alert/{id}/notifier/{notifier_id}
 - [x] /shodan/alert/{id}/trigger/{trigger}
 - [x] /shodan/alert/{id}/trigger/{trigger}/ignore/{service}
 
 #### Notifiers
-- [ ] /notifier
-- [ ] /notifier/provider
-- [ ] /notifier/{id}
+- [x] /notifier
+- [x] /notifier/provider
+- [x] /notifier/{id}
 
 #### Directory Methods
 - [x] /shodan/query

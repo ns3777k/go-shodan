@@ -13,7 +13,7 @@ func TestClient_DeleteAlert(t *testing.T) {
 	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
-	id := "ZZ4TDUUORVE1DIIP"
+	id := "DSFJK737SJD"
 	path := fmt.Sprintf(alertDeletePath, id)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +22,44 @@ func TestClient_DeleteAlert(t *testing.T) {
 	})
 
 	result, err := client.DeleteAlert(context.TODO(), id)
+
+	assert.Nil(t, err)
+	assert.True(t, result)
+}
+
+func TestClient_AddAlertNotifier(t *testing.T) {
+	mux, tearDownTestServe, client := setUpTestServe()
+	defer tearDownTestServe()
+
+	alertID := "8327RHFYSBFIWHJSD"
+	notifierID := "default"
+	path := fmt.Sprintf(alertNotifier, alertID, notifierID)
+
+	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "PUT", r.Method)
+		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+	})
+
+	result, err := client.AddAlertNotifier(context.TODO(), alertID, notifierID)
+
+	assert.Nil(t, err)
+	assert.True(t, result)
+}
+
+func TestClient_DeleteAlertNotifier(t *testing.T) {
+	mux, tearDownTestServe, client := setUpTestServe()
+	defer tearDownTestServe()
+
+	alertID := "SDF74HFKSDSF"
+	notifierID := "default"
+	path := fmt.Sprintf(alertNotifier, alertID, notifierID)
+
+	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "DELETE", r.Method)
+		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+	})
+
+	result, err := client.DeleteAlertNotifier(context.TODO(), alertID, notifierID)
 
 	assert.Nil(t, err)
 	assert.True(t, result)
