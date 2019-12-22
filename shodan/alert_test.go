@@ -32,7 +32,7 @@ func TestClient_AddAlertNotifier(t *testing.T) {
 	defer tearDownTestServe()
 
 	alertID := "8327RHFYSBFIWHJSD"
-	notifierID := "default"
+	notifierID := "GFDL84TLKSJD"
 	path := fmt.Sprintf(alertNotifier, alertID, notifierID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +51,7 @@ func TestClient_DeleteAlertNotifier(t *testing.T) {
 	defer tearDownTestServe()
 
 	alertID := "SDF74HFKSDSF"
-	notifierID := "default"
+	notifierID := "JD383LS9UF8"
 	path := fmt.Sprintf(alertNotifier, alertID, notifierID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
