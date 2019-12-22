@@ -1,0 +1,12 @@
+{
+  "pagerduty": {
+    "required": [
+      "routing_key"
+    ]
+  },
+  "email": {
+    "required": [
+      "to"
+    ]
+  }
+}

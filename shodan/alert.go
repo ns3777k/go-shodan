@@ -12,6 +12,7 @@ const (
 	alertInfoPath      = "/shodan/alert/%s/info"
 	alertDeletePath    = "/shodan/alert/%s"
 	alertCreatePath    = "/shodan/alert"
+	alertNotifier      = "/shodan/alert/%s/notifier/%s"
 )
 
 // AlertFilters holds alert criteria (only ip for now).
@@ -29,6 +30,7 @@ type Alert struct {
 	Expired    bool          `json:"expired"`
 	Size       int           `json:"size"`
 	Filters    *AlertFilters `json:"filters"`
+	Notifiers  []*Notifier   `json:"notifiers"`
 	// not documented for now :-(
 	Triggers map[string]interface{} `json:"triggers"`
 }
@@ -113,4 +115,37 @@ func (c *Client) DeleteAlert(ctx context.Context, id string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (c *Client) toggleAlertNotifier(
+	ctx context.Context,
+	method string,
+	alertID string,
+	notifierID string,
+) (bool, error) {
+	var response genericSuccessResponse
+	path := fmt.Sprintf(alertNotifier, alertID, notifierID)
+
+	req, err := c.NewRequest(method, path, nil, nil)
+	if err != nil {
+		return false, err
+	}
+
+	if err := c.Do(ctx, req, &response); err != nil {
+		return false, err
+	}
+
+	return response.Success, nil
+}
+
+// AddAlertNotifier adds the specified notifier to the network alert. Notifications are only sent if triggers have
+// also been enabled.
+func (c *Client) AddAlertNotifier(ctx context.Context, alertID string, notifierID string) (bool, error) {
+	return c.toggleAlertNotifier(ctx, "PUT", alertID, notifierID)
+}
+
+// DeleteAlertNotifier removes the notification service from the alert. Notifications are only sent if triggers have
+// also been enabled.
+func (c *Client) DeleteAlertNotifier(ctx context.Context, alertID string, notifierID string) (bool, error) {
+	return c.toggleAlertNotifier(ctx, "DELETE", alertID, notifierID)
 }

@@ -1,6 +1,7 @@
 # Changelog
 
 ## [UNRELEASED]
+- Implement notifiers API
 - Implement `/shodan/host/search/facets` in method `GetFacets`
 - Implement `/shodan/host/search/filters` in method `GetFilters`
 
