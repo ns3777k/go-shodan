@@ -82,7 +82,7 @@ func main() {
 
 Every method accepts context in the first argument so you can easily cancel any request.
 
-You can also use `SetDebug(true)` to see the curl version of your requests.
+You can also use `SetDebug(true)` to see the actual request data (method, url, body).
 
 ### Implemented REST API
 
