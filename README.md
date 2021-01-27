@@ -59,7 +59,7 @@ import (
 
 func main() {
 	client := shodan.NewEnvClient(nil)
-	ch := make(chan *shodan.HostData)
+	ch := make(chan *shodan.StreamHostData)
 	err := client.GetBannersByASN(context.Background(), []string{"3303", "32475"}, ch)
 	if err != nil {
 		panic(err)

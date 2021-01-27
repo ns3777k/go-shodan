@@ -20,13 +20,24 @@ const (
 	bannersASNPath     = "/shodan/asn/%s"
 )
 
+type StreamAlertMeta struct {
+	ID            string
+	Name          string
+	Trigger       string
+	Sha1Signature string
+}
+
+type StreamHostData struct {
+	*HostData
+	AlertMeta *StreamAlertMeta
+}
+
 // handleResponseStream reads response body, transforms it to *HostData and
 // sends to channel.
-func (c *Client) handleResponseStream(resp *http.Response, ch chan *HostData) {
+func (c *Client) handleResponseStream(resp *http.Response, ch chan *StreamHostData) {
 	reader := bufio.NewReader(resp.Body)
 
 	for {
-		banner := new(HostData)
 		chunk, err := reader.ReadBytes('\n')
 		if err != nil {
 			resp.Body.Close()
@@ -39,10 +50,18 @@ func (c *Client) handleResponseStream(resp *http.Response, ch chan *HostData) {
 			continue
 		}
 
+		banner := new(StreamHostData)
 		if err := c.parseResponse(banner, bytes.NewBuffer(chunk)); err != nil {
 			resp.Body.Close()
 			close(ch)
 			break
+		}
+
+		banner.AlertMeta = &StreamAlertMeta{
+			ID:            resp.Header.Get("SHODAN-ALERT-ID"),
+			Name:          resp.Header.Get("SHODAN-ALERT-NAME"),
+			Trigger:       resp.Header.Get("SHODAN-ALERT-TRIGGER"),
+			Sha1Signature: resp.Header.Get("SHODAN-SIGNATURE-SHA1"),
 		}
 
 		ch <- banner
@@ -91,7 +110,7 @@ func (c *Client) startStreaming(ctx context.Context, path string) (*http.Respons
 
 // GetBannersByASN provides a filtered, bandwidth-saving view of the Banners stream in case
 // you are only interested in devices located in certain ASNs.
-func (c *Client) GetBannersByASN(ctx context.Context, asn []string, ch chan *HostData) error {
+func (c *Client) GetBannersByASN(ctx context.Context, asn []string, ch chan *StreamHostData) error {
 	path := fmt.Sprintf(bannersASNPath, strings.Join(asn, ","))
 	resp, err := c.startStreaming(ctx, path)
 	if err != nil {
@@ -105,7 +124,7 @@ func (c *Client) GetBannersByASN(ctx context.Context, asn []string, ch chan *Hos
 
 // GetBannersByCountries provides a filtered, bandwidth-saving view of the Banners
 // stream in case you are only interested in devices located in certain countries.
-func (c *Client) GetBannersByCountries(ctx context.Context, countries []string, ch chan *HostData) error {
+func (c *Client) GetBannersByCountries(ctx context.Context, countries []string, ch chan *StreamHostData) error {
 	strCountries := make([]string, 0)
 	for _, country := range countries {
 		strCountries = append(strCountries, strings.ToUpper(country))
@@ -125,7 +144,7 @@ func (c *Client) GetBannersByCountries(ctx context.Context, countries []string, 
 // GetBannersByPorts returns only banner data for the list of specified hosts.
 // This stream provides a filtered, bandwidth-saving view of the Banners stream
 // in case you are only interested in a specific list of ports.
-func (c *Client) GetBannersByPorts(ctx context.Context, ports []int, ch chan *HostData) error {
+func (c *Client) GetBannersByPorts(ctx context.Context, ports []int, ch chan *StreamHostData) error {
 	strPorts := make([]string, 0)
 	for _, port := range ports {
 		strPorts = append(strPorts, strconv.Itoa(port))
@@ -144,7 +163,7 @@ func (c *Client) GetBannersByPorts(ctx context.Context, ports []int, ch chan *Ho
 
 // GetBannersByAlert subscribes to banners discovered on the IP range defined
 // in a specific network alert.
-func (c *Client) GetBannersByAlert(ctx context.Context, id string, ch chan *HostData) error {
+func (c *Client) GetBannersByAlert(ctx context.Context, id string, ch chan *StreamHostData) error {
 	path := fmt.Sprintf(bannersAlertPath, id)
 	resp, err := c.startStreaming(ctx, path)
 	if err != nil {
@@ -158,7 +177,7 @@ func (c *Client) GetBannersByAlert(ctx context.Context, id string, ch chan *Host
 
 // GetBannersByAlerts subscribes to banners discovered on all IP ranges described
 // in the network alerts.
-func (c *Client) GetBannersByAlerts(ctx context.Context, ch chan *HostData) error {
+func (c *Client) GetBannersByAlerts(ctx context.Context, ch chan *StreamHostData) error {
 	resp, err := c.startStreaming(ctx, bannersAlertsPath)
 	if err != nil {
 		return err
@@ -172,7 +191,7 @@ func (c *Client) GetBannersByAlerts(ctx context.Context, ch chan *HostData) erro
 // GetBanners provides ALL of the data that Shodan collects. Use this stream
 // if you need access to everything and / or want to store your own Shodan database
 // locally. If you only care about specific ports, please use the Ports stream.
-func (c *Client) GetBanners(ctx context.Context, ch chan *HostData) error {
+func (c *Client) GetBanners(ctx context.Context, ch chan *StreamHostData) error {
 	resp, err := c.startStreaming(ctx, bannersPath)
 	if err != nil {
 		return err

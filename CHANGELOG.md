@@ -1,5 +1,8 @@
 # Changelog
 
+## [5.0.0]
+- Stream methods now contain alert metadata
+
 ## [4.2.0]
 - Implement notifiers API
 - Implement `/shodan/host/search/facets` in method `GetFacets`
