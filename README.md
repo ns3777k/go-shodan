@@ -13,7 +13,7 @@ To start working with Shodan you have to get your token first. You can do this a
 The import path depends on whether you use go modules:
 
 ```go
-import "github.com/ns3777k/go-shodan/v4/shodan"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
+import "github.com/ns3777k/go-shodan/v5/shodan"	// with go modules enabled (GO111MODULE=on or outside GOPATH)
 import "github.com/ns3777k/go-shodan/shodan" // with go modules disabled
 ```
 
@@ -26,7 +26,7 @@ import (
 	"log"
 	"context"
 
-	"github.com/ns3777k/go-shodan/v4/shodan" // go modules required
+	"github.com/ns3777k/go-shodan/v5/shodan" // go modules required
 )
 
 func main() {
@@ -54,7 +54,7 @@ import (
 	"log"
 	"context"
 
-	"github.com/ns3777k/go-shodan/v4/shodan" // go modules required
+	"github.com/ns3777k/go-shodan/v5/shodan" // go modules required
 )
 
 func main() {
