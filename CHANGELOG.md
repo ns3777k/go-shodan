@@ -1,5 +1,8 @@
 # Changelog
 
+## [UNRELEASED]
+- Implement GeoNet API
+
 ## [4.2.0]
 - Implement notifiers API
 - Implement `/shodan/host/search/facets` in method `GetFacets`

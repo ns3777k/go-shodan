@@ -22,6 +22,7 @@ func setUpTestServe() (*http.ServeMux, func(), *Client) {
 	client.BaseURL = server.URL
 	client.ExploitBaseURL = server.URL
 	client.StreamBaseURL = server.URL
+	client.GeoNetBaseURL = server.URL
 	tearDownTestServe := func() {
 		server.Close()
 	}

@@ -1,0 +1,20 @@
+{
+  "ip": "127.0.0.1",
+  "is_alive": true,
+  "min_rtt": 0.271,
+  "avg_rtt": 0.289,
+  "max_rtt": 0.307,
+  "rtts": [
+    0.3066062927246094,
+    0.2884864807128906,
+    0.27060508728027344
+  ],
+  "packets_sent": 3,
+  "packets_received": 3,
+  "packet_loss": 0.0,
+  "from_loc": {
+    "city": "Santa Clara",
+    "country": "US",
+    "latlon": "37.3924,-121.9623"
+  }
+}

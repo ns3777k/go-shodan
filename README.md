@@ -163,6 +163,12 @@ You can also use `SetDebug(true)` to see the actual request data (method, url, b
 - [x] /shodan/alert
 - [x] /shodan/alert/{id}
 
+#### GeoNet
+- [x] /api/ping/{ip}
+- [x] /api/geoping/{ip}
+- [x] /api/dns/{hostname}
+- [x] /api/geodns/{hostname}
+
 If a method is absent or something doesn't work properly don't hesitate to create an issue.
 
 ### Links
