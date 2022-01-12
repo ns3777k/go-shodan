@@ -1,4 +1,5 @@
 # go-shodan
+[![msisdn CI](https://github.com/ns3777k/go-shodan/actions/workflows/test.yml/badge.svg)](https://github.com/ns3777k/go-shodan/actions/workflows/test.yml)
 [![GoDoc](https://godoc.org/github.com/ns3777k/go-shodan/shodan?status.svg)](https://godoc.org/github.com/ns3777k/go-shodan/shodan)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ns3777k/go-shodan)](https://goreportcard.com/report/github.com/ns3777k/go-shodan)
@@ -160,7 +161,8 @@ You can also use `SetDebug(true)` to see the actual request data (method, url, b
 - [x] /shodan/alert
 - [x] /shodan/alert/{id}
 
-#### GeoNet
+### Implemented GeoNet API
+
 - [x] /api/ping/{ip}
 - [x] /api/geoping/{ip}
 - [x] /api/dns/{hostname}
