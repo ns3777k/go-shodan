@@ -3,12 +3,11 @@ package shodan
 import (
 	"context"
 	"fmt"
+	"net"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
-
-	"net"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -35,7 +34,7 @@ func TestClient_GetDomain(t *testing.T) {
 	path := fmt.Sprintf(dnsPath, "example.com")
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "dns_domain")) //nolint:errcheck
+		w.Write(getStub(t, "dns_domain"))
 	})
 
 	actual, err := client.GetDomain(context.TODO(), "example.com")
@@ -58,7 +57,7 @@ func TestClient_GetDNSResolve(t *testing.T) {
 		split := strings.Split(hostnames, ",")
 		assert.Len(t, split, len(expectedHostnames))
 
-		w.Write(getStub(t, "dns_resolve")) //nolint:errcheck
+		w.Write(getStub(t, "dns_resolve"))
 	})
 
 	resolve, err := client.GetDNSResolve(context.TODO(), expectedHostnames)
@@ -76,8 +75,7 @@ func TestClient_GetDNSReverse(t *testing.T) {
 	mux, tearDownTestServe, client := setUpTestServe()
 	defer tearDownTestServe()
 
-	expectedIPs := []net.IP{
-		net.ParseIP("74.125.227.244"), net.ParseIP("92.63.108.40")}
+	expectedIPs := []net.IP{net.ParseIP("74.125.227.244"), net.ParseIP("92.63.108.40")}
 
 	mux.HandleFunc(reversePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
@@ -88,7 +86,7 @@ func TestClient_GetDNSReverse(t *testing.T) {
 		split := strings.Split(ips, ",")
 		assert.Len(t, split, len(expectedIPs))
 
-		w.Write(getStub(t, "dns_reverse")) //nolint:errcheck
+		w.Write(getStub(t, "dns_reverse"))
 	})
 
 	reversed, err := client.GetDNSReverse(context.TODO(), expectedIPs)

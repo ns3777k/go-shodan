@@ -18,7 +18,7 @@ func TestClient_DeleteAlert(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{}`) //nolint:errcheck
+		fmt.Fprint(w, `{}`)
 	})
 
 	result, err := client.DeleteAlert(context.TODO(), id)
@@ -37,7 +37,7 @@ func TestClient_AddAlertNotifier(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "PUT", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	result, err := client.AddAlertNotifier(context.TODO(), alertID, notifierID)
@@ -56,7 +56,7 @@ func TestClient_DeleteAlertNotifier(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	result, err := client.DeleteAlertNotifier(context.TODO(), alertID, notifierID)
@@ -74,7 +74,7 @@ func TestClient_GetAlert(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "alert/alert")) //nolint:errcheck
+		w.Write(getStub(t, "alert/alert"))
 	})
 
 	alert, err := client.GetAlert(context.TODO(), id)
@@ -101,7 +101,7 @@ func TestClient_GetAlerts(t *testing.T) {
 
 	mux.HandleFunc(alertsInfoListPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "alert/alerts")) //nolint:errcheck
+		w.Write(getStub(t, "alert/alerts"))
 	})
 
 	alerts, err := client.GetAlerts(context.TODO())
@@ -142,7 +142,7 @@ func TestClient_CreateAlert(t *testing.T) {
 
 	mux.HandleFunc(alertCreatePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "POST", r.Method)
-		w.Write(getStub(t, "alert/create_alert")) //nolint:errcheck
+		w.Write(getStub(t, "alert/create_alert"))
 	})
 
 	alert, err := client.CreateAlert(context.TODO(), "Test alert API", []string{"198.20.88.0/24"}, 0)

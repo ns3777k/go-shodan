@@ -44,7 +44,7 @@ func (c *Client) GetDomain(ctx context.Context, domain string) (*DomainDNSInfo, 
 	return &info, nil
 }
 
-// GetDNSResolve looks up the IP address for the provided list of hostnames
+// GetDNSResolve looks up the IP address for the provided list of hostnames.
 func (c *Client) GetDNSResolve(ctx context.Context, hostnames []string) (map[string]*net.IP, error) {
 	dnsResolved := make(map[string]*net.IP)
 	params := struct {
@@ -63,7 +63,7 @@ func (c *Client) GetDNSResolve(ctx context.Context, hostnames []string) (map[str
 	return dnsResolved, nil
 }
 
-// GetDNSReverse looks up the hostnames that have been defined for the given list of IP addresses
+// GetDNSReverse looks up the hostnames that have been defined for the given list of IP addresses.
 func (c *Client) GetDNSReverse(ctx context.Context, ip []net.IP) (map[string]*[]string, error) {
 	ips := make([]string, 0)
 

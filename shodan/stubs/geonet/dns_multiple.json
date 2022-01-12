@@ -1,0 +1,28 @@
+[
+  {
+    "answers": [
+      {
+        "type": "A",
+        "value": "67.225.146.248"
+      }
+    ],
+    "from_loc": {
+      "city": "Santa Clara",
+      "country": "US",
+      "latlon": "37.3924,-121.9623"
+    }
+  },
+  {
+    "answers": [
+      {
+        "type": "A",
+        "value": "67.225.146.248"
+      }
+    ],
+    "from_loc": {
+      "city": "Clifton",
+      "country": "US",
+      "latlon": "40.8344,-74.1377"
+    }
+  }
+]

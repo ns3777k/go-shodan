@@ -30,8 +30,8 @@ type DatasetFile struct {
 
 // UnmarshalJSON implements Unmarshaler interface for 2 reasons:
 //
-// 1. transform int timestamp into valid time.Time
-// 2. transform url string into *url.URL
+// 1. transform int timestamp into valid time.Time.
+// 2. transform url string into *url.URL.
 func (f *DatasetFile) UnmarshalJSON(data []byte) error {
 	type Alias DatasetFile
 
@@ -61,8 +61,8 @@ func (f *DatasetFile) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements Marshaler interface to restore original json.
 //
-// 1. transform time.Time into int
-// 2. transform *url.URL into string
+// 1. transform time.Time into int.
+// 2. transform *url.URL into string.
 func (f *DatasetFile) MarshalJSON() ([]byte, error) {
 	type Alias DatasetFile
 

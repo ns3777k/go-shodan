@@ -14,7 +14,7 @@ func TestClient_GetPorts(t *testing.T) {
 
 	mux.HandleFunc(portsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "ports")) //nolint:errcheck
+		w.Write(getStub(t, "ports"))
 	})
 
 	portsExpected := []int{22, 771, 5353, 110, 8139}

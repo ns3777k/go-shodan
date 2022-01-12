@@ -1,0 +1,13 @@
+{
+  "answers": [
+    {
+      "type": "A",
+      "value": "67.225.146.248"
+    }
+  ],
+  "from_loc": {
+    "city": "Santa Clara",
+    "country": "US",
+    "latlon": "37.3924,-121.9623"
+  }
+}

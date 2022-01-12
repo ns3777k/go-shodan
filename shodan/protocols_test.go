@@ -14,7 +14,7 @@ func TestClient_GetProtocols(t *testing.T) {
 
 	mux.HandleFunc(protocolsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "protocols")) //nolint:errcheck
+		w.Write(getStub(t, "protocols"))
 	})
 
 	protocolsExpected := map[string]string{

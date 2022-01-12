@@ -1,8 +1,21 @@
-linters-settings:
-  maligned:
-    suggest-new: true
-
 linters:
   enable-all: true
   disable:
     - bodyclose
+    - tagliatelle
+    - wrapcheck
+    - scopelint
+    - golint
+    - interfacer
+    - maligned
+    - testpackage
+    - paralleltest
+    - gomnd
+    - goerr113
+    - exhaustivestruct
+    - nlreturn
+    - wsl
+    - noctx
+    - godot
+    - errcheck
+    - varnamelen

@@ -20,7 +20,10 @@ const (
 	baseURL        = "https://api.shodan.io"
 	exploitBaseURL = "https://exploits.shodan.io/api"
 	streamBaseURL  = "https://stream.shodan.io"
+	geonetBaseURL  = "https://geonet.shodan.io"
 )
+
+type ErrorHandler func(*http.Response) error
 
 // Client represents Shodan HTTP client
 type Client struct {
@@ -30,6 +33,7 @@ type Client struct {
 	BaseURL        string
 	ExploitBaseURL string
 	StreamBaseURL  string
+	GeoNetBaseURL  string
 	Debug          bool
 	Client         *http.Client
 }
@@ -45,6 +49,7 @@ func NewClient(client *http.Client, token string) *Client {
 		BaseURL:        baseURL,
 		ExploitBaseURL: exploitBaseURL,
 		StreamBaseURL:  streamBaseURL,
+		GeoNetBaseURL:  geonetBaseURL,
 		Client:         client,
 		m:              &sync.Mutex{},
 	}
@@ -62,21 +67,6 @@ func (c *Client) SetDebug(debug bool) {
 	defer c.m.Unlock()
 
 	c.Debug = debug
-}
-
-// NewExploitRequest prepares new request to exploit shodan api.
-func (c *Client) NewExploitRequest(
-	method string,
-	path string,
-	params interface{},
-	body io.Reader,
-) (*http.Request, error) {
-	u, err := url.Parse(c.ExploitBaseURL + path)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.newRequest(method, u, params, body)
 }
 
 // NewRequest prepares new request to common shodan api.
@@ -142,6 +132,16 @@ func (c *Client) do(ctx context.Context, req *http.Request) (*http.Response, err
 
 // Do executes common (non-streaming) request.
 func (c *Client) Do(ctx context.Context, req *http.Request, destination interface{}) error {
+	return c.DoWithErrorHandling(ctx, req, destination, getErrorFromResponse)
+}
+
+// DoWithErrorHandling executes common (non-streaming) request with argument for custom error handling.
+func (c *Client) DoWithErrorHandling(
+	ctx context.Context,
+	req *http.Request,
+	destination interface{},
+	errHandler ErrorHandler,
+) error {
 	resp, err := c.do(ctx, req)
 	if err != nil {
 		return err
@@ -150,7 +150,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, destination interfac
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return getErrorFromResponse(resp)
+		return errHandler(resp)
 	}
 
 	if destination == nil {

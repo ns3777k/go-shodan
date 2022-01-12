@@ -8,7 +8,7 @@ const (
 	profilePath = "/account/profile"
 )
 
-// Profile holds account's information
+// Profile holds account's information.
 type Profile struct {
 	Member  bool   `json:"member"`
 	Credits int    `json:"credits"`
@@ -16,7 +16,7 @@ type Profile struct {
 	Created string `json:"created"`
 }
 
-// GetAccountProfile returns information about the Shodan account linked to the API key
+// GetAccountProfile returns information about the Shodan account linked to the API key.
 func (c *Client) GetAccountProfile(ctx context.Context) (*Profile, error) {
 	var profile Profile
 

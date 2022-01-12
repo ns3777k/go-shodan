@@ -14,7 +14,7 @@ func TestClient_GetAccountProfile(t *testing.T) {
 
 	mux.HandleFunc(profilePath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "profile")) //nolint:errcheck
+		w.Write(getStub(t, "profile"))
 	})
 
 	account, err := client.GetAccountProfile(context.TODO())
