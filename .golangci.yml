@@ -18,3 +18,4 @@ linters:
     - noctx
     - godot
     - errcheck
+    - varnamelen
