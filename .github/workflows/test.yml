@@ -29,4 +29,4 @@ jobs:
           key: ${{ runner.os }}-test-go-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-test-go-
       - name: Tests
-        run: go test -race ./shodan/
+        run: go test -race ./shodan/ -v
