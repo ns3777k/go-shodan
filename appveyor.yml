@@ -8,9 +8,9 @@ cache:
 
 environment:
   GOPATH: c:\gopath
-  GOVERSION: 1.16
-  GOBIN: c:\gopath\bin
   GO111MODULE: on
+
+stack: go 1.16
 
 build: false
 deploy: false
