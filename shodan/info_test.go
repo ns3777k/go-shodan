@@ -14,7 +14,7 @@ func TestClient_GetAPIInfo(t *testing.T) {
 
 	mux.HandleFunc(infoPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "info")) //nolint:errcheck
+		w.Write(getStub(t, "info"))
 	})
 
 	info, err := client.GetAPIInfo(context.TODO())

@@ -15,7 +15,7 @@ func TestClient_GetNotifierProviders(t *testing.T) {
 
 	mux.HandleFunc(notifierProviderPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "notifiers/providers")) //nolint:errcheck
+		w.Write(getStub(t, "notifiers/providers"))
 	})
 
 	providers, err := client.GetNotifierProviders(context.TODO())
@@ -34,7 +34,7 @@ func TestClient_GetNotifiers(t *testing.T) {
 
 	mux.HandleFunc(notifierPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "notifiers/notifiers")) //nolint:errcheck
+		w.Write(getStub(t, "notifiers/notifiers"))
 	})
 
 	notifiers, err := client.GetNotifiers(context.TODO())
@@ -53,7 +53,7 @@ func TestClient_GetNotifier(t *testing.T) {
 	id := "FKDSHFKS47D"
 	mux.HandleFunc(notifierPath+"/"+id, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "notifiers/notifier")) //nolint:errcheck
+		w.Write(getStub(t, "notifiers/notifier"))
 	})
 
 	notifier, err := client.GetNotifier(context.TODO(), id)
@@ -72,7 +72,7 @@ func TestClient_DeleteNotifier(t *testing.T) {
 	id := "default"
 	mux.HandleFunc(notifierPath+"/"+id, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	isOK, err := client.DeleteNotifier(context.TODO(), id)
@@ -87,7 +87,7 @@ func TestClient_CreateNotifier(t *testing.T) {
 
 	mux.HandleFunc(notifierPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "POST", r.Method)
-		fmt.Fprint(w, `{"id": "GREY545DYUDYU3432", "success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"id": "GREY545DYUDYU3432", "success": true}`)
 	})
 
 	notifier := &Notifier{
@@ -110,7 +110,7 @@ func TestClient_UpdateNotifierArgs(t *testing.T) {
 	id := "default"
 	mux.HandleFunc(notifierPath+"/"+id, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "PUT", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	isOK, err := client.UpdateNotifierArgs(context.TODO(), id, map[string]string{"to": "test@test.local"})

@@ -14,7 +14,7 @@ func TestClient_GetQueryTags(t *testing.T) {
 
 	mux.HandleFunc(queryTagsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "query_tags")) //nolint:errcheck
+		w.Write(getStub(t, "query_tags"))
 	})
 
 	queryTagsExpected := &QueryTags{
@@ -42,7 +42,7 @@ func TestClient_SearchQueries(t *testing.T) {
 
 	mux.HandleFunc(querySearchPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "query_search_results")) //nolint:errcheck
+		w.Write(getStub(t, "query_search_results"))
 	})
 
 	searchQueryExpected := &QuerySearch{
@@ -98,7 +98,7 @@ func TestClient_GetQueries(t *testing.T) {
 
 	mux.HandleFunc(queryPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "query_search_results")) //nolint:errcheck
+		w.Write(getStub(t, "query_search_results"))
 	})
 
 	queriesExpected := &QuerySearch{

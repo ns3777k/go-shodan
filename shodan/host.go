@@ -171,7 +171,7 @@ type HostQueryTokens struct {
 	Attributes map[string]interface{} `json:"attributes"`
 }
 
-// GetServicesForHost returns all services that have been found on the given host IP
+// GetServicesForHost returns all services that have been found on the given host IP.
 func (c *Client) GetServicesForHost(ctx context.Context, ip string, options *HostServicesOptions) (*Host, error) {
 	var host Host
 
@@ -189,7 +189,7 @@ func (c *Client) GetServicesForHost(ctx context.Context, ip string, options *Hos
 
 // GetHostsCountForQuery behaves identical to "/shodan/host/search" with the only difference that this method
 // does not return any host results, it only returns the total number of results that matched the query and any facet
-// information that was requested. As a result this method does not consume query credits
+// information that was requested. As a result this method does not consume query credits.
 func (c *Client) GetHostsCountForQuery(ctx context.Context, options *HostQueryOptions) (*HostMatch, error) {
 	var found HostMatch
 
@@ -210,7 +210,7 @@ func (c *Client) GetHostsCountForQuery(ctx context.Context, options *HostQueryOp
 // following criteria are met, your account will be deducated 1 query credit:
 // 1. The search query contains a filter
 // 2. Accessing results past the 1st page using the "page". For every 100 results past the 1st page 1 query credit is
-// deducted
+// deducted.
 func (c *Client) GetHostsForQuery(ctx context.Context, options *HostQueryOptions) (*HostMatch, error) {
 	var found HostMatch
 

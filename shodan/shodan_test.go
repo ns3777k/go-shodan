@@ -31,6 +31,7 @@ func setUpTestServe() (*http.ServeMux, func(), *Client) {
 }
 
 func getStub(t *testing.T, stubName string) []byte {
+	t.Helper()
 	stubPath := fmt.Sprintf("%s/%s.json", stubsDir, stubName)
 	content, err := ioutil.ReadFile(stubPath)
 	if err != nil {

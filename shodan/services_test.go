@@ -14,7 +14,7 @@ func TestClient_GetServices(t *testing.T) {
 
 	mux.HandleFunc(servicesPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "services")) //nolint:errcheck
+		w.Write(getStub(t, "services"))
 	})
 
 	servicesExpected := map[string]string{

@@ -36,7 +36,7 @@ func TestClient_Scan(t *testing.T) {
 			assert.NotNil(t, net.ParseIP(ip))
 		}
 
-		w.Write(getStub(t, "scan")) //nolint:errcheck
+		w.Write(getStub(t, "scan"))
 	})
 
 	scanStatus, err := client.Scan(context.TODO(), expectedIPs)
@@ -88,7 +88,7 @@ func TestClient_GetScanStatus(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "scan_status")) //nolint:errcheck
+		w.Write(getStub(t, "scan_status"))
 	})
 
 	scanStatus, err := client.GetScanStatus(context.TODO(), "BOMA59VSGWX8QJR9")

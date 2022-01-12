@@ -2,10 +2,9 @@ package shodan
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"testing"
-
-	"encoding/json"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,7 +15,7 @@ func TestClient_GetHostsForQuery_DifferentVersionFormats(t *testing.T) {
 
 	mux.HandleFunc(hostSearchPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "host/version")) //nolint:errcheck
+		w.Write(getStub(t, "host/version"))
 	})
 
 	options := &HostQueryOptions{Query: "argentina"}
@@ -77,7 +76,7 @@ func TestClient_GetFacets(t *testing.T) {
 	mux.HandleFunc(hostSearchFacetsPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
 		b, _ := json.Marshal(expectedFacets)
-		w.Write(b) //nolint:errcheck
+		w.Write(b)
 	})
 
 	actualFacets, err := client.GetFacets(context.TODO())
@@ -95,7 +94,7 @@ func TestClient_GetFilters(t *testing.T) {
 	mux.HandleFunc(hostSearchFiltersPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
 		b, _ := json.Marshal(expectedFilters)
-		w.Write(b) //nolint:errcheck
+		w.Write(b)
 	})
 
 	actualFilters, err := client.GetFilters(context.TODO())

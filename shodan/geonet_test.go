@@ -3,10 +3,11 @@ package shodan
 import (
 	"context"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClient_GeoPing(t *testing.T) {
@@ -18,7 +19,7 @@ func TestClient_GeoPing(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "geonet/ping")) //nolint:errcheck
+		w.Write(getStub(t, "geonet/ping"))
 	})
 
 	pingResult, err := client.GeoPing(context.TODO(), net.ParseIP(ip))
@@ -49,7 +50,7 @@ func TestClient_GeoPings(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "geonet/ping_multiple")) //nolint:errcheck
+		w.Write(getStub(t, "geonet/ping_multiple"))
 	})
 
 	pingResult, err := client.GeoPings(context.TODO(), net.ParseIP(ip))
@@ -97,7 +98,7 @@ func TestClient_GeoDNSQuery(t *testing.T) {
 		assert.Equal(t, "GET", r.Method)
 		assert.Equal(t, "A", r.URL.Query().Get("rtype"))
 
-		w.Write(getStub(t, "geonet/dns")) //nolint:errcheck
+		w.Write(getStub(t, "geonet/dns"))
 	})
 
 	queryResult, err := client.GeoDNSQuery(context.TODO(), hostname, &DNSQueryOptions{RecordType: "A"})
@@ -122,7 +123,7 @@ func TestClient_GeoDNSQueries(t *testing.T) {
 		assert.Equal(t, "GET", r.Method)
 		assert.Equal(t, "A", r.URL.Query().Get("rtype"))
 
-		w.Write(getStub(t, "geonet/dns_multiple")) //nolint:errcheck
+		w.Write(getStub(t, "geonet/dns_multiple"))
 	})
 
 	queryResult, err := client.GeoDNSQueries(context.TODO(), hostname, &DNSQueryOptions{RecordType: "A"})

@@ -15,7 +15,7 @@ func TestClient_GetOrganization(t *testing.T) {
 
 	mux.HandleFunc(organizationPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "org")) //nolint:errcheck
+		w.Write(getStub(t, "org"))
 	})
 
 	org, err := client.GetOrganization(context.TODO())
@@ -44,7 +44,7 @@ func TestClient_AddMemberToOrganization(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "PUT", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	r, err := client.AddMemberToOrganization(context.TODO(), user, nil)
@@ -64,7 +64,7 @@ func TestClient_AddMemberToOrganizationWithNotifications(t *testing.T) {
 		q := r.URL.Query()
 		assert.Equal(t, "PUT", r.Method)
 		assert.Equal(t, "true", q["notify"][0])
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	r, err := client.AddMemberToOrganization(context.TODO(), user, &AddMemberToOrganizationOptions{Notify: true})
@@ -82,7 +82,7 @@ func TestClient_RemoveMemberFromOrganization(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	r, err := client.RemoveMemberFromOrganization(context.TODO(), user)

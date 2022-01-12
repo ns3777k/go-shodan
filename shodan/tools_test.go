@@ -3,11 +3,10 @@ package shodan
 import (
 	"context"
 	"fmt"
+	"net"
 	"net/http"
 	"strconv"
 	"testing"
-
-	"net"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -35,7 +34,7 @@ func TestClient_GetHTTPHeaders(t *testing.T) {
 
 	mux.HandleFunc(headersPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "headers")) //nolint:errcheck
+		w.Write(getStub(t, "headers"))
 	})
 
 	headersExpected := map[string]string{

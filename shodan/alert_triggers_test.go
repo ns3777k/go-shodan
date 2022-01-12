@@ -15,7 +15,7 @@ func TestClient_GetAlertTriggers(t *testing.T) {
 
 	mux.HandleFunc(alertTriggersListPath, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		w.Write(getStub(t, "alert/triggers")) //nolint:errcheck
+		w.Write(getStub(t, "alert/triggers"))
 	})
 
 	triggers, err := client.GetAlertTriggers(context.TODO())
@@ -46,7 +46,7 @@ func TestClient_EnableAlertTrigger(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "PUT", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	options := &AlertTriggerIdent{AlertID: id, TriggerName: trigger}
@@ -66,7 +66,7 @@ func TestClient_DisableAlertTrigger(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	options := &AlertTriggerIdent{AlertID: id, TriggerName: trigger}
@@ -87,7 +87,7 @@ func TestClient_AddServiceToAlertTriggerWhitelist(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "PUT", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	triggerOptions := &AlertTriggerIdent{AlertID: id, TriggerName: trigger}
@@ -109,7 +109,7 @@ func TestClient_RemoveServiceFromAlertTriggerWhitelist(t *testing.T) {
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
-		fmt.Fprint(w, `{"success": true}`) //nolint:errcheck
+		fmt.Fprint(w, `{"success": true}`)
 	})
 
 	triggerOptions := &AlertTriggerIdent{AlertID: id, TriggerName: trigger}

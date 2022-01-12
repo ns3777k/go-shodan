@@ -8,7 +8,7 @@ const (
 	portsPath = "/shodan/ports"
 )
 
-// GetPorts returns a list of port numbers that the crawlers are looking for
+// GetPorts returns a list of port numbers that the crawlers are looking for.
 func (c *Client) GetPorts(ctx context.Context) ([]int, error) {
 	var ports []int
 
