@@ -11,6 +11,8 @@ env:
 go:
   - "1.12"
   - "1.13"
+  - "1.14"
+  - "1.15"
 
 install:
   - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.19.1
